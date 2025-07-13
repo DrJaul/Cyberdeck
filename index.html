@@ -9,6 +9,7 @@
     label { display: block; margin-top: 1em; }
     input[type="number"] { width: 50px; }
     button { margin-top: 1.5em; }
+    #status { margin-top: 1em; color: green; }
   </style>
 </head>
 <body>
@@ -16,6 +17,13 @@
   <h2>Cyberdeck Configuration</h2>
 
   <form id="deck-config">
+    <label>
+      Load Preset:
+      <select id="preset-selector">
+        <option value="">-- Select a preset --</option>
+      </select>
+    </label>
+
     <label>Attack: <input type="number" name="attack" min="0" max="8"></label>
     <label>Sleaze: <input type="number" name="sleaze" min="0" max="8"></label>
     <label>Data Processing: <input type="number" name="dataProcessing" min="0" max="8"></label>
@@ -25,7 +33,7 @@
     <button type="button" id="reset-config">Reset</button>
   </form>
 
-  <div id="status" style="margin-top:1em; color: green;"></div>
+  <div id="status"></div>
 
   <script>
     const STORAGE_KEY = "cyberdeckConfig";
@@ -59,14 +67,40 @@
       $("#status").text("Configuration reset.");
     }
 
+    // Load presets from external JSON file
+    function loadPresets() {
+      $.getJSON("presets.json", function (presets) {
+        presets.forEach((preset, index) => {
+          $("#preset-selector").append(
+            $("<option>")
+              .val(index)
+              .text(preset.name)
+              .data("config", preset)
+          );
+        });
+      });
+    }
+
+    // Handle preset selection
+    $("#preset-selector").on("change", function () {
+      const selected = $(this).find("option:selected").data("config");
+      if (selected) {
+        for (const key in selected) {
+          if (key !== "name") {
+            $(`[name="${key}"]`).val(selected[key]);
+          }
+        }
+        $("#status").text(`Preset "${selected.name}" loaded.`);
+      }
+    });
+
     $(document).ready(function () {
       loadConfig();
-
+      loadPresets();
       $("#deck-config").on("submit", function (e) {
         e.preventDefault();
         saveConfig();
       });
-
       $("#reset-config").on("click", function () {
         resetConfig();
       });
@@ -75,3 +109,4 @@
 
 </body>
 </html>
+

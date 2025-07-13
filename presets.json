@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Renraku Tsurugi",
+    "attack": 2,
+    "sleaze": 5,
+    "dataProcessing": 4,
+    "firewall": 3
+  },
+  {
+    "name": "Microdeck Summit",
+    "attack": 1,
+    "sleaze": 3,
+    "dataProcessing": 5,
+    "firewall": 4
+  },
+  {
+    "name": "Hermes Ikon",
+    "attack": 4,
+    "sleaze": 3,
+    "dataProcessing": 3,
+    "firewall": 4
+  }
+]
