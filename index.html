@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyberdeck Config Helper (SR5)</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 1em; max-width: 500px; }
+    label { display: block; margin-top: 1em; }
+    input[type="number"] { width: 50px; }
+    button { margin-top: 1.5em; }
+  </style>
+</head>
+<body>
+
+  <h2>Cyberdeck Configuration</h2>
+
+  <form id="deck-config">
+    <label>Attack: <input type="number" name="attack" min="0" max="8"></label>
+    <label>Sleaze: <input type="number" name="sleaze" min="0" max="8"></label>
+    <label>Data Processing: <input type="number" name="dataProcessing" min="0" max="8"></label>
+    <label>Firewall: <input type="number" name="firewall" min="0" max="8"></label>
+
+    <button type="submit">Save Configuration</button>
+    <button type="button" id="reset-config">Reset</button>
+  </form>
+
+  <div id="status" style="margin-top:1em; color: green;"></div>
+
+  <script>
+    const STORAGE_KEY = "cyberdeckConfig";
+
+    // Load saved config from localStorage
+    function loadConfig() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved) {
+        for (const key in saved) {
+          $(`[name="${key}"]`).val(saved[key]);
+        }
+      }
+    }
+
+    // Save config to localStorage
+    function saveConfig() {
+      const config = {
+        attack: parseInt($('[name="attack"]').val()) || 0,
+        sleaze: parseInt($('[name="sleaze"]').val()) || 0,
+        dataProcessing: parseInt($('[name="dataProcessing"]').val()) || 0,
+        firewall: parseInt($('[name="firewall"]').val()) || 0,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      $("#status").text("Configuration saved!");
+    }
+
+    // Reset config
+    function resetConfig() {
+      localStorage.removeItem(STORAGE_KEY);
+      $("#deck-config")[0].reset();
+      $("#status").text("Configuration reset.");
+    }
+
+    $(document).ready(function () {
+      loadConfig();
+
+      $("#deck-config").on("submit", function (e) {
+        e.preventDefault();
+        saveConfig();
+      });
+
+      $("#reset-config").on("click", function () {
+        resetConfig();
+      });
+    });
+  </script>
+
+</body>
+</html>
