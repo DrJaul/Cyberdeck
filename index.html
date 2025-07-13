@@ -1,121 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Cyberdeck Config Helper (SR5)</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <style>
-    body { font-family: sans-serif; padding: 1em; max-width: 800px; }
-
-    label { display: block; margin: 0.5em 0; }
-    input[type="number"] { width: 50px; }
-    button { margin-top: 1em; }
-
-    #status { margin-top: 1em; color: green; }
-
-    .stat-box {
-      display: inline-block;
-      width: 100px;
-      padding: 0.5em;
-      margin: 0.5em;
-      border: 1px solid #aaa;
-      border-radius: 5px;
-      text-align: center;
-      background-color: #eee;
-      cursor: move;
-    }
-
-    .stat-box.dragging {
-      opacity: 0.5;
-      background-color: #ccc;
-    }
-
-    #deck-stats {
-      margin-top: 1em;
-    }
-
-    #program-section {
-      display: flex;
-      margin-top: 2em;
-      gap: 2em;
-      flex-wrap: wrap;
-    }
-
-    #program-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5em;
-      max-width: 300px;
-    }
-
-    .program-item {
-      border: 1px solid #999;
-      padding: 0.5em;
-      background: #f7f7f7;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-
-    .program-item:hover {
-      background-color: #ddd;
-    }
-
-    #program-slots {
-      margin-top: 1em;
-      max-width: 350px;
-    }
-
-    .program-slot {
-      border: 1px dashed #666;
-      padding: 0.5em;
-      margin: 0.25em 0;
-      min-height: 1.5em;
-      background-color: #fff;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .program-slot.drag-over {
-      background-color: #eef;
-    }
-
-    #program-tooltip {
-      position: absolute;
-      z-index: 9999;
-      max-width: 250px;
-      padding: 0.5em;
-      background: #222;
-      color: #fff;
-      border-radius: 4px;
-      font-size: 0.85em;
-      pointer-events: none;
-      display: none;
-      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-      white-space: pre-line;
-    }
-
-    #decking-inputs {
-      margin-top: 2em;
-      display: flex;
-      gap: 2em;
-      flex-wrap: wrap;
-    }
-
-    .deck-col {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .deck-col label {
-      display: block;
-      margin: 0.5em 0;
-    }
-  </style>
 </head>
 <body>
+  <!-- Collapsible Panels -->
+  <div id="left-panel" class="side-panel">
+    <h3>Attributes</h3>
+    <label>Logic: <input type="number" id="attr-logic" min="1" max="10" /></label>
+    <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10" /></label>
+    <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10" /></label>
 
-  <h2>Cyberdeck Configuration</h2>
+    <h3>Skills</h3>
+    <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12" /></label>
+    <label>Computer: <input type="number" id="skill-computer" min="0" max="12" /></label>
+    <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12" /></label>
+    <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12" /></label>
+    <label>Software: <input type="number" id="skill-software" min="0" max="12" /></label>
+
+    <h3>Qualities</h3>
+    <div id="quality-list">
+      
+      <label class="quality-checkbox">
+        <input type="checkbox" value="Analytical Mind" /> Analytical Mind
+      </label>
+      <label class="quality-checkbox">
+        <input type="checkbox" value="Codeslinger (Hacking on the Fly)" /> Codeslinger (Hacking on the Fly)
+      </label>
+    </div>
+  </div>
+
+  <div id="right-panel" class="side-panel">
+    <h3>Matrix Actions</h3>
+    <table id="matrix-actions-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Limit</th>
+          <th>Description</th>
+          <th>Formula</th>
+          <th>Dice Pool</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <button id="left-toggle" class="panel-toggle">☰</button>
+  <button id="right-toggle" class="panel-toggle">☰</button>
 
   <form id="deck-config">
     <label>
@@ -124,12 +59,10 @@
         <option value="">-- Select a preset --</option>
       </select>
     </label>
-
-    <label>Attack: <input type="number" name="attack" min="0" max="8"></label>
-    <label>Sleaze: <input type="number" name="sleaze" min="0" max="8"></label>
-    <label>Data Processing: <input type="number" name="dataProcessing" min="0" max="8"></label>
-    <label>Firewall: <input type="number" name="firewall" min="0" max="8"></label>
-
+    <label>Attack: <input type="number" name="attack" /></label>
+    <label>Sleaze: <input type="number" name="sleaze" /></label>
+    <label>Data Processing: <input type="number" name="dataProcessing" /></label>
+    <label>Firewall: <input type="number" name="firewall" /></label>
     <button type="submit">Save Configuration</button>
     <button type="button" id="reset-config">Reset</button>
   </form>
@@ -143,23 +76,6 @@
       <div class="stat-box" draggable="true" data-type="firewall">Firewall: <span>0</span></div>
     </div>
     <button type="button" id="reset-factory">Reset to Factory Settings</button>
-  </div>
-
-  <div id="decking-inputs">
-    <div class="deck-col">
-      <h3>Attributes</h3>
-      <label>Logic: <input type="number" id="attr-logic" min="1" max="10"></label>
-      <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10"></label>
-      <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10"></label>
-    </div>
-    <div class="deck-col">
-      <h3>Skills</h3>
-      <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12"></label>
-      <label>Computer: <input type="number" id="skill-computer" min="0" max="12"></label>
-      <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12"></label>
-      <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12"></label>
-      <label>Software: <input type="number" id="skill-software" min="0" max="12"></label>
-    </div>
   </div>
 
   <div id="program-section">
@@ -176,284 +92,6 @@
   <div id="status"></div>
   <div id="program-tooltip"></div>
 
-  <script>
-    const STORAGE_KEY = "cyberdeckConfig";
-    const PROGRAM_STORAGE_KEY = "cyberdeckPrograms";
-    const STATS_STORAGE_KEY = "cyberdeckCharacterStats";
-    let factorySettings = null;
-
-    function saveConfig() {
-      const config = {
-        attack: parseInt($('[name="attack"]').val()) || 0,
-        sleaze: parseInt($('[name="sleaze"]').val()) || 0,
-        dataProcessing: parseInt($('[name="dataProcessing"]').val()) || 0,
-        firewall: parseInt($('[name="firewall"]').val()) || 0,
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-      updateStatDisplay();
-      $("#status").text("Configuration saved!");
-    }
-
-    function loadConfig() {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved) {
-        for (const key in saved) {
-          $(`[name="${key}"]`).val(saved[key]);
-        }
-      }
-    }
-
-    function savePrograms() {
-      const active = $(".program-slot").toArray().map(slot => $(slot).text().trim()).filter(p => p !== "");
-      localStorage.setItem(PROGRAM_STORAGE_KEY, JSON.stringify(active));
-    }
-
-    function loadProgramsFromStorage() {
-      const saved = JSON.parse(localStorage.getItem(PROGRAM_STORAGE_KEY));
-      if (!Array.isArray(saved)) return;
-
-      const $slots = $(".program-slot");
-      for (let i = 0; i < $slots.length && i < saved.length; i++) {
-        $($slots[i]).text(saved[i] || "");
-      }
-    }
-
-    function saveDeckingStats() {
-      const stats = {
-        logic: parseInt($("#attr-logic").val()) || 0,
-        intuition: parseInt($("#attr-intuition").val()) || 0,
-        reaction: parseInt($("#attr-reaction").val()) || 0,
-        hacking: parseInt($("#skill-hacking").val()) || 0,
-        computer: parseInt($("#skill-computer").val()) || 0,
-        ewarfare: parseInt($("#skill-ewarfare").val()) || 0,
-        cybercombat: parseInt($("#skill-cybercombat").val()) || 0,
-        software: parseInt($("#skill-software").val()) || 0
-      };
-      localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
-    }
-
-    function loadDeckingStats() {
-      const stats = JSON.parse(localStorage.getItem(STATS_STORAGE_KEY));
-      if (!stats) return;
-      for (const key in stats) {
-        $(`#attr-${key}`).val(stats[key]);
-        $(`#skill-${key}`).val(stats[key]);
-      }
-    }
-
-    function updateStatDisplay() {
-      $(".stat-box").each(function () {
-        const type = $(this).data("type");
-        const value = $(`[name='${type}']`).val();
-        $(this).find("span").text(value);
-      });
-    }
-
-    function resetConfig() {
-      localStorage.removeItem(STORAGE_KEY);
-      $("#deck-config")[0].reset();
-      updateStatDisplay();
-      $("#status").text("Configuration reset.");
-    }
-
-    function resetToFactory() {
-      if (!factorySettings) return;
-      for (const key in factorySettings) {
-        if (["attack", "sleaze", "dataProcessing", "firewall"].includes(key)) {
-          $(`[name="${key}"]`).val(factorySettings[key]);
-        }
-      }
-      updateStatDisplay();
-      saveConfig();
-      $("#status").text("Restored factory settings.");
-    }
-
-    function renderProgramSlots(count) {
-      const $container = $("#program-slots");
-      $container.find(".program-slot").remove();
-
-      for (let i = 0; i < count; i++) {
-        const $slot = $("<div>").addClass("program-slot").attr("data-slot", i);
-        $container.append($slot);
-      }
-
-      loadProgramsFromStorage();
-    }
-
-    function loadPrograms() {
-      $.getJSON("programs.json", function (programs) {
-        programs.forEach(program => {
-          const $item = $("<div>")
-            .addClass("program-item")
-            .attr("draggable", "true")
-            .text(program.name)
-            .data("program", program.name)
-            .data("description", program.description || "")
-            .on("dragstart", function (e) {
-              e.originalEvent.dataTransfer.setData("text/plain", $(this).data("program"));
-            })
-            .on("mouseenter", function () {
-              const desc = $(this).data("description");
-              if (desc) {
-                $("#program-tooltip").text(desc).fadeIn(100);
-              }
-            })
-            .on("mousemove", function (e) {
-              $("#program-tooltip").css({
-                top: e.pageY + 10 + "px",
-                left: e.pageX + 10 + "px"
-              });
-            })
-            .on("mouseleave", function () {
-              $("#program-tooltip").fadeOut(100);
-            });
-          $("#program-list").append($item);
-        });
-      });
-    }
-
-    function initDragAndDrop() {
-      let dragged = null;
-
-      $(".stat-box").on("dragstart", function (e) {
-        dragged = this;
-        $(this).addClass("dragging");
-      });
-
-      $(".stat-box").on("dragend", function () {
-        $(".stat-box").removeClass("dragging");
-      });
-
-      $(".stat-box").on("dragover", function (e) {
-        e.preventDefault();
-        $(this).addClass("drag-over");
-      });
-
-      $(".stat-box").on("dragleave", function () {
-        $(this).removeClass("drag-over");
-      });
-
-      $(".stat-box").on("drop", function (e) {
-        e.preventDefault();
-        $(this).removeClass("drag-over");
-        if (!dragged || dragged === this) return;
-
-        const $source = $(dragged);
-        const $target = $(this);
-
-        const sourceType = $source.data("type");
-        const targetType = $target.data("type");
-
-        const sourceVal = parseInt($source.find("span").text());
-        const targetVal = parseInt($target.find("span").text());
-
-        $source.find("span").text(targetVal);
-        $target.find("span").text(sourceVal);
-
-        $(`[name='${sourceType}']`).val(targetVal);
-        $(`[name='${targetType}']`).val(sourceVal);
-
-        saveConfig();
-      });
-
-      $(document).on("dragover", ".program-slot", function (e) {
-        e.preventDefault();
-        $(this).addClass("drag-over");
-      });
-
-      $(document).on("dragleave", ".program-slot", function () {
-        $(this).removeClass("drag-over");
-      });
-
-      $(document).on("drop", ".program-slot", function (e) {
-        e.preventDefault();
-        $(this).removeClass("drag-over");
-
-        const programName = e.originalEvent.dataTransfer.getData("text/plain");
-        if (!programName) return;
-
-        const alreadyUsed = $(".program-slot").toArray().some(slot =>
-          $(slot).text().trim() === programName
-        );
-
-        if (alreadyUsed) {
-          $("#status").text(`"${programName}" is already active.`);
-          return;
-        }
-
-        $(this).text(programName);
-        savePrograms();
-      });
-
-      $(document).on("click", ".program-slot", function () {
-        $(this).text("");
-        savePrograms();
-      });
-    }
-
-    function loadPresets() {
-      $.getJSON("presets.json", function (presets) {
-        presets.forEach((preset, index) => {
-          $("#preset-selector").append(
-            $("<option>")
-              .val(index)
-              .text(preset.name)
-              .data("config", preset)
-          );
-        });
-      });
-    }
-
-    $("#preset-selector").on("change", function () {
-      const selected = $(this).find("option:selected").data("config");
-      if (selected) {
-        factorySettings = selected;
-
-        for (const key in selected) {
-          if (["attack", "sleaze", "dataProcessing", "firewall"].includes(key)) {
-            $(`[name="${key}"]`).val(selected[key]);
-          }
-        }
-
-        const slotCount = selected.programSlots || 3;
-        renderProgramSlots(slotCount);
-
-        updateStatDisplay();
-        saveConfig();
-        savePrograms();
-        $("#status").text(`Preset "${selected.name}" loaded.`);
-      }
-    });
-
-    $(document).ready(function () {
-      loadConfig();
-      loadPresets();
-      loadDeckingStats();
-      renderProgramSlots(3);
-      initDragAndDrop();
-      updateStatDisplay();
-
-      $("#deck-config").on("submit", function (e) {
-        e.preventDefault();
-        saveConfig();
-      });
-
-      $("#reset-config").on("click", function () {
-        resetConfig();
-      });
-
-      $("#reset-factory").on("click", function () {
-        resetToFactory();
-      });
-
-      $("#decking-inputs input").on("change", function () {
-        saveDeckingStats();
-      });
-
-      loadPrograms();
-    });
-  </script>
-
+  <script src="main.js"></script>
 </body>
 </html>
-

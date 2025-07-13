@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Hack on the Fly",
+    "limit": "Sleaze",
+    "description": "Gain a mark silently.",
+    "formula": [
+      "logic",
+      "hacking"
+    ]
+  },
+  {
+    "name": "Brute Force",
+    "limit": "Attack",
+    "description": "Gain a mark noisily.",
+    "formula": [
+      "logic",
+      "cybercombat"
+    ]
+  },
+  {
+    "name": "Snoop",
+    "limit": "Sleaze",
+    "description": "Intercept traffic.",
+    "formula": [
+      "intuition",
+      "electronicWarfare"
+    ]
+  },
+  {
+    "name": "Trace Icon",
+    "limit": "Data Processing",
+    "description": "Locate device.",
+    "formula": [
+      "intuition",
+      "computer"
+    ]
+  }
+]
