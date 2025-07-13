@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Analytical Mind",
+    "description": "Provides +2 dice to tests involving logic-based analysis, including Matrix perception.",
+    "improvements": {
+      "skills": {
+        "computer": 2
+      }
+    }
+  },
+  {
+    "name": "Codeslinger (Hacking on the Fly)",
+    "description": "Provides +2 dice to a specific Matrix action, here 'Hacking on the Fly'.",
+    "improvements": {
+      "matrixActions": {
+        "Hack on the Fly": 2
+      }
+    }
+  },
+  {
+    "name": "Focused Concentration",
+    "description": "Provides bonuses to sustain complex forms. If adapted, could grant stability to bonuses without penalty.",
+    "improvements": {}
+  },
+  {
+    "name": "High Pain Tolerance",
+    "description": "Reduces wound penalties, could help in Matrix combat scenarios.",
+    "improvements": {}
+  },
+  {
+    "name": "Quick Configurator",
+    "description": "Provides +1 to dice pools when reconfiguring devices on the fly.",
+    "improvements": {
+      "matrixActions": {
+        "Change Icon": 1
+      }
+    }
+  }
+]

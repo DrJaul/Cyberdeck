@@ -1,0 +1,175 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  color: #eee;
+}
+
+h3 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+form, #deck-stats, #program-section, #program-slots, #status {
+  margin: 1em;
+}
+
+label {
+  display: block;
+  margin: 0.5em 0;
+}
+
+input[type="number"] {
+  width: 60px;
+  margin-left: 0.5em;
+}
+
+#draggables {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  margin-top: 0.5em;
+}
+
+.stat-box {
+  padding: 0.5em;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: move;
+  user-select: none;
+  min-width: 100px;
+  text-align: center;
+}
+
+.stat-box:hover {
+  background-color: #444;
+}
+
+#program-list-container, #program-slots {
+  margin: 1em;
+}
+
+#program-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.program-item {
+  background-color: #222;
+  border: 1px solid #444;
+  padding: 0.3em 0.5em;
+  border-radius: 3px;
+  cursor: grab;
+  user-select: none;
+}
+
+.program-slot {
+  display: inline-block;
+  background-color: #1a1a1a;
+  border: 1px dashed #555;
+  min-width: 100px;
+  min-height: 30px;
+  padding: 0.5em;
+  margin: 0.3em;
+  border-radius: 4px;
+  vertical-align: top;
+}
+
+.program-slot.drag-over {
+  background-color: #333;
+}
+
+#program-tooltip {
+  position: absolute;
+  background-color: #222;
+  border: 1px solid #555;
+  padding: 0.4em;
+  border-radius: 4px;
+  color: white;
+  display: none;
+  z-index: 999;
+  pointer-events: none;
+  max-width: 300px;
+}
+
+/* Matrix Actions Table */
+#matrix-actions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+#matrix-actions-table th,
+#matrix-actions-table td {
+  border: 1px solid #444;
+  padding: 0.5em;
+  text-align: left;
+}
+
+#matrix-actions-table th {
+  background-color: #222;
+}
+
+#matrix-actions-table td {
+  background-color: #1a1a1a;
+}
+
+/* Side Panels */
+.side-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #1e1e1e;
+  color: white;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  padding: 1em;
+}
+
+#left-panel {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+#right-panel {
+  right: 0;
+  transform: translateX(100%);
+}
+
+#left-panel.open {
+  transform: translateX(0);
+}
+
+#right-panel.open {
+  transform: translateX(0);
+}
+
+.panel-toggle {
+  position: fixed;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+#left-toggle {
+  left: 0;
+}
+
+#right-toggle {
+  right: 0;
+}
+
+.quality-checkbox {
+  display: block;
+  margin: 0.3em 0;
+}
