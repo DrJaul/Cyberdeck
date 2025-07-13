@@ -5,10 +5,13 @@
   <title>Cyberdeck Config Helper (SR5)</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
-    body { font-family: sans-serif; padding: 1em; max-width: 500px; }
-    label { display: block; margin-top: 1em; }
+    body { font-family: sans-serif; padding: 1em; max-width: 800px; }
+
+    label { display: block; margin: 0.5em 0; }
     input[type="number"] { width: 50px; }
-    button { margin-top: 1.5em; }
+    button { margin-top: 1em; }
+
+    #status { margin-top: 1em; color: green; }
 
     .stat-box {
       display: inline-block;
@@ -31,9 +34,82 @@
       margin-top: 1em;
     }
 
-    #status {
+    #program-section {
+      display: flex;
+      margin-top: 2em;
+      gap: 2em;
+      flex-wrap: wrap;
+    }
+
+    #program-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5em;
+      max-width: 300px;
+    }
+
+    .program-item {
+      border: 1px solid #999;
+      padding: 0.5em;
+      background: #f7f7f7;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .program-item:hover {
+      background-color: #ddd;
+    }
+
+    #program-slots {
       margin-top: 1em;
-      color: green;
+      max-width: 350px;
+    }
+
+    .program-slot {
+      border: 1px dashed #666;
+      padding: 0.5em;
+      margin: 0.25em 0;
+      min-height: 1.5em;
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .program-slot.drag-over {
+      background-color: #eef;
+    }
+
+    #program-tooltip {
+      position: absolute;
+      z-index: 9999;
+      max-width: 250px;
+      padding: 0.5em;
+      background: #222;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 0.85em;
+      pointer-events: none;
+      display: none;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+      white-space: pre-line;
+    }
+
+    #decking-inputs {
+      margin-top: 2em;
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+    }
+
+    .deck-col {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .deck-col label {
+      display: block;
+      margin: 0.5em 0;
     }
   </style>
 </head>
@@ -69,11 +145,54 @@
     <button type="button" id="reset-factory">Reset to Factory Settings</button>
   </div>
 
+  <div id="decking-inputs">
+    <div class="deck-col">
+      <h3>Attributes</h3>
+      <label>Logic: <input type="number" id="attr-logic" min="1" max="10"></label>
+      <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10"></label>
+      <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10"></label>
+    </div>
+    <div class="deck-col">
+      <h3>Skills</h3>
+      <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12"></label>
+      <label>Computer: <input type="number" id="skill-computer" min="0" max="12"></label>
+      <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12"></label>
+      <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12"></label>
+      <label>Software: <input type="number" id="skill-software" min="0" max="12"></label>
+    </div>
+  </div>
+
+  <div id="program-section">
+    <div id="program-list-container">
+      <h3>Programs</h3>
+      <div id="program-list"></div>
+    </div>
+  </div>
+
+  <div id="program-slots">
+    <h3>Active Programs</h3>
+  </div>
+
   <div id="status"></div>
+  <div id="program-tooltip"></div>
 
   <script>
     const STORAGE_KEY = "cyberdeckConfig";
+    const PROGRAM_STORAGE_KEY = "cyberdeckPrograms";
+    const STATS_STORAGE_KEY = "cyberdeckCharacterStats";
     let factorySettings = null;
+
+    function saveConfig() {
+      const config = {
+        attack: parseInt($('[name="attack"]').val()) || 0,
+        sleaze: parseInt($('[name="sleaze"]').val()) || 0,
+        dataProcessing: parseInt($('[name="dataProcessing"]').val()) || 0,
+        firewall: parseInt($('[name="firewall"]').val()) || 0,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      updateStatDisplay();
+      $("#status").text("Configuration saved!");
+    }
 
     function loadConfig() {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -84,16 +203,50 @@
       }
     }
 
-    function saveConfig() {
-      const config = {
-        attack: parseInt($('[name="attack"]').val()) || 0,
-        sleaze: parseInt($('[name="sleaze"]').val()) || 0,
-        dataProcessing: parseInt($('[name="dataProcessing"]').val()) || 0,
-        firewall: parseInt($('[name="firewall"]').val()) || 0,
+    function savePrograms() {
+      const active = $(".program-slot").toArray().map(slot => $(slot).text().trim()).filter(p => p !== "");
+      localStorage.setItem(PROGRAM_STORAGE_KEY, JSON.stringify(active));
+    }
+
+    function loadProgramsFromStorage() {
+      const saved = JSON.parse(localStorage.getItem(PROGRAM_STORAGE_KEY));
+      if (!Array.isArray(saved)) return;
+
+      const $slots = $(".program-slot");
+      for (let i = 0; i < $slots.length && i < saved.length; i++) {
+        $($slots[i]).text(saved[i] || "");
+      }
+    }
+
+    function saveDeckingStats() {
+      const stats = {
+        logic: parseInt($("#attr-logic").val()) || 0,
+        intuition: parseInt($("#attr-intuition").val()) || 0,
+        reaction: parseInt($("#attr-reaction").val()) || 0,
+        hacking: parseInt($("#skill-hacking").val()) || 0,
+        computer: parseInt($("#skill-computer").val()) || 0,
+        ewarfare: parseInt($("#skill-ewarfare").val()) || 0,
+        cybercombat: parseInt($("#skill-cybercombat").val()) || 0,
+        software: parseInt($("#skill-software").val()) || 0
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-      $("#status").text("Configuration saved!");
-      updateStatDisplay();
+      localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
+    }
+
+    function loadDeckingStats() {
+      const stats = JSON.parse(localStorage.getItem(STATS_STORAGE_KEY));
+      if (!stats) return;
+      for (const key in stats) {
+        $(`#attr-${key}`).val(stats[key]);
+        $(`#skill-${key}`).val(stats[key]);
+      }
+    }
+
+    function updateStatDisplay() {
+      $(".stat-box").each(function () {
+        const type = $(this).data("type");
+        const value = $(`[name='${type}']`).val();
+        $(this).find("span").text(value);
+      });
     }
 
     function resetConfig() {
@@ -106,7 +259,7 @@
     function resetToFactory() {
       if (!factorySettings) return;
       for (const key in factorySettings) {
-        if (key !== "name") {
+        if (["attack", "sleaze", "dataProcessing", "firewall"].includes(key)) {
           $(`[name="${key}"]`).val(factorySettings[key]);
         }
       }
@@ -115,11 +268,47 @@
       $("#status").text("Restored factory settings.");
     }
 
-    function updateStatDisplay() {
-      $(".stat-box").each(function () {
-        const type = $(this).data("type");
-        const value = $(`[name='${type}']`).val();
-        $(this).find("span").text(value);
+    function renderProgramSlots(count) {
+      const $container = $("#program-slots");
+      $container.find(".program-slot").remove();
+
+      for (let i = 0; i < count; i++) {
+        const $slot = $("<div>").addClass("program-slot").attr("data-slot", i);
+        $container.append($slot);
+      }
+
+      loadProgramsFromStorage();
+    }
+
+    function loadPrograms() {
+      $.getJSON("programs.json", function (programs) {
+        programs.forEach(program => {
+          const $item = $("<div>")
+            .addClass("program-item")
+            .attr("draggable", "true")
+            .text(program.name)
+            .data("program", program.name)
+            .data("description", program.description || "")
+            .on("dragstart", function (e) {
+              e.originalEvent.dataTransfer.setData("text/plain", $(this).data("program"));
+            })
+            .on("mouseenter", function () {
+              const desc = $(this).data("description");
+              if (desc) {
+                $("#program-tooltip").text(desc).fadeIn(100);
+              }
+            })
+            .on("mousemove", function (e) {
+              $("#program-tooltip").css({
+                top: e.pageY + 10 + "px",
+                left: e.pageX + 10 + "px"
+              });
+            })
+            .on("mouseleave", function () {
+              $("#program-tooltip").fadeOut(100);
+            });
+          $("#program-list").append($item);
+        });
       });
     }
 
@@ -166,6 +355,40 @@
 
         saveConfig();
       });
+
+      $(document).on("dragover", ".program-slot", function (e) {
+        e.preventDefault();
+        $(this).addClass("drag-over");
+      });
+
+      $(document).on("dragleave", ".program-slot", function () {
+        $(this).removeClass("drag-over");
+      });
+
+      $(document).on("drop", ".program-slot", function (e) {
+        e.preventDefault();
+        $(this).removeClass("drag-over");
+
+        const programName = e.originalEvent.dataTransfer.getData("text/plain");
+        if (!programName) return;
+
+        const alreadyUsed = $(".program-slot").toArray().some(slot =>
+          $(slot).text().trim() === programName
+        );
+
+        if (alreadyUsed) {
+          $("#status").text(`"${programName}" is already active.`);
+          return;
+        }
+
+        $(this).text(programName);
+        savePrograms();
+      });
+
+      $(document).on("click", ".program-slot", function () {
+        $(this).text("");
+        savePrograms();
+      });
     }
 
     function loadPresets() {
@@ -185,37 +408,52 @@
       const selected = $(this).find("option:selected").data("config");
       if (selected) {
         factorySettings = selected;
+
         for (const key in selected) {
-          if (key !== "name") {
+          if (["attack", "sleaze", "dataProcessing", "firewall"].includes(key)) {
             $(`[name="${key}"]`).val(selected[key]);
           }
         }
+
+        const slotCount = selected.programSlots || 3;
+        renderProgramSlots(slotCount);
+
         updateStatDisplay();
         saveConfig();
+        savePrograms();
         $("#status").text(`Preset "${selected.name}" loaded.`);
       }
-    });
-
-    $("#deck-config").on("submit", function (e) {
-      e.preventDefault();
-      saveConfig();
-    });
-
-    $("#reset-config").on("click", function () {
-      resetConfig();
-    });
-
-    $("#reset-factory").on("click", function () {
-      resetToFactory();
     });
 
     $(document).ready(function () {
       loadConfig();
       loadPresets();
+      loadDeckingStats();
+      renderProgramSlots(3);
       initDragAndDrop();
       updateStatDisplay();
+
+      $("#deck-config").on("submit", function (e) {
+        e.preventDefault();
+        saveConfig();
+      });
+
+      $("#reset-config").on("click", function () {
+        resetConfig();
+      });
+
+      $("#reset-factory").on("click", function () {
+        resetToFactory();
+      });
+
+      $("#decking-inputs input").on("change", function () {
+        saveDeckingStats();
+      });
+
+      loadPrograms();
     });
   </script>
 
 </body>
 </html>
+
