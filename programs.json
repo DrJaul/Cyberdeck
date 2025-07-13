@@ -1,0 +1,12 @@
+[
+  { "name": "Armor", "description": "Adds +2 to Firewall." },
+  { "name": "Baby Monitor", "description": "Alerts you when OS is high." },
+  { "name": "Biofeedback Filter", "description": "Reduce biofeedback from dumpshock." },
+  { "name": "Browse", "description": "Improves Matrix Search speed." },
+  { "name": "Configurate", "description": "Rearrange attributes as a Free Action." },
+  { "name": "Edit", "description": "Helps with matrix editing tasks." },
+  { "name": "Encryption", "description": "Adds +1 to your Firewall." },
+  { "name": "Stealth", "description": "Adds +2 to Sleaze for detection resistance." },
+  { "name": "Toolbox", "description": "Adds +1 to Data Processing." },
+  { "name": "Decryption", "description": "Aids with cracking file protection." }
+]

@@ -9,7 +9,32 @@
     label { display: block; margin-top: 1em; }
     input[type="number"] { width: 50px; }
     button { margin-top: 1.5em; }
-    #status { margin-top: 1em; color: green; }
+
+    .stat-box {
+      display: inline-block;
+      width: 100px;
+      padding: 0.5em;
+      margin: 0.5em;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      text-align: center;
+      background-color: #eee;
+      cursor: move;
+    }
+
+    .stat-box.dragging {
+      opacity: 0.5;
+      background-color: #ccc;
+    }
+
+    #deck-stats {
+      margin-top: 1em;
+    }
+
+    #status {
+      margin-top: 1em;
+      color: green;
+    }
   </style>
 </head>
 <body>
@@ -33,12 +58,23 @@
     <button type="button" id="reset-config">Reset</button>
   </form>
 
+  <div id="deck-stats">
+    <h3>Drag to Reassign Stats</h3>
+    <div id="draggables">
+      <div class="stat-box" draggable="true" data-type="attack">Attack: <span>0</span></div>
+      <div class="stat-box" draggable="true" data-type="sleaze">Sleaze: <span>0</span></div>
+      <div class="stat-box" draggable="true" data-type="dataProcessing">Data: <span>0</span></div>
+      <div class="stat-box" draggable="true" data-type="firewall">Firewall: <span>0</span></div>
+    </div>
+    <button type="button" id="reset-factory">Reset to Factory Settings</button>
+  </div>
+
   <div id="status"></div>
 
   <script>
     const STORAGE_KEY = "cyberdeckConfig";
+    let factorySettings = null;
 
-    // Load saved config from localStorage
     function loadConfig() {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (saved) {
@@ -48,7 +84,6 @@
       }
     }
 
-    // Save config to localStorage
     function saveConfig() {
       const config = {
         attack: parseInt($('[name="attack"]').val()) || 0,
@@ -58,16 +93,81 @@
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
       $("#status").text("Configuration saved!");
+      updateStatDisplay();
     }
 
-    // Reset config
     function resetConfig() {
       localStorage.removeItem(STORAGE_KEY);
       $("#deck-config")[0].reset();
+      updateStatDisplay();
       $("#status").text("Configuration reset.");
     }
 
-    // Load presets from external JSON file
+    function resetToFactory() {
+      if (!factorySettings) return;
+      for (const key in factorySettings) {
+        if (key !== "name") {
+          $(`[name="${key}"]`).val(factorySettings[key]);
+        }
+      }
+      updateStatDisplay();
+      saveConfig();
+      $("#status").text("Restored factory settings.");
+    }
+
+    function updateStatDisplay() {
+      $(".stat-box").each(function () {
+        const type = $(this).data("type");
+        const value = $(`[name='${type}']`).val();
+        $(this).find("span").text(value);
+      });
+    }
+
+    function initDragAndDrop() {
+      let dragged = null;
+
+      $(".stat-box").on("dragstart", function (e) {
+        dragged = this;
+        $(this).addClass("dragging");
+      });
+
+      $(".stat-box").on("dragend", function () {
+        $(".stat-box").removeClass("dragging");
+      });
+
+      $(".stat-box").on("dragover", function (e) {
+        e.preventDefault();
+        $(this).addClass("drag-over");
+      });
+
+      $(".stat-box").on("dragleave", function () {
+        $(this).removeClass("drag-over");
+      });
+
+      $(".stat-box").on("drop", function (e) {
+        e.preventDefault();
+        $(this).removeClass("drag-over");
+        if (!dragged || dragged === this) return;
+
+        const $source = $(dragged);
+        const $target = $(this);
+
+        const sourceType = $source.data("type");
+        const targetType = $target.data("type");
+
+        const sourceVal = parseInt($source.find("span").text());
+        const targetVal = parseInt($target.find("span").text());
+
+        $source.find("span").text(targetVal);
+        $target.find("span").text(sourceVal);
+
+        $(`[name='${sourceType}']`).val(targetVal);
+        $(`[name='${targetType}']`).val(sourceVal);
+
+        saveConfig();
+      });
+    }
+
     function loadPresets() {
       $.getJSON("presets.json", function (presets) {
         presets.forEach((preset, index) => {
@@ -81,32 +181,41 @@
       });
     }
 
-    // Handle preset selection
     $("#preset-selector").on("change", function () {
       const selected = $(this).find("option:selected").data("config");
       if (selected) {
+        factorySettings = selected;
         for (const key in selected) {
           if (key !== "name") {
             $(`[name="${key}"]`).val(selected[key]);
           }
         }
+        updateStatDisplay();
+        saveConfig();
         $("#status").text(`Preset "${selected.name}" loaded.`);
       }
+    });
+
+    $("#deck-config").on("submit", function (e) {
+      e.preventDefault();
+      saveConfig();
+    });
+
+    $("#reset-config").on("click", function () {
+      resetConfig();
+    });
+
+    $("#reset-factory").on("click", function () {
+      resetToFactory();
     });
 
     $(document).ready(function () {
       loadConfig();
       loadPresets();
-      $("#deck-config").on("submit", function (e) {
-        e.preventDefault();
-        saveConfig();
-      });
-      $("#reset-config").on("click", function () {
-        resetConfig();
-      });
+      initDragAndDrop();
+      updateStatDisplay();
     });
   </script>
 
 </body>
 </html>
-
