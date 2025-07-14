@@ -7,58 +7,60 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-  <!-- Collapsible Panels -->
-  <div id="left-panel" class="side-panel">
-    <h3>Attributes</h3>
-    <label>Logic: <input type="number" id="attr-logic" min="1" max="10" /></label>
-    <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10" /></label>
-    <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10" /></label>
-
-    <h3>Skills</h3>
-    <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12" /></label>
-    <label>Computer: <input type="number" id="skill-computer" min="0" max="12" /></label>
-    <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12" /></label>
-    <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12" /></label>
-    <label>Software: <input type="number" id="skill-software" min="0" max="12" /></label>
-
-    <h3>Qualities</h3>
-    <div id="quality-list">
-      <label class="quality-checkbox">
-        <input type="checkbox" value="Analytical Mind" /> Analytical Mind
+  <div class="panel-container">
+    <div id="left-panel" class="side-panel">
+    <form id="deck-config">
+      <label>
+        Select Your Deck:
+        <select id="preset-selector">
+          <option value="">----</option>
+        </select>
       </label>
-      <label class="quality-checkbox">
-        <input type="checkbox" value="Codeslinger (Hacking on the Fly)" /> Codeslinger (Hacking on the Fly)
-      </label>
+    </form>
+    </br>
+      <h3>Attributes</h3>
+      <label>Logic: <input type="number" id="attr-logic" min="1" max="10" /></label>
+      <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10" /></label>
+      <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10" /></label>
+
+      <h3>Skills</h3>
+      <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12" /></label>
+      <label>Computer: <input type="number" id="skill-computer" min="0" max="12" /></label>
+      <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12" /></label>
+      <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12" /></label>
+      <label>Software: <input type="number" id="skill-software" min="0" max="12" /></label>
+
+      <h3>Qualities</h3>
+      <div id="quality-list">
+        <label class="quality-checkbox">
+          <input type="checkbox" value="Analytical Mind" /> Analytical Mind
+        </label>
+        <label class="quality-checkbox">
+          <input type="checkbox" value="Codeslinger (Hacking on the Fly)" /> Codeslinger (Hacking on the Fly)
+        </label>
+      </div>
+    </div>
+
+    <div id="right-panel" class="side-panel">
+      <h3>Matrix Actions</h3>
+      <table id="matrix-actions-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Limit</th>
+            <th>Description</th>
+            <th>Formula</th>
+            <th>Dice Pool</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
-
-  <div id="right-panel" class="side-panel">
-    <h3>Matrix Actions</h3>
-    <table id="matrix-actions-table">
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Limit</th>
-          <th>Description</th>
-          <th>Formula</th>
-          <th>Dice Pool</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
   <button id="left-toggle" class="panel-toggle">☰</button>
   <button id="right-toggle" class="panel-toggle">☰</button>
 
-  <form id="deck-config">
-    <label>
-      Load Preset:
-      <select id="preset-selector">
-        <option value="">-- Select a preset --</option>
-      </select>
-    </label>
-  </form>
+  
 
   <div id="deck-stats">
     <h3>Drag to Reassign Stats</h3>

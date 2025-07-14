@@ -133,8 +133,7 @@ input[type="number"] {
 .side-panel {
   position: fixed;
   top: 0;
-  bottom: 0;
-  width: 300px;
+  bottom: 0; 
   background-color: #1e1e1e;
   color: white;
   overflow-y: auto;
@@ -146,11 +145,13 @@ input[type="number"] {
 #left-panel {
   left: 0;
   transform: translateX(-100%);
+  width: 25%;
 }
 
 #right-panel {
   right: 0;
   transform: translateX(100%);
+  width: 75%;
 }
 
 #left-panel.open {
