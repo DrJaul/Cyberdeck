@@ -144,11 +144,11 @@ $(document).ready(async function () {
     }
   });
 
-  $("#reset-factory").on("click", function () {
+$("#reset-factory").on("click", function () {
     localStorage.removeItem("cyberdeckState");
     location.reload();
   });
-
+  
   $("#left-toggle").on("click", function () {
     $("#left-panel").toggleClass("open");
   });
@@ -157,7 +157,6 @@ $(document).ready(async function () {
     $("#right-panel").toggleClass("open");
   });
 
-  // Fixed drag-swap logic
   let draggedBox = null;
 
   $("#draggables .stat-box").on("dragstart", function (e) {
