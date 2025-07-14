@@ -42,15 +42,6 @@ function makeProgramsDraggable(programs) {
   });
 }
 
-function updateDeckStatLabels(deckStats) {
-  $("#draggables .stat-box").each(function () {
-    const type = $(this).data("type");
-    if (deckStats[type] !== undefined) {
-      $(this).find("span").text(deckStats[type]);
-    }
-  });
-}
-
 function saveState() {
   const state = {
     attributes: getAttributes(),
@@ -60,6 +51,12 @@ function saveState() {
     programSlots: $(".program-slot").map((_, el) => $(el).text()).get()
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
+}
+
+function updateDeckStatLabels(deckStats) {
+  for (const key in deckStats) {
+    $(`#draggables .stat-box[data-type="${key}"] span`).text(deckStats[key]);
+  }
 }
 
 $(document).ready(async function () {
@@ -159,5 +156,44 @@ $(document).ready(async function () {
   $("#right-toggle").on("click", function () {
     $("#right-panel").toggleClass("open");
   });
-});
 
+  // Fixed drag-swap logic
+  let draggedBox = null;
+
+  $("#draggables .stat-box").on("dragstart", function (e) {
+    draggedBox = this;
+  });
+
+  $("#draggables .stat-box").on("dragover", function (e) {
+    e.preventDefault();
+    $(this).addClass("drag-over");
+  });
+
+  $("#draggables .stat-box").on("dragleave", function () {
+    $(this).removeClass("drag-over");
+  });
+
+  $("#draggables .stat-box").on("drop", function (e) {
+    e.preventDefault();
+    $(this).removeClass("drag-over");
+
+    const targetBox = this;
+    if (draggedBox === targetBox) return;
+
+    const sourceSpan = $(draggedBox).find("span");
+    const targetSpan = $(targetBox).find("span");
+
+    const sourceVal = sourceSpan.text();
+    const targetVal = targetSpan.text();
+
+    $(draggedBox).addClass("swap");
+    $(targetBox).addClass("swap");
+
+    setTimeout(() => {
+      sourceSpan.text(targetVal);
+      targetSpan.text(sourceVal);
+      $(draggedBox).removeClass("swap");
+      $(targetBox).removeClass("swap");
+    }, 150);
+  });
+});
