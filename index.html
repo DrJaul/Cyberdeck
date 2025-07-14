@@ -58,10 +58,6 @@
         <option value="">-- Select a preset --</option>
       </select>
     </label>
-    <label>Attack: <input type="number" name="attack" /></label>
-    <label>Sleaze: <input type="number" name="sleaze" /></label>
-    <label>Data Processing: <input type="number" name="dataProcessing" /></label>
-    <label>Firewall: <input type="number" name="firewall" /></label>
     <button type="submit">Save Configuration</button>
     <button type="button" id="reset-config">Reset</button>
   </form>
@@ -69,10 +65,22 @@
   <div id="deck-stats">
     <h3>Drag to Reassign Stats</h3>
     <div id="draggables">
-      <div class="stat-box" draggable="true" data-type="attack">Attack: <span>0</span></div>
-      <div class="stat-box" draggable="true" data-type="sleaze">Sleaze: <span>0</span></div>
-      <div class="stat-box" draggable="true" data-type="dataProcessing">Data: <span>0</span></div>
-      <div class="stat-box" draggable="true" data-type="firewall">Firewall: <span>0</span></div>
+      <div class="stat-container">
+        <div class="stat-label">Attack</div>
+        <div class="stat-box" draggable="true" data-type="attack"><span>0</span></div>
+      </div>
+      <div class="stat-container">
+        <div class="stat-label">Sleaze</div>
+        <div class="stat-box" draggable="true" data-type="sleaze"><span>0</span></div>
+      </div>
+      <div class="stat-container">
+        <div class="stat-label">Data Processing</div>
+        <div class="stat-box" draggable="true" data-type="dataProcessing"><span>0</span></div>
+      </div>
+      <div class="stat-container">
+        <div class="stat-label">Firewall</div>
+        <div class="stat-box" draggable="true" data-type="firewall"><span>0</span></div>
+      </div>
     </div>
     <button type="button" id="reset-factory">Reset to Factory Settings</button>
   </div>
@@ -94,4 +102,3 @@
   <script type="module" src="uiHandlers.js"></script>
 </body>
 </html>
-

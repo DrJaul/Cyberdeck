@@ -42,6 +42,15 @@ function makeProgramsDraggable(programs) {
   });
 }
 
+function updateDeckStatLabels(deckStats) {
+  $("#draggables .stat-box").each(function () {
+    const type = $(this).data("type");
+    if (deckStats[type] !== undefined) {
+      $(this).find("span").text(deckStats[type]);
+    }
+  });
+}
+
 function saveState() {
   const state = {
     attributes: getAttributes(),
@@ -95,10 +104,11 @@ $(document).ready(async function () {
     saved.qualities.forEach(q => $(`.quality-checkbox input[value="${q}"]`).prop("checked", true));
   }
 
+  const activePreset = presets.find(p => p.name === saved.selectedPreset) || presets[0];
   initProgramSlots(
-    presets[0].programSlots || 6,
+    activePreset.programSlots || 6,
     saved.programSlots || [],
-    saveState // ✅ Pass the callback
+    saveState
   );
 
   function updateMatrixActions() {
@@ -111,7 +121,15 @@ $(document).ready(async function () {
       skills: getSkills(),
       deckStats: { ...baseStats },
     }, selectedQualities);
-    renderMatrixActions(matrixActions, modifiedStats.attributes, modifiedStats.skills, modifiedStats.deckStats, modifiedStats.matrixActions || {});
+
+    updateDeckStatLabels(modifiedStats.deckStats);
+    renderMatrixActions(
+      matrixActions,
+      modifiedStats.attributes,
+      modifiedStats.skills,
+      modifiedStats.deckStats,
+      modifiedStats.matrixActions || {}
+    );
   }
 
   updateMatrixActions();
@@ -119,6 +137,14 @@ $(document).ready(async function () {
   $("input, select").on("input change", function () {
     updateMatrixActions();
     saveState();
+  });
+
+  $("#preset-selector").on("change", function () {
+    const selected = presets.find(p => p.name === $(this).val());
+    if (selected) {
+      updateDeckStatLabels(selected);
+      updateMatrixActions();
+    }
   });
 
   $("#reset-factory").on("click", function () {
@@ -134,3 +160,4 @@ $(document).ready(async function () {
     $("#right-panel").toggleClass("open");
   });
 });
+
