@@ -1,38 +1,218 @@
 [
   {
-    "name": "Hack on the Fly",
-    "limit": "Sleaze",
-    "description": "Gain a mark silently.",
+    "name": "Disarm Data Bomb",
+    "limit": "Firewall",
+    "description": "Disarm a databomb.",
     "formula": [
-      "logic",
-      "hacking"
+      "software",
+      "intuition"
     ]
   },
   {
-    "name": "Brute Force",
-    "limit": "Attack",
-    "description": "Gain a mark noisily.",
+    "name": "Jack Out",
+    "limit": "Firewall",
+    "description": "Jack out of the Matrix and reboot device being used.",
     "formula": [
-      "logic",
-      "cybercombat"
+      "hardware",
+      "willpower"
     ]
   },
   {
-    "name": "Snoop",
+    "name": "Control Device",
     "limit": "Sleaze",
-    "description": "Intercept traffic.",
+    "description": "Perform an action through a device you control.",
     "formula": [
-      "intuition",
-      "electronicWarfare"
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Set Data Bomb",
+    "limit": "Sleaze",
+    "description": "Set a data bomb.",
+    "formula": [
+      "software",
+      "logic"
+    ]
+  },
+  {
+    "name": "Garbage In/Out",
+    "limit": "Sleaze",
+    "description": "Confuse a device's input and output commands.",
+    "formula": [
+      "software",
+      "logic"
+    ]
+  },
+  {
+    "name": "Hide",
+    "limit": "Sleaze",
+    "description": "Hide in the Matrix.",
+    "formula": [
+      "electronicWarfare",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Spoof Command",
+    "limit": "Sleaze",
+    "description": "Send a command that the device thinks is a legitimate one from its owner.",
+    "formula": [
+      "hacking",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Intercept Traffic",
+    "limit": "Sleaze",
+    "description": "User is aware of Matrix actions the target is going to use.",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Format Device",
+    "limit": "Data Processing",
+    "description": "Device shuts down and immediately reboots.",
+    "formula": [
+      "computer",
+      "logic"
     ]
   },
   {
     "name": "Trace Icon",
     "limit": "Data Processing",
-    "description": "Locate device.",
+    "description": "Find the physical location of a device or persona in the Matrix.",
     "formula": [
-      "intuition",
-      "computer"
+      "computer",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Tag Icon",
+    "limit": "Data Processing",
+    "description": "Visibly tag a target on a PAN with AROs.",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "name": "Reduce Noise",
+    "limit": "Data Processing",
+    "description": "Use RCC to reduce noise between user and vehicles/drones.",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Reboot Device",
+    "limit": "Data Processing",
+    "description": "Device shuts down and immediately reboots.",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "name": "Matrix Perception",
+    "limit": "Data Processing",
+    "description": "Analyze a Matrix object or scan your vicinity.",
+    "formula": [
+      "computer",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Offer Mark",
+    "limit": "Data Processing",
+    "description": "Offer other icons a mark on your device.",
+    "formula": [
+      "none",
+      "none"
+    ]
+  },
+  {
+    "name": "Analyze Icon",
+    "limit": "Data Processing",
+    "description": "Threat highlighting.",
+    "formula": [
+      "computer",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Edit File",
+    "limit": "Data Processing",
+    "description": "Create, change, copy, delete, or protect any kind of file.",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "name": "Lock-On",
+    "limit": "Data Processing",
+    "description": "Detect wireless signals for a target lock.",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "name": "Send Message",
+    "limit": "Data Processing",
+    "description": "Lend processing power to increase speed of a persona.",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Jam Signals",
+    "limit": "Attack",
+    "description": "Prevents device from calling or sending messages.",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Jammer",
+    "limit": "Attack",
+    "description": "Turn wireless device you are using into a local jammer.",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "name": "Erase Mark",
+    "limit": "Attack",
+    "description": "Remove mark on your persona or on another icon.",
+    "formula": [
+      "cybercombat",
+      "intuition"
+    ]
+  },
+  {
+    "name": "Crash Program",
+    "limit": "Attack",
+    "description": "Send harmful instructions to target causing Matrix damage.",
+    "formula": [
+      "cybercombat",
+      "logic"
+    ]
+  },
+  {
+    "name": "Crack File",
+    "limit": "Attack",
+    "description": "Remove the protection from a file.",
+    "formula": [
+      "hacking",
+      "logic"
     ]
   }
 ]
