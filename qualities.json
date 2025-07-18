@@ -1,39 +1,131 @@
 [
   {
+    "name": "Home Ground",
+    "description": "+2 dice to Matrix actions when operating in your chosen host/grid.",
+    "improvements": {
+      "type": "static",
+      "selections": {
+        "default": [
+          {
+            "affects": "matrixAction",
+            "Hack on the Fly": 2
+          },
+          {
+            "affects": "matrixAction",
+            "Brute Force": 2
+          },
+          {
+            "affects": "matrixAction",
+            "Snoop": 2
+          },
+          {
+            "affects": "matrixAction",
+            "Trace Icon": 2
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "Codeslinger",
+    "description": "+2 dice to the 'Hack on the Fly' Matrix action.",
+    "improvements": {
+      "type": "choice",
+      "selections": {
+        "Hack On The Fly": [
+          {
+            "affects": "matrixAction",
+            "Hack on the Fly": 2
+          }
+        ],
+        "Data Spike": [
+          {
+            "affects": "matrixAction",
+            "Data Spike": 2
+          }
+        ],
+        "Brute Force": [
+          {
+            "affects": "matrixAction",
+            "Brute Force": 2
+          }
+        ]
+      }
+    }
+  },
+ 
+  {
     "name": "Analytical Mind",
-    "description": "Provides +2 dice to tests involving logic-based analysis, including Matrix perception.",
+    "description": "+2 dice to Logic-based tests, including Matrix Perception.",
     "improvements": {
-      "skills": {
-        "computer": 2
+      "type": "static",
+      "selections": {
+        "default": [
+          {
+            "affects": "attribute",
+            "logic": 2
+          }
+        ]
       }
     }
   },
   {
-    "name": "Codeslinger (Hacking on the Fly)",
-    "description": "Provides +2 dice to a specific Matrix action, here 'Hacking on the Fly'.",
+    "name": "Perfect Time",
+    "description": "Gain an additional Free Action per Combat Turn — helps with reconfiguring decks/programs.",
     "improvements": {
-      "matrixActions": {
-        "Hack on the Fly": 2
+      "type": "static",
+      "selections": {
+        "default": []
       }
     }
   },
   {
-    "name": "Focused Concentration",
-    "description": "Provides bonuses to sustain complex forms. If adapted, could grant stability to bonuses without penalty.",
-    "improvements": {}
-  },
-  {
-    "name": "High Pain Tolerance",
-    "description": "Reduces wound penalties, could help in Matrix combat scenarios.",
-    "improvements": {}
-  },
-  {
-    "name": "Quick Configurator",
-    "description": "Provides +1 to dice pools when reconfiguring devices on the fly.",
+    "name": "Trust Data, Not Lore",
+    "description": "Use logic in place of intuition on all matrix actions",
     "improvements": {
-      "matrixActions": {
-        "Change Icon": 1
+      "type": "replacement",
+      "selections": {
+        "default": [{
+            "affects": "matrixAction",
+            "formula": ["intuition", "logic"]
+          }]
+      }
+    }
+  },
+  {
+    "name": "Trust Lore, Not Data",
+    "description": "Use intuition in place of logic on all matrix actions",
+    "improvements": {
+      "type": "replacement",
+      "selections": {
+        "default": [{
+            "affects": "matrixAction",
+            "formula": ["logic", "intuition"]
+          }]
       }
     }
   }
+  
+  {
+    "name": "Perceptive",
+    "description": "+1 or +2 dice to Perception tests, including Matrix Perception (Intuition + Computer).",
+    "improvements": {
+      "type": "ranked",
+      "selections": {
+        "1": [
+          {
+            "affects": "matrixAction",
+            "Matrix Perception": 1
+          }
+        ],
+        "2": [
+          {
+            "affects": "matrixAction",
+            "Matrix Perception": 2
+          }
+        ]
+      }
+    }
+  }
+  
 ]
