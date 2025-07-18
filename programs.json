@@ -1,12 +1,323 @@
 [
-  { "name": "Armor", "description": "Adds +2 to Firewall." },
-  { "name": "Baby Monitor", "description": "Alerts you when OS is high." },
-  { "name": "Biofeedback Filter", "description": "Reduce biofeedback from dumpshock." },
-  { "name": "Browse", "description": "Improves Matrix Search speed." },
-  { "name": "Configurate", "description": "Rearrange attributes as a Free Action." },
-  { "name": "Edit", "description": "Helps with matrix editing tasks." },
-  { "name": "Encryption", "description": "Adds +1 to your Firewall." },
-  { "name": "Stealth", "description": "Adds +2 to Sleaze for detection resistance." },
-  { "name": "Toolbox", "description": "Adds +1 to Data Processing." },
-  { "name": "Decryption", "description": "Aids with cracking file protection." }
+    {
+        "name": "Browse",
+        "description": "Cuts the time for a Matrix Search action in half.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Search",
+                        "Matrix Search": 0
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Configurator",
+        "description": "Stores an alternate configuration for your deck, allowing you to swap to the full configuration instead of only two attributes or programs.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "program",
+                        "Configurator": 0
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Edit",
+        "description": "+2 to Data Processing limit for Edit tests.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Edit File",
+                        "Edit File": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Encryption",
+        "description": "+1 bonus to your Firewall attribute.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "deckStat",
+                        "Firewall": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Signal Scrub",
+        "description": "Rating 2 noise reduction.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Handle Noise",
+                        "Handle Noise": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Toolbox",
+        "description": "+1 bonus to your Data Processing attribute.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "deckStat",
+                        "Data Processing": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Virtual Machine",
+        "description": "Your deck can run two additional programs, but whenever your persona takes Matrix damage, it takes an additional box of Matrix damage that cannot be resisted.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "program",
+                        "Virtual Machine": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Armor",
+        "description": "+2 dice pool modifier to resist Matrix damage.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Resist Matrix Damage",
+                        "Resist Matrix Damage": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Baby Monitor",
+        "description": "Keeps track of your movements in the Matrix, so you always know your current Overwatch Score.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "attribute",
+                        "Overwatch Score Visibility": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Biofeedback",
+        "description": "Attacks causing Matrix damage add an equal amount of Stun (cold-sim) or Physical (hot-sim) biofeedback damage. Also applies to damage caused by failed attacks against you.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Damage",
+                        "Matrix Damage": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Biofeedback Filter",
+        "description": "+2 dice pool modifier to resist biofeedback damage.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Resist Biofeedback",
+                        "Resist Biofeedback": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Blackout",
+        "description": "Same as biofeedback, but only causes Stun damage, even if the target is using hot-sim.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Biofeedback Stun",
+                        "Biofeedback Stun": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Decryption",
+        "description": "+1 bonus to your Attack attribute.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "deckStat",
+                        "Attack": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Cat's Paw",
+        "description": "On a successful Data Spike action, instead of doing damage, the program generates a negative dice pool modifier equal to two plus the number of marks the user has on their target.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Data Spike",
+                        "Data Spike": 0,
+                        "-Dice Pool Modifier": 0
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Tarball",
+        "description": "+2 Attack and +1 dice pool to Crash Program actions.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Crash Program",
+                        "Attack": 2,
+                        "Crash Program": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Hammer",
+        "description": "+2 DV to Matrix Damage. Does not apply on failed Attack actions against you.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Damage",
+                        "Matrix Damage": 2
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Lockdown",
+        "description": "When you cause damage to a persona, he or she is link-locked until you stop running this program or they successfully Jack Out.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Damage",
+                        "Link\u2011lock": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Mugger",
+        "description": "Bonus damage from marks is increased by 1 DV per mark.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Damage",
+                        "Matrix Damage Per Mark": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Guard",
+        "description": "Reduces the extra damage you take from marks by 1 DV per mark.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Matrix Damage",
+                        "Damage Reduction Per Mark": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "name": "Shell",
+        "description": "+1 dice pool to resist Matrix and biofeedback damage.",
+        "improvements": {
+            "type": "static",
+            "selections": {
+                "default": [
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Resist Matrix Damage",
+                        "Resist Matrix Damage": 1
+                    },
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Resist Biofeedback",
+                        "Resist Biofeedback": 1
+                    }
+                ]
+            }
+        }
+    }
 ]
