@@ -130,8 +130,7 @@
     "limit": "Data Processing",
     "description": "Offer other icons a mark on your device.",
     "formula": [
-      "none",
-      "none"
+      "-"
     ]
   },
   {

@@ -7,9 +7,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Search",
-                        "Matrix Search": 0
+                        "affects": "notes",
+                        "value": "Halve matrix search time"
                     }
                 ]
             }
@@ -23,8 +22,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "program",
-                        "Configurator": 0
+                        "affects": "notes",
+                        "value": "Change all deck attributes and programs with single free action"
                     }
                 ]
             }
@@ -40,7 +39,7 @@
                     {
                         "affects": "matrixAction",
                         "onMatrixAction": "Edit File",
-                        "Edit File": 2
+                        "limit": 2
                     }
                 ]
             }
@@ -55,7 +54,7 @@
                 "default": [
                     {
                         "affects": "deckStat",
-                        "Firewall": 1
+                        "firewall": 1
                     }
                 ]
             }
@@ -69,9 +68,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Handle Noise",
-                        "Handle Noise": 2
+                        "affects": "notes",
+                        "value": "-2 to noise"
                     }
                 ]
             }
@@ -100,8 +98,12 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "program",
-                        "Virtual Machine": 2
+                        "affects": "programSlots",
+                        "programslots": 2
+                    },
+                    {
+                        "affects": "notes",
+                        "value": "+1 unresisted incoming matrix damage"
                     }
                 ]
             }
@@ -115,9 +117,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Resist Matrix Damage",
-                        "Resist Matrix Damage": 2
+                        "affects": "notes",
+                        "value": "+2 to resist Matrix damage"
                     }
                 ]
             }
@@ -131,8 +132,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "attribute",
-                        "Overwatch Score Visibility": 1
+                        "affects": "notes",
+                        "value": "GM tells you overwatch score for free"
                     }
                 ]
             }
@@ -146,9 +147,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Damage",
-                        "Matrix Damage": 1
+                        "affects": "notes",
+                        "value": "When dealing matrix damage, apply equal damage to opponent in meat-space ( sim dependednt)"
                     }
                 ]
             }
@@ -162,9 +162,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Resist Biofeedback",
-                        "Resist Biofeedback": 2
+                        "affects": "notes",
+                        "value": "+2 to resist biofeedback damage"
                     }
                 ]
             }
@@ -178,9 +177,12 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Biofeedback Stun",
-                        "Biofeedback Stun": 1
+                        "affects": "notes",
+                        "value": "if opponent in hot-sim, when dealing matrix damage, deal equal physical damage"
+                    },
+                    {
+                        "affects": "notes",
+                        "value": "if opponent in cold-sim, when dealing matrix damage, deal equal stun damage"
                     }
                 ]
             }
@@ -204,15 +206,18 @@
     {
         "name": "Cat's Paw",
         "description": "On a successful Data Spike action, instead of doing damage, the program generates a negative dice pool modifier equal to two plus the number of marks the user has on their target.",
+        "active":false,
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Data Spike",
-                        "Data Spike": 0,
-                        "-Dice Pool Modifier": 0
+                        "affects": "notes",
+                        "value": "deal 0 matrix damage on Data Spike"
+                    },
+                    {
+                        "affects": "notes",
+                        "value": "-(marks +2) to all matrix actions your opponent attempts after beign Data Spiked"
                     }
                 ]
             }
@@ -228,8 +233,13 @@
                     {
                         "affects": "matrixAction",
                         "onMatrixAction": "Crash Program",
-                        "Attack": 2,
-                        "Crash Program": 1
+                        "value": 1
+                    },
+                    {
+                        "affects": "matrixAction",
+                        "onMatrixAction": "Crash Program",
+                        "limit": 2
+                        
                     }
                 ]
             }
@@ -243,9 +253,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Damage",
-                        "Matrix Damage": 2
+                        "affects": "notes",
+                        "value":"+2 DV to matrix damage"
                     }
                 ]
             }
@@ -259,9 +268,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Damage",
-                        "Link\u2011lock": 1
+                        "affects": "notes",
+                        "value":"Opponent link-locked after you damage them"
                     }
                 ]
             }
@@ -275,9 +283,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Damage",
-                        "Matrix Damage Per Mark": 1
+                        "affects": "notes",
+                        "value": "+marks to dv when dealing matrix damage"
                     }
                 ]
             }
@@ -291,9 +298,8 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Matrix Damage",
-                        "Damage Reduction Per Mark": 1
+                        "affects": "notes",
+                        "value": "-marks to incoming damage"
                     }
                 ]
             }
@@ -307,14 +313,12 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Resist Matrix Damage",
-                        "Resist Matrix Damage": 1
+                        "affects": "notes",
+                        "value":"+1 to resist matrix damage"
                     },
                     {
-                        "affects": "matrixAction",
-                        "onMatrixAction": "Resist Biofeedback",
-                        "Resist Biofeedback": 1
+                        "affects": "notes",
+                        "value":"+1 to resist biofeedback damage"
                     }
                 ]
             }

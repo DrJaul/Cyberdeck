@@ -64,6 +64,10 @@
           {
             "affects": "attribute",
             "logic": 2
+          },
+          {
+            "affects": "matrixAction",
+            "Matrix Perception": 2
           }
         ]
       }
@@ -75,7 +79,10 @@
     "improvements": {
       "type": "static",
       "selections": {
-        "default": []
+        "default": [{
+            "affects": "notes",
+            "value": "+1 free action"
+          }]
       }
     }
   },
@@ -108,7 +115,7 @@
   
   {
     "name": "Perceptive",
-    "description": "+1 or +2 dice to Perception tests, including Matrix Perception (Intuition + Computer).",
+    "description": "+1 or +2 dice to Perception tests, including Matrix Perception.",
     "improvements": {
       "type": "ranked",
       "selections": {
