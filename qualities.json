@@ -8,19 +8,7 @@
         "default": [
           {
             "affects": "matrixAction",
-            "Hack on the Fly": 2
-          },
-          {
-            "affects": "matrixAction",
-            "Brute Force": 2
-          },
-          {
-            "affects": "matrixAction",
-            "Snoop": 2
-          },
-          {
-            "affects": "matrixAction",
-            "Trace Icon": 2
+            "value": 2
           }
         ]
       }
@@ -35,19 +23,22 @@
         "Hack On The Fly": [
           {
             "affects": "matrixAction",
-            "Hack on the Fly": 2
+            "onMatrixAction":"Hack On The Fly",
+            "value": 2
           }
         ],
         "Data Spike": [
           {
             "affects": "matrixAction",
-            "Data Spike": 2
+            "onMatrixAction":"Data Spike",
+            "value": 2
           }
         ],
         "Brute Force": [
           {
             "affects": "matrixAction",
-            "Brute Force": 2
+            "onMatrixAction":"Brute Force",
+            "value": 2
           }
         ]
       }
@@ -67,7 +58,8 @@
           },
           {
             "affects": "matrixAction",
-            "Matrix Perception": 2
+            "onMatrixAction":"Matrix Perception",
+            "value": 2
           }
         ]
       }
@@ -122,13 +114,15 @@
         "1": [
           {
             "affects": "matrixAction",
-            "Matrix Perception": 1
+            "onMatrixAction":"Matrix Perception",
+            "value": 1
           }
         ],
         "2": [
           {
             "affects": "matrixAction",
-            "Matrix Perception": 2
+            "onMatrixAction":"Matrix Perception",
+            "value": 2
           }
         ]
       }
