@@ -136,7 +136,7 @@ $(document).ready(async function () {
     saveState();
   });
 
-  $("#preset-selector").on("change", function () {
+$("#preset-selector").on("change", function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
       updateDeckStatLabels(selected);
@@ -144,11 +144,11 @@ $(document).ready(async function () {
     }
   });
 
-$("#reset-factory").on("click", function () {
+  $("#reset-factory").on("click", function () {
     localStorage.removeItem("cyberdeckState");
     location.reload();
   });
-  
+
   $("#left-toggle").on("click", function () {
     $("#left-panel").toggleClass("open");
   });
@@ -157,10 +157,9 @@ $("#reset-factory").on("click", function () {
     $("#right-panel").toggleClass("open");
   });
 
-  let draggedBox = null;
-
+  // Add drag-swap logic
   $("#draggables .stat-box").on("dragstart", function (e) {
-    draggedBox = this;
+    e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
   });
 
   $("#draggables .stat-box").on("dragover", function (e) {
@@ -176,23 +175,29 @@ $("#reset-factory").on("click", function () {
     e.preventDefault();
     $(this).removeClass("drag-over");
 
-    const targetBox = this;
-    if (draggedBox === targetBox) return;
+    const sourceType = e.originalEvent.dataTransfer.getData("text/plain");
+    const targetBox = $(this);
+    const targetType = targetBox.data("type");
 
-    const sourceSpan = $(draggedBox).find("span");
-    const targetSpan = $(targetBox).find("span");
+    if (sourceType === targetType) return;
 
-    const sourceVal = sourceSpan.text();
-    const targetVal = targetSpan.text();
+    const sourceBox = $(`#draggables .stat-box[data-type="${sourceType}"]`);
+    const sourceVal = sourceBox.find("span").text();
+    const targetVal = targetBox.find("span").text();
 
-    $(draggedBox).addClass("swap");
-    $(targetBox).addClass("swap");
+    sourceBox.addClass("swap");
+    targetBox.addClass("swap");
 
     setTimeout(() => {
-      sourceSpan.text(targetVal);
-      targetSpan.text(sourceVal);
-      $(draggedBox).removeClass("swap");
-      $(targetBox).removeClass("swap");
+      sourceBox.find("span").text(targetVal);
+      targetBox.find("span").text(sourceVal);
+      sourceBox.removeClass("swap");
+      targetBox.removeClass("swap");
     }, 150);
+
+    const temp = sourceBox.data("type");
+    sourceBox.data("type", targetType);
+    targetBox.data("type", temp);
   });
 });
+

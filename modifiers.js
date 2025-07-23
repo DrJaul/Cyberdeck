@@ -14,39 +14,85 @@ export function getSkills() {
   };
 }
 
-export function applyImprovements(baseStats, qualities) {
-  const modified = JSON.parse(JSON.stringify(baseStats)); // deep clone
-  qualities.forEach(q => {
-    if (q.improvements) {
-      for (const key in q.improvements) {
-        switch (key) {
-          case "attributes":
-            for (const attr in q.improvements.attributes) {
-              modified.attributes[attr] += q.improvements.attributes[attr];
+export function getAllMatrixActionNames(matrixActions) {
+  return matrixActions.map(action => action.name);
+}
+
+export function applyImprovements(baseStats, sources, matrixActionsList) {
+  const modified = JSON.parse(JSON.stringify(baseStats));
+  modified.matrixActions = {};
+  modified.notes = [];
+
+  const allMatrixActionNames = getAllMatrixActionNames(matrixActionsList);
+
+  sources.forEach(source => {
+    const { improvements } = source;
+    if (!improvements || !improvements.selections) return;
+
+    const selectionKey =
+      improvements.type === "choice" && source.selected
+        ? source.selected
+        : "default";
+
+    const improvementsList = improvements.selections[selectionKey] || [];
+
+    for (const imp of improvementsList) {
+      switch (imp.affects) {
+        case "matrixAction": {
+          const targets = imp.onMatrixAction
+            ? [imp.onMatrixAction]
+            : allMatrixActionNames;
+          targets.forEach(name => {
+            if (!modified.matrixActions[name]) {
+              modified.matrixActions[name] = { valueBonus: 0, limitBonus: 0 };
             }
-            break;
-          case "skills":
-            for (const skill in q.improvements.skills) {
-              modified.skills[skill] += q.improvements.skills[skill];
+            if (imp.value) {
+              modified.matrixActions[name].valueBonus += imp.value;
             }
-            break;
-          case "deckStats":
-            for (const stat in q.improvements.deckStats) {
-              modified.deckStats[stat] += q.improvements.deckStats[stat];
+            if (imp.limit) {
+              modified.matrixActions[name].limitBonus += imp.limit;
             }
-            break;
-          case "matrixActions":
-            if (!modified.matrixActions) modified.matrixActions = {};
-            for (const action in q.improvements.matrixActions) {
-              modified.matrixActions[action] =
-                (modified.matrixActions[action] || 0) +
-                q.improvements.matrixActions[action];
+          });
+          break;
+        }
+
+        case "attribute": {
+          for (const key in imp) {
+            if (key !== "affects") {
+              modified.attributes[key] = (modified.attributes[key] || 0) + imp[key];
             }
-            break;
+          }
+          break;
+        }
+
+        case "skill": {
+          for (const key in imp) {
+            if (key !== "affects") {
+              modified.skills[key] = (modified.skills[key] || 0) + imp[key];
+            }
+          }
+          break;
+        }
+
+        case "deckStat": {
+          for (const key in imp) {
+            if (key !== "affects") {
+              modified.deckStats[key] = (modified.deckStats[key] || 0) + imp[key];
+            }
+          }
+          break;
+        }
+
+        case "notes": {
+          if (imp.value) {
+            modified.notes.push(imp.value);
+          }
+          break;
         }
       }
     }
   });
+
   return modified;
 }
 
@@ -57,11 +103,13 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
   actions.forEach(action => {
     const row = $("<tr>");
     const baseLimit = baseStats[action.limit.toLowerCase()] || 0;
-    const limitCell = `${action.limit}(${baseLimit})`;
+    const mod = qualityMods[action.name] || { valueBonus: 0, limitBonus: 0 };
+    const totalLimit = baseLimit + (mod.limitBonus || 0);
+    const limitCell = `${action.limit}(${totalLimit})`;
+
     const attrVal = attributes[action.formula[0].toLowerCase()] || 0;
     const skillVal = skills[action.formula[1].toLowerCase()] || 0;
-    const qualityBonus =
-      qualityMods[action.name] ? qualityMods[action.name] : 0;
+    const qualityBonus = mod.valueBonus || 0;
 
     const formula = `${action.attribute}(${attrVal}) + ${action.skill}(${skillVal})` +
       (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
