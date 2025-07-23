@@ -13,6 +13,19 @@ import {
   renderMatrixActions
 } from './modifiers.js';
 
+function renderDeckNotes(notes) {
+  const notesContainer = $("#deck-notes");
+  const list = $("#notes-list");
+  list.empty();
+
+  if (notes && notes.length > 0) {
+    notes.forEach(note => list.append($("<li>").text(note)));
+    notesContainer.show();
+  } else {
+    notesContainer.hide();
+  }
+}
+
 function makeProgramsDraggable(programs) {
   const container = $("#program-list");
   container.empty();
@@ -113,11 +126,15 @@ $(document).ready(async function () {
     const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
       return qualities.find(q => q.name === $(el).val());
     }).get();
-    const modifiedStats = applyImprovements({
-      attributes: getAttributes(),
-      skills: getSkills(),
-      deckStats: { ...baseStats },
-    }, selectedQualities);
+    const modifiedStats = applyImprovements(
+      {
+        attributes: getAttributes(),
+        skills: getSkills(),
+        deckStats: { ...baseStats },
+      },
+      selectedQualities,
+      matrixActions
+    );
 
     updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
@@ -127,6 +144,7 @@ $(document).ready(async function () {
       modifiedStats.deckStats,
       modifiedStats.matrixActions || {}
     );
+    renderDeckNotes(modifiedStats.notes || []);
   }
 
   updateMatrixActions();
@@ -136,7 +154,7 @@ $(document).ready(async function () {
     saveState();
   });
 
-$("#preset-selector").on("change", function () {
+  $("#preset-selector").on("change", function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
       updateDeckStatLabels(selected);
@@ -157,9 +175,10 @@ $("#preset-selector").on("change", function () {
     $("#right-panel").toggleClass("open");
   });
 
-  // Add drag-swap logic
+  let draggedBox = null;
+
   $("#draggables .stat-box").on("dragstart", function (e) {
-    e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
+    draggedBox = this;
   });
 
   $("#draggables .stat-box").on("dragover", function (e) {
@@ -175,29 +194,23 @@ $("#preset-selector").on("change", function () {
     e.preventDefault();
     $(this).removeClass("drag-over");
 
-    const sourceType = e.originalEvent.dataTransfer.getData("text/plain");
-    const targetBox = $(this);
-    const targetType = targetBox.data("type");
+    const targetBox = this;
+    if (draggedBox === targetBox) return;
 
-    if (sourceType === targetType) return;
+    const sourceSpan = $(draggedBox).find("span");
+    const targetSpan = $(targetBox).find("span");
 
-    const sourceBox = $(`#draggables .stat-box[data-type="${sourceType}"]`);
-    const sourceVal = sourceBox.find("span").text();
-    const targetVal = targetBox.find("span").text();
+    const sourceVal = sourceSpan.text();
+    const targetVal = targetSpan.text();
 
-    sourceBox.addClass("swap");
-    targetBox.addClass("swap");
+    $(draggedBox).addClass("swap");
+    $(targetBox).addClass("swap");
 
     setTimeout(() => {
-      sourceBox.find("span").text(targetVal);
-      targetBox.find("span").text(sourceVal);
-      sourceBox.removeClass("swap");
-      targetBox.removeClass("swap");
+      sourceSpan.text(targetVal);
+      targetSpan.text(sourceVal);
+      $(draggedBox).removeClass("swap");
+      $(targetBox).removeClass("swap");
     }, 150);
-
-    const temp = sourceBox.data("type");
-    sourceBox.data("type", targetType);
-    targetBox.data("type", temp);
   });
 });
-
