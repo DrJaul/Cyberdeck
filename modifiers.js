@@ -102,23 +102,27 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
 
   actions.forEach(action => {
     const row = $("<tr>");
-    const baseLimit = baseStats[action.limit.toLowerCase()] || 0;
+
+    const baseLimit = action.limit
+      ? baseStats[action.limit.toLowerCase()] || 0
+      : 0;
+
     const mod = qualityMods[action.name] || { valueBonus: 0, limitBonus: 0 };
     const totalLimit = baseLimit + (mod.limitBonus || 0);
-    const limitCell = `${action.limit}(${totalLimit})`;
+    const limitCell = action.limit ? `${action.limit}(${totalLimit})` : "—";
 
-    const attrVal = attributes[action.formula[0].toLowerCase()] || 0;
-    const skillVal = skills[action.formula[1].toLowerCase()] || 0;
+    const attrVal = attributes[action.formula?.[0]?.toLowerCase()] || 0;
+    const skillVal = skills[action.formula?.[1]?.toLowerCase()] || 0;
     const qualityBonus = mod.valueBonus || 0;
 
-    const formula = `${action.attribute}(${attrVal}) + ${action.skill}(${skillVal})` +
+    const formula = `${action.attribute || "Attr"}(${attrVal}) + ${action.skill || "Skill"}(${skillVal})` +
       (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
 
     const total = attrVal + skillVal + qualityBonus;
 
-    row.append($("<td>").text(action.name));
+    row.append($("<td>").text(action.name || "—"));
     row.append($("<td>").text(limitCell));
-    row.append($("<td>").text(action.description));
+    row.append($("<td>").text(action.description || ""));
     row.append($("<td>").text(formula));
     row.append($("<td>").text(total));
     table.append(row);
