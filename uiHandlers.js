@@ -26,7 +26,7 @@ function renderDeckNotes(notes) {
   }
 }
 
-function makeProgramsDraggable(programs) {
+function makeProgramsDraggable(programs, onProgramChange) {
   const container = $("#program-list");
   container.empty();
   programs.forEach(prog => {
@@ -52,6 +52,10 @@ function makeProgramsDraggable(programs) {
         });
       });
     container.append(item);
+  });
+
+  $(".program-slot").on("drop", function () {
+    onProgramChange();
   });
 }
 
@@ -94,8 +98,6 @@ $(document).ready(async function () {
     presetSelect.append(opt);
   });
 
-  makeProgramsDraggable(programs);
-
   const saved = JSON.parse(localStorage.getItem("cyberdeckState") || "{}");
   if (saved.attributes) {
     for (const key in saved.attributes) {
@@ -118,8 +120,16 @@ $(document).ready(async function () {
   initProgramSlots(
     activePreset.programSlots || 6,
     saved.programSlots || [],
-    saveState
+    () => {
+      updateMatrixActions();
+      saveState();
+    }
   );
+
+  makeProgramsDraggable(programs, () => {
+    updateMatrixActions();
+    saveState();
+  });
 
   function updateMatrixActions() {
     const baseStats = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
@@ -150,6 +160,11 @@ $(document).ready(async function () {
   updateMatrixActions();
 
   $("input, select").on("input change", function () {
+    updateMatrixActions();
+    saveState();
+  });
+
+  $("#quality-list").on("change", "input[type='checkbox']", function () {
     updateMatrixActions();
     saveState();
   });
@@ -211,6 +226,10 @@ $(document).ready(async function () {
       targetSpan.text(sourceVal);
       $(draggedBox).removeClass("swap");
       $(targetBox).removeClass("swap");
+
+      // Recalculate after swap
+      updateMatrixActions();
+      saveState();
     }, 150);
   });
 });
