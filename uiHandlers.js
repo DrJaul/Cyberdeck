@@ -13,62 +13,7 @@ import {
   renderMatrixActions
 } from './modifiers.js';
 
-function renderDeckNotes(notes) {
-  const notesContainer = $("#deck-notes");
-  const list = $("#notes-list");
-  list.empty();
-
-  if (notes && notes.length > 0) {
-    notes.forEach(note => list.append($("<li>").text(note)));
-    notesContainer.show();
-  } else {
-    notesContainer.hide();
-  }
-}
-
-function updateDeckStatLabels(baseStats, modifiedStats) {
-  for (const key in baseStats) {
-    const $label = $(`#draggables .stat-box[data-type="${key}"]`);
-    $label.find("span").text(baseStats[key]);
-
-    let aug = modifiedStats[key];
-    let $augEl = $label.find(".augmented-value");
-
-    if (!$augEl.length) {
-      $augEl = $("<div>").addClass("augmented-value").appendTo($label);
-    }
-
-    if (aug !== baseStats[key]) {
-      $augEl.text(`(${aug})`).show();
-    } else {
-      $augEl.hide();
-    }
-  }
-}
-
-function updateAugmentedInputs(modified, base, selectorPrefix) {
-  for (const key in base) {
-    const $input = $(`${selectorPrefix}-${key}`);
-    if (!$input.length) continue;
-
-    let $augEl = $input.siblings(".augmented-value");
-
-    if (!$augEl.length) {
-      $augEl = $("<span>")
-        .addClass("augmented-value")
-        .css({ marginLeft: "0.5em", color: "#aaa" })
-        .insertAfter($input);
-    }
-
-    if (modified[key] !== base[key]) {
-      $augEl.text(`(${modified[key]})`).show();
-    } else {
-      $augEl.hide();
-    }
-  }
-}
-
-function makeProgramsDraggable(programs, onProgramChange) {
+function makeProgramsDraggable(programs) {
   const container = $("#program-list");
   container.empty();
   programs.forEach(prog => {
@@ -95,10 +40,6 @@ function makeProgramsDraggable(programs, onProgramChange) {
       });
     container.append(item);
   });
-
-  $(".program-slot").on("drop", function () {
-    onProgramChange();
-  });
 }
 
 function saveState() {
@@ -107,9 +48,17 @@ function saveState() {
     skills: getSkills(),
     qualities: $(".quality-checkbox:checked").map((_, el) => $(el).val()).get(),
     selectedPreset: $("#preset-selector").val(),
-    programSlots: $(".program-slot").map((_, el) => $(el).text()).get()
+    programSlots: $(".program-slot").map((_, el) => $(el).text()).get(),
+    statOrder: $("#draggables .stat-box").map((_, el) => $(el).data("type")).get()
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
+}
+
+function updateDeckStatLabels(deckStats) {
+  $("#draggables .stat-box").each(function () {
+    const type = $(this).data("type");
+    $(this).find("span").text(deckStats[type] ?? 0);
+  });
 }
 
 $(document).ready(async function () {
@@ -134,6 +83,8 @@ $(document).ready(async function () {
     presetSelect.append(opt);
   });
 
+  makeProgramsDraggable(programs);
+
   const saved = JSON.parse(localStorage.getItem("cyberdeckState") || "{}");
   if (saved.attributes) {
     for (const key in saved.attributes) {
@@ -156,35 +107,32 @@ $(document).ready(async function () {
   initProgramSlots(
     activePreset.programSlots || 6,
     saved.programSlots || [],
-    () => {
-      updateMatrixActions();
-      saveState();
-    }
+    saveState
   );
 
-  makeProgramsDraggable(programs, () => {
-    updateMatrixActions();
-    saveState();
-  });
+  function getOrderedBaseStats(preset) {
+    const defaultOrder = ["attack", "sleaze", "dataProcessing", "firewall"];
+    const savedOrder = saved.statOrder || defaultOrder;
+    const reordered = {};
+    savedOrder.forEach(stat => {
+      reordered[stat] = preset[stat];
+    });
+    return reordered;
+  }
 
   function updateMatrixActions() {
-    const selectedPreset = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
+    const basePreset = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
+    const baseStats = getOrderedBaseStats(basePreset);
     const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
       return qualities.find(q => q.name === $(el).val());
     }).get();
-
-    const inputStats = {
+    const modifiedStats = applyImprovements({
       attributes: getAttributes(),
       skills: getSkills(),
-      deckStats: { ...selectedPreset }
-    };
+      deckStats: { ...baseStats }
+    }, selectedQualities);
 
-    const modifiedStats = applyImprovements(
-      inputStats,
-      selectedQualities,
-      matrixActions
-    );
-
+    updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
       matrixActions,
       modifiedStats.attributes,
@@ -192,21 +140,11 @@ $(document).ready(async function () {
       modifiedStats.deckStats,
       modifiedStats.matrixActions || {}
     );
-
-    updateDeckStatLabels(selectedPreset, modifiedStats.deckStats);
-    updateAugmentedInputs(modifiedStats.attributes, inputStats.attributes, "#attr");
-    updateAugmentedInputs(modifiedStats.skills, inputStats.skills, "#skill");
-    renderDeckNotes(modifiedStats.notes || []);
   }
 
   updateMatrixActions();
 
   $("input, select").on("input change", function () {
-    updateMatrixActions();
-    saveState();
-  });
-
-  $("#quality-list").on("change", "input[type='checkbox']", function () {
     updateMatrixActions();
     saveState();
   });
@@ -231,10 +169,9 @@ $(document).ready(async function () {
     $("#right-panel").toggleClass("open");
   });
 
-  let draggedBox = null;
-
+  // Add drag-swap logic
   $("#draggables .stat-box").on("dragstart", function (e) {
-    draggedBox = this;
+    e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
   });
 
   $("#draggables .stat-box").on("dragover", function (e) {
@@ -250,25 +187,30 @@ $(document).ready(async function () {
     e.preventDefault();
     $(this).removeClass("drag-over");
 
-    const targetBox = this;
-    if (draggedBox === targetBox) return;
+    const sourceType = e.originalEvent.dataTransfer.getData("text/plain");
+    const targetBox = $(this);
+    const targetType = targetBox.data("type");
 
-    const sourceSpan = $(draggedBox).find("span");
-    const targetSpan = $(targetBox).find("span");
+    if (sourceType === targetType) return;
 
-    const sourceVal = sourceSpan.text();
-    const targetVal = targetSpan.text();
+    const sourceBox = $(`#draggables .stat-box[data-type="${sourceType}"]`);
+    const sourceVal = sourceBox.find("span").text();
+    const targetVal = targetBox.find("span").text();
 
-    $(draggedBox).addClass("swap");
-    $(targetBox).addClass("swap");
+    sourceBox.addClass("swap");
+    targetBox.addClass("swap");
 
     setTimeout(() => {
-      sourceSpan.text(targetVal);
-      targetSpan.text(sourceVal);
-      $(draggedBox).removeClass("swap");
-      $(targetBox).removeClass("swap");
+      sourceBox.find("span").text(targetVal);
+      targetBox.find("span").text(sourceVal);
+      sourceBox.removeClass("swap");
+      targetBox.removeClass("swap");
 
-      // Recalculate after swap
+      // Swap data-type
+      sourceBox.data("type", targetType);
+      targetBox.data("type", sourceType);
+
+      // Re-run updates to reflect changes
       updateMatrixActions();
       saveState();
     }, 150);

@@ -1,115 +1,99 @@
-function getAttributes() {
+export function getAttributes() {
   return {
-    logic: parseInt($("#attr-logic").val(), 10) || 0,
-    intuition: parseInt($("#attr-intuition").val(), 10) || 0,
-    reaction: parseInt($("#attr-reaction").val(), 10) || 0
+    logic: parseInt($("#attr-logic").val()) || 0,
+    intuition: parseInt($("#attr-intuition").val()) || 0,
+    reaction: parseInt($("#attr-reaction").val()) || 0
   };
 }
 
-function getSkills() {
+export function getSkills() {
   return {
-    hacking: parseInt($("#skill-hacking").val(), 10) || 0,
-    computer: parseInt($("#skill-computer").val(), 10) || 0,
-    ewarfare: parseInt($("#skill-ewarfare").val(), 10) || 0,
-    cybercombat: parseInt($("#skill-cybercombat").val(), 10) || 0,
-    software: parseInt($("#skill-software").val(), 10) || 0
+    hacking: parseInt($("#skill-hacking").val()) || 0,
+    computer: parseInt($("#skill-computer").val()) || 0,
+    electronicWarfare: parseInt($("#skill-ewarfare").val()) || 0,
+    cybercombat: parseInt($("#skill-cybercombat").val()) || 0,
+    software: parseInt($("#skill-software").val()) || 0
   };
 }
 
-function getAllMatrixActionNames(matrixActions) {
-  return matrixActions.map(action => action.name.toLowerCase());
-}
+export function applyImprovements(baseStats, qualities = []) {
+  const modified = JSON.parse(JSON.stringify(baseStats)); // deep clone
 
-function applyImprovements(baseStats, selectedQualities, matrixActions) {
-  const modified = {
-    attributes: { ...baseStats.attributes },
-    skills: { ...baseStats.skills },
-    deckStats: { ...baseStats.deckStats },
-    matrixActions: {},
-    notes: []
-  };
+  if (!modified.attributes) modified.attributes = {};
+  if (!modified.skills) modified.skills = {};
+  if (!modified.deckStats) modified.deckStats = {};
+  if (!modified.matrixActions) modified.matrixActions = {};
 
-  const actionNames = getAllMatrixActionNames(matrixActions);
+  qualities.forEach(q => {
+    if (q.improvements && q.improvements.selections) {
+      const type = q.improvements.type || "static";
+      const selections = q.improvements.selections;
 
-  selectedQualities.forEach(quality => {
-    const imp = quality.improvements;
-    if (!imp) return;
+      // For now, apply default only; choice/ranked logic not yet implemented
+      const selectionArray = selections.default || [];
 
-    const entries = imp.selections?.default || [];
-
-    entries.forEach(entry => {
-      switch (entry.affects) {
-        case "attribute":
-          if (modified.attributes.hasOwnProperty(entry.name)) {
-            modified.attributes[entry.name] += entry.value;
+      selectionArray.forEach(entry => {
+        for (const [target, value] of Object.entries(entry)) {
+          if (target === "affects") continue;
+          const targetGroup = entry.affects;
+          switch (targetGroup) {
+            case "attribute":
+              if (!modified.attributes[target]) modified.attributes[target] = 0;
+              modified.attributes[target] += value;
+              break;
+            case "skill":
+              if (!modified.skills[target]) modified.skills[target] = 0;
+              modified.skills[target] += value;
+              break;
+            case "deckStat":
+              if (!modified.deckStats[target]) modified.deckStats[target] = 0;
+              modified.deckStats[target] += value;
+              break;
+            case "matrixAction":
+              if (!modified.matrixActions[target]) modified.matrixActions[target] = 0;
+              modified.matrixActions[target] += value;
+              break;
           }
-          break;
-        case "skill":
-          if (modified.skills.hasOwnProperty(entry.name)) {
-            modified.skills[entry.name] += entry.value;
-          }
-          break;
-        case "deckStat":
-          if (modified.deckStats.hasOwnProperty(entry.name)) {
-            modified.deckStats[entry.name] += entry.value;
-          }
-          break;
-        case "matrixAction":
-          const actionKey = entry.name.toLowerCase();
-          if (actionNames.includes(actionKey)) {
-            if (!modified.matrixActions[actionKey]) {
-              modified.matrixActions[actionKey] = { limit: 0, pool: 0 };
-            }
-            modified.matrixActions[actionKey].pool += entry.value;
-          }
-          break;
-        case "note":
-          if (entry.text) {
-            modified.notes.push(entry.text);
-          }
-          break;
-      }
-    });
+        }
+      });
+    }
   });
 
   return modified;
 }
 
-function renderMatrixActions(matrixActions, attributes, skills, deckStats, modMatrixActions) {
-  const tbody = $("#matrix-actions-table tbody");
-  tbody.empty();
+export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods) {
+  const table = $("#matrix-actions-table tbody");
+  table.empty();
 
-  matrixActions.forEach(action => {
-    const baseLimit = evalFormula(action.limit, attributes, skills, deckStats);
-    const basePool = evalFormula(action.formula, attributes, skills, deckStats);
+  actions.forEach(action => {
+    const row = $("<tr>");
 
-    const mod = modMatrixActions[action.name.toLowerCase()] || { pool: 0 };
+    const limitKey = (action.limit || "").toLowerCase();
+    const baseLimit = baseStats[limitKey] ?? 0;
+    const limitCell = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
 
-    const tr = $("<tr>");
-    tr.append($("<td>").text(action.name));
-    tr.append($("<td>").text(`${action.limit} (${baseLimit})`));
-    tr.append($("<td>").text(action.description));
-    tr.append($("<td>").text(`${action.formula} (${basePool})`));
-    tr.append($("<td>").text(basePool + mod.pool));
-    tbody.append(tr);
+    const attrKey = Array.isArray(action.formula) && action.formula[0]
+      ? action.formula[0].toLowerCase()
+      : "";
+    const skillKey = Array.isArray(action.formula) && action.formula[1]
+      ? action.formula[1].toLowerCase()
+      : "";
+
+    const attrVal = attributes[attrKey] || 0;
+    const skillVal = skills[skillKey] || 0;
+    const qualityBonus = qualityMods[action.name] || 0;
+
+    const formula = `${action.formula?.[0] || "?"}(${attrVal}) + ${action.formula?.[1] || "?"}(${skillVal})` +
+      (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
+
+    const total = attrVal + skillVal + qualityBonus;
+
+    row.append($("<td>").text(action.name || "(unnamed)"));
+    row.append($("<td>").text(limitCell));
+    row.append($("<td>").text(action.description || ""));
+    row.append($("<td>").text(formula));
+    row.append($("<td>").text(total));
+    table.append(row);
   });
 }
-
-function evalFormula(formula, attributes, skills, deckStats) {
-  try {
-    const combined = { ...attributes, ...skills, ...deckStats };
-    const expr = formula.replace(/\b(\w+)\b/g, (match) => {
-      return combined.hasOwnProperty(match) ? combined[match] : "0";
-    });
-    return eval(expr);
-  } catch {
-    return 0;
-  }
-}
-
-export {
-  getAttributes,
-  getSkills,
-  applyImprovements,
-  renderMatrixActions
-};
