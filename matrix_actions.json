@@ -248,7 +248,7 @@
     "description": "Mark target without obtaining normal permissions",
     "formula": [
       "cybercombat",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -259,7 +259,7 @@
     "description": "Send harmful instructions to target causing Matrix damage",
     "formula": [
       "cybercombat",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -270,7 +270,7 @@
     "description": "Pollute data streams with noise",
     "formula": [
       "cybercombat",
-      "log"
+      "logic"
     ],
     "marksRequired": "Varies",
     "actionType": "Simple"
@@ -281,7 +281,7 @@
     "description": "Remove mark on you, your persona, or another\u0092s",
     "formula": [
       "cybercombat",
-      "int"
+      "intuition"
     ],
     "marksRequired": "Special",
     "actionType": "Complex"
@@ -292,7 +292,7 @@
     "description": "Disables all of target's PAN-related functions",
     "formula": [
       "cybercombat",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -313,7 +313,7 @@
     "description": "Prevent device from calling or sending messages",
     "formula": [
       "cybercombat",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Simple"
@@ -323,8 +323,8 @@
     "limit": "Data",
     "description": "Break lock a target has on you",
     "formula": [
-      "e.war",
-      "int"
+      "electronicWarfare",
+      "intuition"
     ],
     "marksRequired": "0",
     "actionType": "Simple"
@@ -354,8 +354,8 @@
     "limit": "Data",
     "description": "Send spoofed code to a piloted device",
     "formula": [
-      "e.war",
-      "log"
+      "electronicWarfare",
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -386,7 +386,7 @@
     "description": "Hop to another grid",
     "formula": [
       "computer",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -426,8 +426,8 @@
     "limit": "Data",
     "description": "Jump into rigger-adapted device",
     "formula": [
-      "e.war",
-      "log"
+      "electronicWarfare",
+      "logic"
     ],
     "marksRequired": "3",
     "actionType": "Complex"
@@ -468,7 +468,7 @@
     "description": "Visibly tag PAN target",
     "formula": [
       "computer",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Simple"
@@ -499,7 +499,7 @@
     "description": "Disarm a databomb",
     "formula": [
       "software",
-      "int"
+      "intuition"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -509,8 +509,8 @@
     "limit": "Firewall",
     "description": "Focus on Matrix defense",
     "formula": [
-      "e.war",
-      "int"
+      "electronicWarfare",
+      "intuition"
     ],
     "marksRequired": "Owner",
     "actionType": "Interrupt"
@@ -521,7 +521,7 @@
     "description": "Jack out and reboot",
     "formula": [
       "hardware",
-      "will"
+      "willpower"
     ],
     "marksRequired": "Owner",
     "actionType": "Simple"
@@ -531,8 +531,8 @@
     "limit": "Sleaze",
     "description": "Check how close Grid is to spotting you",
     "formula": [
-      "e.war",
-      "log"
+      "electronicWarfare",
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Simple"
@@ -543,7 +543,7 @@
     "description": "Mark target without permission",
     "formula": [
       "hacking",
-      "log"
+      "logic"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -554,7 +554,7 @@
     "description": "Impersonate a persona",
     "formula": [
       "hacking",
-      "int"
+      "intuition"
     ],
     "marksRequired": "2-Feb",
     "actionType": "Complex"
@@ -564,8 +564,8 @@
     "limit": "Sleaze",
     "description": "Intercept traffic",
     "formula": [
-      "e.war",
-      "int"
+      "electronicWarfare",
+      "intuition"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -575,8 +575,8 @@
     "limit": "Sleaze",
     "description": "Manipulate simple device",
     "formula": [
-      "e.war",
-      "int"
+      "electronicWarfare",
+      "intuition"
     ],
     "marksRequired": "1",
     "actionType": "Complex"
@@ -586,8 +586,8 @@
     "limit": "Sleaze",
     "description": "Watch for Matrix actions",
     "formula": [
-      "e.war",
-      "log"
+      "electronicWarfare",
+      "logic"
     ],
     "marksRequired": "-",
     "actionType": "Simple"
