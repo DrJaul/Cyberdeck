@@ -24,7 +24,9 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "marksRequired": "Variable",
+    "actionType": "Complex"
   },
   {
     "name": "Set Data Bomb",
@@ -33,7 +35,9 @@
     "formula": [
       "software",
       "logic"
-    ]
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
   },
   {
     "name": "Garbage In/Out",
@@ -42,7 +46,9 @@
     "formula": [
       "software",
       "logic"
-    ]
+    ],
+    "marksRequired": "3",
+    "actionType": "Complex"
   },
   {
     "name": "Hide",
@@ -51,7 +57,9 @@
     "formula": [
       "electronicWarfare",
       "intuition"
-    ]
+    ],
+    "marksRequired": "-",
+    "actionType": "Complex"
   },
   {
     "name": "Spoof Command",
@@ -60,7 +68,9 @@
     "formula": [
       "hacking",
       "intuition"
-    ]
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
   },
   {
     "name": "Intercept Traffic",
@@ -78,7 +88,9 @@
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "marksRequired": "3",
+    "actionType": "Complex"
   },
   {
     "name": "Trace Icon",
@@ -87,7 +99,9 @@
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "marksRequired": "2",
+    "actionType": "Complex"
   },
   {
     "name": "Tag Icon",
@@ -114,7 +128,9 @@
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "marksRequired": "-",
+    "actionType": "Complex"
   },
   {
     "name": "Matrix Perception",
@@ -123,7 +139,9 @@
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "marksRequired": "-",
+    "actionType": "Special"
   },
   {
     "name": "Offer Mark",
@@ -149,7 +167,9 @@
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
   },
   {
     "name": "Lock-On",
@@ -167,7 +187,9 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "marksRequired": "0 or 1",
+    "actionType": "Complex"
   },
   {
     "name": "Jam Signals",
@@ -176,7 +198,9 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Complex"
   },
   {
     "name": "Jammer",
@@ -203,7 +227,9 @@
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
   },
   {
     "name": "Crack File",
@@ -212,6 +238,358 @@
     "formula": [
       "hacking",
       "logic"
-    ]
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Brute Force",
+    "limit": "Attack",
+    "description": "Mark target without obtaining normal permissions",
+    "formula": [
+      "cybercombat",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Data Spike",
+    "limit": "Attack",
+    "description": "Send harmful instructions to target causing Matrix damage",
+    "formula": [
+      "cybercombat",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Denial of Service",
+    "limit": "Attack",
+    "description": "Pollute data streams with noise",
+    "formula": [
+      "cybercombat",
+      "log"
+    ],
+    "marksRequired": "Varies",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Erase Marks",
+    "limit": "Attack",
+    "description": "Remove mark on you, your persona, or another\u0092s",
+    "formula": [
+      "cybercombat",
+      "int"
+    ],
+    "marksRequired": "Special",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Haywire",
+    "limit": "Attack",
+    "description": "Disables all of target's PAN-related functions",
+    "formula": [
+      "cybercombat",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Popup",
+    "limit": "Attack",
+    "description": "Flood AR with pop-up spam",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "1",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Squelch",
+    "limit": "Attack",
+    "description": "Prevent device from calling or sending messages",
+    "formula": [
+      "cybercombat",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Break Target Lock",
+    "limit": "Data",
+    "description": "Break lock a target has on you",
+    "formula": [
+      "e.war",
+      "int"
+    ],
+    "marksRequired": "0",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Calibration",
+    "limit": "Data",
+    "description": "Lend processing power to speed up a program",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Varies",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Change Icon",
+    "limit": "Data",
+    "description": "Change device\u0092s icon",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Confluence Plot",
+    "limit": "Data",
+    "description": "Send spoofed code to a piloted device",
+    "formula": [
+      "e.war",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Detect Target Lock",
+    "limit": "Data",
+    "description": "Detect signals targeting you",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Free"
+  },
+  {
+    "name": "Enter/Exit Host",
+    "limit": "Data",
+    "description": "Enter or exit a host",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Grid Hop",
+    "limit": "Data",
+    "description": "Hop to another grid",
+    "formula": [
+      "computer",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "I am the Firewall",
+    "limit": "Data",
+    "description": "Threat highlighting",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex/Interrupt"
+  },
+  {
+    "name": "Intervene",
+    "limit": "-",
+    "description": "Warn ally to avoid harm",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "-",
+    "actionType": "Interrupt"
+  },
+  {
+    "name": "Invite Mark",
+    "limit": "Data",
+    "description": "Offer someone else a mark on your device",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Jump into Rigger Device",
+    "limit": "Data",
+    "description": "Jump into rigger-adapted device",
+    "formula": [
+      "e.war",
+      "log"
+    ],
+    "marksRequired": "3",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Matrix Search",
+    "limit": "Data",
+    "description": "Search Matrix for topic",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Suppress Noise",
+    "limit": "Data",
+    "description": "Use RCC to reduce noise",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Switch Interface Mode",
+    "limit": "Data",
+    "description": "Switch between AR and VR",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Tag",
+    "limit": "Sleaze",
+    "description": "Visibly tag PAN target",
+    "formula": [
+      "computer",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Target Device",
+    "limit": "Sleaze",
+    "description": "Target spotted device",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "2",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Trackback",
+    "limit": "Data",
+    "description": "Track marks back to source",
+    "formula": [
+      "-"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Special"
+  },
+  {
+    "name": "Disarm Databomb",
+    "limit": "Firewall",
+    "description": "Disarm a databomb",
+    "formula": [
+      "software",
+      "int"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Full Matrix Defense",
+    "limit": "Firewall",
+    "description": "Focus on Matrix defense",
+    "formula": [
+      "e.war",
+      "int"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Interrupt"
+  },
+  {
+    "name": "Jackout",
+    "limit": "Firewall",
+    "description": "Jack out and reboot",
+    "formula": [
+      "hardware",
+      "will"
+    ],
+    "marksRequired": "Owner",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Check Overwatch Score",
+    "limit": "Sleaze",
+    "description": "Check how close Grid is to spotting you",
+    "formula": [
+      "e.war",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Simple"
+  },
+  {
+    "name": "Hack on the Fly",
+    "limit": "Sleaze",
+    "description": "Mark target without permission",
+    "formula": [
+      "hacking",
+      "log"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Masquerade",
+    "limit": "Sleaze",
+    "description": "Impersonate a persona",
+    "formula": [
+      "hacking",
+      "int"
+    ],
+    "marksRequired": "2-Feb",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Snoop",
+    "limit": "Sleaze",
+    "description": "Intercept traffic",
+    "formula": [
+      "e.war",
+      "int"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Subvert Infrastructure",
+    "limit": "Sleaze",
+    "description": "Manipulate simple device",
+    "formula": [
+      "e.war",
+      "int"
+    ],
+    "marksRequired": "1",
+    "actionType": "Complex"
+  },
+  {
+    "name": "Watchdog",
+    "limit": "Sleaze",
+    "description": "Watch for Matrix actions",
+    "formula": [
+      "e.war",
+      "log"
+    ],
+    "marksRequired": "-",
+    "actionType": "Simple"
   }
 ]
