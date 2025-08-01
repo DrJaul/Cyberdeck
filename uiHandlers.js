@@ -26,6 +26,48 @@ function renderDeckNotes(notes) {
   }
 }
 
+function updateDeckStatLabels(baseStats, modifiedStats) {
+  for (const key in baseStats) {
+    const $label = $(`#draggables .stat-box[data-type="${key}"]`);
+    $label.find("span").text(baseStats[key]);
+
+    let aug = modifiedStats[key];
+    let $augEl = $label.find(".augmented-value");
+
+    if (!$augEl.length) {
+      $augEl = $("<div>").addClass("augmented-value").appendTo($label);
+    }
+
+    if (aug !== baseStats[key]) {
+      $augEl.text(`(${aug})`).show();
+    } else {
+      $augEl.hide();
+    }
+  }
+}
+
+function updateAugmentedInputs(modified, base, selectorPrefix) {
+  for (const key in base) {
+    const $input = $(`${selectorPrefix}-${key}`);
+    if (!$input.length) continue;
+
+    let $augEl = $input.siblings(".augmented-value");
+
+    if (!$augEl.length) {
+      $augEl = $("<span>")
+        .addClass("augmented-value")
+        .css({ marginLeft: "0.5em", color: "#aaa" })
+        .insertAfter($input);
+    }
+
+    if (modified[key] !== base[key]) {
+      $augEl.text(`(${modified[key]})`).show();
+    } else {
+      $augEl.hide();
+    }
+  }
+}
+
 function makeProgramsDraggable(programs, onProgramChange) {
   const container = $("#program-list");
   container.empty();
@@ -68,12 +110,6 @@ function saveState() {
     programSlots: $(".program-slot").map((_, el) => $(el).text()).get()
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
-}
-
-function updateDeckStatLabels(deckStats) {
-  for (const key in deckStats) {
-    $(`#draggables .stat-box[data-type="${key}"] span`).text(deckStats[key]);
-  }
 }
 
 $(document).ready(async function () {
@@ -132,21 +168,23 @@ $(document).ready(async function () {
   });
 
   function updateMatrixActions() {
-    const baseStats = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
+    const selectedPreset = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
     const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
       return qualities.find(q => q.name === $(el).val());
     }).get();
+
+    const inputStats = {
+      attributes: getAttributes(),
+      skills: getSkills(),
+      deckStats: { ...selectedPreset }
+    };
+
     const modifiedStats = applyImprovements(
-      {
-        attributes: getAttributes(),
-        skills: getSkills(),
-        deckStats: { ...baseStats },
-      },
+      inputStats,
       selectedQualities,
       matrixActions
     );
 
-    updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
       matrixActions,
       modifiedStats.attributes,
@@ -154,6 +192,10 @@ $(document).ready(async function () {
       modifiedStats.deckStats,
       modifiedStats.matrixActions || {}
     );
+
+    updateDeckStatLabels(selectedPreset, modifiedStats.deckStats);
+    updateAugmentedInputs(modifiedStats.attributes, inputStats.attributes, "#attr");
+    updateAugmentedInputs(modifiedStats.skills, inputStats.skills, "#skill");
     renderDeckNotes(modifiedStats.notes || []);
   }
 
@@ -172,7 +214,6 @@ $(document).ready(async function () {
   $("#preset-selector").on("change", function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
-      updateDeckStatLabels(selected);
       updateMatrixActions();
     }
   });

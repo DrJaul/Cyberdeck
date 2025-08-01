@@ -9,36 +9,53 @@
 <body>
   <div class="panel-container">
     <div id="left-panel" class="side-panel">
-    <form id="deck-config">
-      <label>
-        Select Your Deck:
-        <select id="preset-selector">
-          <option value="">----</option>
-        </select>
-      </label>
-    </form>
-    </br>
+      <form id="deck-config">
+        <label>
+          Select Your Deck:
+          <select id="preset-selector">
+            <option value="">----</option>
+          </select>
+        </label>
+      </form>
+      </br>
       <h3>Attributes</h3>
-      <label>Logic: <input type="number" id="attr-logic" min="1" max="10" /></label>
-      <label>Intuition: <input type="number" id="attr-intuition" min="1" max="10" /></label>
-      <label>Reaction: <input type="number" id="attr-reaction" min="1" max="10" /></label>
+      <label>Logic: 
+        <input type="number" id="attr-logic" min="1" max="10" />
+        <span class="augmented-display" id="aug-logic"></span>
+      </label>
+      <label>Intuition: 
+        <input type="number" id="attr-intuition" min="1" max="10" />
+        <span class="augmented-display" id="aug-intuition"></span>
+      </label>
+      <label>Reaction: 
+        <input type="number" id="attr-reaction" min="1" max="10" />
+        <span class="augmented-display" id="aug-reaction"></span>
+      </label>
 
       <h3>Skills</h3>
-      <label>Hacking: <input type="number" id="skill-hacking" min="0" max="12" /></label>
-      <label>Computer: <input type="number" id="skill-computer" min="0" max="12" /></label>
-      <label>Electronic Warfare: <input type="number" id="skill-ewarfare" min="0" max="12" /></label>
-      <label>Cybercombat: <input type="number" id="skill-cybercombat" min="0" max="12" /></label>
-      <label>Software: <input type="number" id="skill-software" min="0" max="12" /></label>
+      <label>Hacking: 
+        <input type="number" id="skill-hacking" min="0" max="12" />
+        <span class="augmented-display" id="aug-hacking"></span>
+      </label>
+      <label>Computer: 
+        <input type="number" id="skill-computer" min="0" max="12" />
+        <span class="augmented-display" id="aug-computer"></span>
+      </label>
+      <label>Electronic Warfare: 
+        <input type="number" id="skill-ewarfare" min="0" max="12" />
+        <span class="augmented-display" id="aug-ewarfare"></span>
+      </label>
+      <label>Cybercombat: 
+        <input type="number" id="skill-cybercombat" min="0" max="12" />
+        <span class="augmented-display" id="aug-cybercombat"></span>
+      </label>
+      <label>Software: 
+        <input type="number" id="skill-software" min="0" max="12" />
+        <span class="augmented-display" id="aug-software"></span>
+      </label>
 
       <h3>Qualities</h3>
-      <div id="quality-list">
-        <label class="quality-checkbox">
-          <input type="checkbox" value="Analytical Mind" /> Analytical Mind
-        </label>
-        <label class="quality-checkbox">
-          <input type="checkbox" value="Codeslinger (Hacking on the Fly)" /> Codeslinger (Hacking on the Fly)
-        </label>
-      </div>
+      <div id="quality-list"></div>
     </div>
 
     <div id="right-panel" class="side-panel">
@@ -57,6 +74,7 @@
       </table>
     </div>
   </div>
+
   <button id="left-toggle" class="panel-toggle">☰</button>
   <button id="right-toggle" class="panel-toggle">☰</button>
 
@@ -65,19 +83,31 @@
     <div id="draggables">
       <div class="stat-container">
         <div class="stat-label">Attack</div>
-        <div class="stat-box" draggable="true" data-type="attack"><span>0</span></div>
+        <div class="stat-box" draggable="true" data-type="attack">
+          <span>0</span>
+          <div class="augmented-display" id="aug-attack"></div>
+        </div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Sleaze</div>
-        <div class="stat-box" draggable="true" data-type="sleaze"><span>0</span></div>
+        <div class="stat-box" draggable="true" data-type="sleaze">
+          <span>0</span>
+          <div class="augmented-display" id="aug-sleaze"></div>
+        </div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Data Processing</div>
-        <div class="stat-box" draggable="true" data-type="dataProcessing"><span>0</span></div>
+        <div class="stat-box" draggable="true" data-type="dataProcessing">
+          <span>0</span>
+          <div class="augmented-display" id="aug-dataProcessing"></div>
+        </div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Firewall</div>
-        <div class="stat-box" draggable="true" data-type="firewall"><span>0</span></div>
+        <div class="stat-box" draggable="true" data-type="firewall">
+          <span>0</span>
+          <div class="augmented-display" id="aug-firewall"></div>
+        </div>
       </div>
     </div>
     <button type="button" id="reset-factory">Reset to Factory Settings</button>

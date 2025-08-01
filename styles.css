@@ -53,6 +53,14 @@ input[type="number"] {
   user-select: none;
   min-width: 100px;
   text-align: center;
+  position: relative;
+}
+
+.stat-box .augmented {
+  display: block;
+  font-size: 0.8em;
+  color: #aaa;
+  margin-top: 0.2em;
 }
 
 .stat-box:hover {
@@ -133,7 +141,7 @@ input[type="number"] {
 .side-panel {
   position: fixed;
   top: 0;
-  bottom: 0; 
+  bottom: 0;
   background-color: #1e1e1e;
   color: white;
   overflow-y: auto;
@@ -186,6 +194,7 @@ input[type="number"] {
   display: block;
   margin: 0.3em 0;
 }
+
 .stat-box.swap {
   transition: transform 0.15s ease;
   transform: scale(1.1);
@@ -193,4 +202,16 @@ input[type="number"] {
 
 .stat-box.drag-over {
   background-color: #555;
+}
+
+/* Augmented UI next to inputs */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.input-wrapper .augmented {
+  font-size: 0.9em;
+  color: #aaa;
 }
