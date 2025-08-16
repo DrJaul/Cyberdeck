@@ -49,7 +49,12 @@ function saveState() {
     qualities: $(".quality-checkbox:checked").map((_, el) => $(el).val()).get(),
     selectedPreset: $("#preset-selector").val(),
     programSlots: $(".program-slot").map((_, el) => $(el).text()).get(),
-    statOrder: $("#draggables .stat-box").map((_, el) => $(el).data("type")).get()
+    swappedStats: {
+      attack: $("#draggables .stat-box[data-type='attack'] span").text(),
+      sleaze: $("#draggables .stat-box[data-type='sleaze'] span").text(),
+      dataProcessing: $("#draggables .stat-box[data-type='dataProcessing'] span").text(),
+      firewall: $("#draggables .stat-box[data-type='firewall'] span").text()
+    }
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
 }
@@ -68,6 +73,9 @@ $(document).ready(async function () {
     loadPrograms(),
     loadMatrixActions()
   ]);
+  
+  // Global variable to store current deck stats
+  let currentDeckStats = {};
 
   const container = $("#quality-list");
   qualities.forEach(q => {
@@ -111,18 +119,35 @@ $(document).ready(async function () {
   );
 
   function getOrderedBaseStats(preset) {
-    const defaultOrder = ["attack", "sleaze", "dataProcessing", "firewall"];
-    const savedOrder = saved.statOrder || defaultOrder;
-    const reordered = {};
-    savedOrder.forEach(stat => {
-      reordered[stat] = preset[stat];
-    });
-    return reordered;
+    // If we have saved swapped stats, use those instead of the preset values
+    if (saved.swappedStats) {
+      return {
+        attack: parseInt(saved.swappedStats.attack) || preset.attack,
+        sleaze: parseInt(saved.swappedStats.sleaze) || preset.sleaze,
+        dataProcessing: parseInt(saved.swappedStats.dataProcessing) || preset.dataProcessing,
+        firewall: parseInt(saved.swappedStats.firewall) || preset.firewall
+      };
+    }
+    
+    // Otherwise use the preset values directly
+    return {
+      attack: preset.attack,
+      sleaze: preset.sleaze,
+      dataProcessing: preset.dataProcessing,
+      firewall: preset.firewall
+    };
   }
 
   function updateMatrixActions() {
     const basePreset = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
-    const baseStats = getOrderedBaseStats(basePreset);
+    
+    // If currentDeckStats is empty, initialize it with values from getOrderedBaseStats
+    if (Object.keys(currentDeckStats).length === 0) {
+      currentDeckStats = getOrderedBaseStats(basePreset);
+    }
+    
+    // Use currentDeckStats instead of calling getOrderedBaseStats every time
+    const baseStats = { ...currentDeckStats };
     const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
       return qualities.find(q => q.name === $(el).val());
     }).get();
@@ -206,9 +231,13 @@ $(document).ready(async function () {
       sourceBox.removeClass("swap");
       targetBox.removeClass("swap");
 
-      // Swap data-type
-      sourceBox.data("type", targetType);
-      targetBox.data("type", sourceType);
+      // No longer swapping data-type attributes
+      // Labels remain fixed, only values change
+      
+      // Update the currentDeckStats with the swapped values
+      const tempValue = currentDeckStats[sourceType];
+      currentDeckStats[sourceType] = currentDeckStats[targetType];
+      currentDeckStats[targetType] = tempValue;
 
       // Re-run updates to reflect changes
       updateMatrixActions();
