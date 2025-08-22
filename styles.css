@@ -215,3 +215,78 @@ input[type="number"] {
   font-size: 0.9em;
   color: #aaa;
 }
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #222;
+  padding: 1.5em;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal h3 {
+  margin-top: 0;
+  color: #eee;
+}
+
+#quality-choice-description {
+  margin-bottom: 1em;
+  color: #ccc;
+}
+
+#quality-choice-dropdown {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 1.5em;
+  background-color: #333;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 3px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.modal-buttons button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#quality-choice-confirm {
+  background-color: #2a6;
+  color: white;
+}
+
+#quality-choice-confirm:hover {
+  background-color: #3b7;
+}
+
+#quality-choice-cancel {
+  background-color: #666;
+  color: white;
+}
+
+#quality-choice-cancel:hover {
+  background-color: #777;
+}
