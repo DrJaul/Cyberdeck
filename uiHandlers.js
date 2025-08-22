@@ -177,7 +177,29 @@ $(document).ready(async function () {
   $("#preset-selector").on("change", function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
+      // Empty all populated program slots
+      initProgramSlots(
+        selected.rating || 6,
+        [], // Empty array to clear all slots
+        saveState
+      );
+      
+      // Clear swapped deck stats by resetting to preset values
+      currentDeckStats = {
+        attack: selected.attack,
+        sleaze: selected.sleaze,
+        dataProcessing: selected.dataProcessing,
+        firewall: selected.firewall
+      };
+      
+      // Update deck stat labels to values from selected preset
+      updateDeckStatLabels(currentDeckStats);
+      
+      // Rerun applyImprovements via updateMatrixActions
       updateMatrixActions();
+      
+      // Save the updated state
+      saveState();
     }
   });
 
