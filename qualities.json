@@ -1,6 +1,6 @@
 [
   {
-    "id": "c7d8e9f0-a1b2-c3d4-e5f6-a7b8c9d0e1f2",
+    "id": 471628,
     "name": "Home Ground",
     "description": "+2 dice to Matrix actions when operating in your chosen host/grid.",
     "improvements": {
@@ -16,7 +16,7 @@
     }
   },
   {
-    "id": "d8e9f0a1-b2c3-d4e5-f6a7-b8c9d0e1f2a3",
+    "id": 935274,
     "name": "Codeslinger",
     "description": "+2 dice to the 'Hack on the Fly' Matrix action.",
     "improvements": {
@@ -25,21 +25,21 @@
         "Hack On The Fly": [
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Hack On The Fly",
+            "matrixActionId":"Hack On The Fly",
             "value": 2
           }
         ],
         "Data Spike": [
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Data Spike",
+            "matrixActionId":"Data Spike",
             "value": 2
           }
         ],
         "Brute Force": [
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Brute Force",
+            "matrixActionId":"Brute Force",
             "value": 2
           }
         ]
@@ -48,7 +48,7 @@
   },
  
   {
-    "id": "e9f0a1b2-c3d4-e5f6-a7b8-c9d0e1f2a3b4",
+    "id": 186429,
     "name": "Analytical Mind",
     "description": "+2 dice to Logic-based tests, including Matrix Perception.",
     "improvements": {
@@ -61,7 +61,7 @@
           },
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Matrix Perception",
+            "matrixActionId":"Matrix Perception",
             "value": 2
           }
         ]
@@ -69,7 +69,7 @@
     }
   },
   {
-    "id": "f0a1b2c3-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+    "id": 647835,
     "name": "Perfect Time",
     "description": "Gain an additional Free Action per Combat Turn — helps with reconfiguring decks/programs.",
     "improvements": {
@@ -83,7 +83,7 @@
     }
   },
   {
-    "id": "a1b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+    "id": 293517,
     "name": "Trust Data, Not Lore",
     "description": "Use logic in place of intuition on all matrix actions",
     "improvements": {
@@ -97,7 +97,7 @@
     }
   },
   {
-    "id": "b2c3d4e5-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+    "id": 814692,
     "name": "Trust Lore, Not Data",
     "description": "Use intuition in place of logic on all matrix actions",
     "improvements": {
@@ -112,7 +112,7 @@
   },
   
   {
-    "id": "c3d4e5f6-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+    "id": 529361,
     "name": "Perceptive",
     "description": "+1 or +2 dice to Perception tests, including Matrix Perception.",
     "improvements": {
@@ -121,14 +121,14 @@
         "1": [
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Matrix Perception",
+            "matrixActionId":"Matrix Perception",
             "value": 1
           }
         ],
         "2": [
           {
             "affects": "matrixAction",
-            "onMatrixAction":"Matrix Perception",
+            "matrixActionId":"Matrix Perception",
             "value": 2
           }
         ]
