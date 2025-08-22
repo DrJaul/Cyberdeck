@@ -2,7 +2,7 @@ export function getAttributes() {
   return {
     logic: parseInt($("#attr-logic").val()) || 0,
     intuition: parseInt($("#attr-intuition").val()) || 0,
-    reaction: parseInt($("#attr-reaction").val()) || 0
+    willpower: parseInt($("#attr-willpower").val()) || 0
   };
 }
 
@@ -10,9 +10,10 @@ export function getSkills() {
   return {
     hacking: parseInt($("#skill-hacking").val()) || 0,
     computer: parseInt($("#skill-computer").val()) || 0,
-    electronicWarfare: parseInt($("#skill-ewarfare").val()) || 0,
+    electronicWarfare: parseInt($("#skill-electronicWarfare").val()) || 0,
     cybercombat: parseInt($("#skill-cybercombat").val()) || 0,
-    software: parseInt($("#skill-software").val()) || 0
+    software: parseInt($("#skill-software").val()) || 0,
+    hardware: parseInt($("#skill-hardware").val()) || 0
   };
 }
 
