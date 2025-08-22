@@ -1,5 +1,6 @@
 [
     {
+        "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         "name": "Browse",
         "description": "Cuts the time for a Matrix Search action in half.",
         "improvements": {
@@ -15,6 +16,7 @@
         }
     },
     {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
         "name": "Configurator",
         "description": "Stores an alternate configuration for your deck, allowing you to swap to the full configuration instead of only two attributes or programs.",
         "improvements": {
@@ -30,6 +32,7 @@
         }
     },
     {
+        "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
         "name": "Edit",
         "description": "+2 to Data Processing limit for Edit tests.",
         "improvements": {
@@ -46,6 +49,7 @@
         }
     },
     {
+        "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
         "name": "Encryption",
         "description": "+1 bonus to your Firewall attribute.",
         "improvements": {
@@ -61,6 +65,7 @@
         }
     },
     {
+        "id": "8c9e6679-7425-40de-944b-e07fc1f90ae7",
         "name": "Signal Scrub",
         "description": "Rating 2 noise reduction.",
         "improvements": {
@@ -76,6 +81,7 @@
         }
     },
     {
+        "id": "9c9e6679-7425-40de-944b-e07fc1f90ae7",
         "name": "Toolbox",
         "description": "+1 bonus to your Data Processing attribute.",
         "improvements": {
@@ -91,6 +97,7 @@
         }
     },
     {
+        "id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5e6",
         "name": "Virtual Machine",
         "description": "Your deck can run two additional programs, but whenever your persona takes Matrix damage, it takes an additional box of Matrix damage that cannot be resisted.",
         "improvements": {
@@ -110,6 +117,7 @@
         }
     },
     {
+        "id": "b1b2b3b4-c1c2-d1d2-e1e2-f1f2f3f4f5f6",
         "name": "Armor",
         "description": "+2 dice pool modifier to resist Matrix damage.",
         "improvements": {
@@ -125,6 +133,7 @@
         }
     },
     {
+        "id": "c1c2c3c4-d1d2-e1e2-f1f2-a1a2a3a4a5a6",
         "name": "Baby Monitor",
         "description": "Keeps track of your movements in the Matrix, so you always know your current Overwatch Score.",
         "improvements": {
@@ -140,6 +149,7 @@
         }
     },
     {
+        "id": "d1d2d3d4-e1e2-f1f2-a1a2-b1b2b3b4b5b6",
         "name": "Biofeedback",
         "description": "Attacks causing Matrix damage add an equal amount of Stun (cold-sim) or Physical (hot-sim) biofeedback damage. Also applies to damage caused by failed attacks against you.",
         "improvements": {
@@ -155,6 +165,7 @@
         }
     },
     {
+        "id": "e1e2e3e4-f1f2-a1a2-b1b2-c1c2c3c4c5c6",
         "name": "Biofeedback Filter",
         "description": "+2 dice pool modifier to resist biofeedback damage.",
         "improvements": {
@@ -170,6 +181,7 @@
         }
     },
     {
+        "id": "f1f2f3f4-a1a2-b1b2-c1c2-d1d2d3d4d5d6",
         "name": "Blackout",
         "description": "Same as biofeedback, but only causes Stun damage, even if the target is using hot-sim.",
         "improvements": {
@@ -189,6 +201,7 @@
         }
     },
     {
+        "id": "a5a6a7a8-b5b6-c5c6-d5d6-e5e6e7e8e9e0",
         "name": "Decryption",
         "description": "+1 bonus to your Attack attribute.",
         "improvements": {
@@ -204,6 +217,7 @@
         }
     },
     {
+        "id": "b5b6b7b8-c5c6-d5d6-e5e6-f5f6f7f8f9f0",
         "name": "Cat's Paw",
         "description": "On a successful Data Spike action, instead of doing damage, the program generates a negative dice pool modifier equal to two plus the number of marks the user has on their target.",
         "active":false,
@@ -224,6 +238,7 @@
         }
     },
     {
+        "id": "c5c6c7c8-d5d6-e5e6-f5f6-a5a6a7a8a9a0",
         "name": "Tarball",
         "description": "+2 Attack and +1 dice pool to Crash Program actions.",
         "improvements": {
@@ -246,6 +261,7 @@
         }
     },
     {
+        "id": "d5d6d7d8-e5e6-f5f6-a5a6-b5b6b7b8b9b0",
         "name": "Hammer",
         "description": "+2 DV to Matrix Damage. Does not apply on failed Attack actions against you.",
         "improvements": {
@@ -261,6 +277,7 @@
         }
     },
     {
+        "id": "e5e6e7e8-f5f6-a5a6-b5b6-c5c6c7c8c9c0",
         "name": "Lockdown",
         "description": "When you cause damage to a persona, he or she is link-locked until you stop running this program or they successfully Jack Out.",
         "improvements": {
@@ -276,6 +293,7 @@
         }
     },
     {
+        "id": "f5f6f7f8-a5a6-b5b6-c5c6-d5d6d7d8d9d0",
         "name": "Mugger",
         "description": "Bonus damage from marks is increased by 1 DV per mark.",
         "improvements": {
@@ -291,6 +309,7 @@
         }
     },
     {
+        "id": "a9a8a7a6-b9b8-c9c8-d9d8-e9e8e7e6e5e4",
         "name": "Guard",
         "description": "Reduces the extra damage you take from marks by 1 DV per mark.",
         "improvements": {
@@ -306,6 +325,7 @@
         }
     },
     {
+        "id": "b9b8b7b6-c9c8-d9d8-e9e8-f9f8f7f6f5f4",
         "name": "Shell",
         "description": "+1 dice pool to resist Matrix and biofeedback damage.",
         "improvements": {
