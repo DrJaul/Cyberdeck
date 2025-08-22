@@ -23,6 +23,7 @@ function makeProgramsDraggable(programs) {
       .text(prog.name)
       .on("dragstart", function (e) {
         e.originalEvent.dataTransfer.setData("text/plain", prog.name);
+        e.originalEvent.dataTransfer.setData("source", "program-list");
       })
       .hover(function (e) {
         $("#program-tooltip").text(prog.description).css({
