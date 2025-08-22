@@ -169,6 +169,32 @@ $(document).ready(async function () {
 
   updateMatrixActions();
 
+  function resetDeck(preset) {
+    // Empty all populated program slots
+    initProgramSlots(
+      preset.rating || 6,
+      [], // Empty array to clear all slots
+      saveState
+    );
+    
+    // Clear swapped deck stats by resetting to preset values
+    currentDeckStats = {
+      attack: preset.attack,
+      sleaze: preset.sleaze,
+      dataProcessing: preset.dataProcessing,
+      firewall: preset.firewall
+    };
+    
+    // Update deck stat labels to values from selected preset
+    updateDeckStatLabels(currentDeckStats);
+    
+    // Rerun applyImprovements via updateMatrixActions
+    updateMatrixActions();
+    
+    // Save the updated state
+    saveState();
+  }
+
   $("input, select").on("input change", function () {
     updateMatrixActions();
     saveState();
@@ -177,35 +203,15 @@ $(document).ready(async function () {
   $("#preset-selector").on("change", function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
-      // Empty all populated program slots
-      initProgramSlots(
-        selected.rating || 6,
-        [], // Empty array to clear all slots
-        saveState
-      );
-      
-      // Clear swapped deck stats by resetting to preset values
-      currentDeckStats = {
-        attack: selected.attack,
-        sleaze: selected.sleaze,
-        dataProcessing: selected.dataProcessing,
-        firewall: selected.firewall
-      };
-      
-      // Update deck stat labels to values from selected preset
-      updateDeckStatLabels(currentDeckStats);
-      
-      // Rerun applyImprovements via updateMatrixActions
-      updateMatrixActions();
-      
-      // Save the updated state
-      saveState();
+      resetDeck(selected);
     }
   });
 
   $("#reset-factory").on("click", function () {
-    localStorage.removeItem("cyberdeckState");
-    location.reload();
+    var currentPresetName = JSON.parse(localStorage.getItem("cyberdeckState") || "{}").selectedPreset
+    var currentPreset = presets.find(p => p.name === currentPresetName);
+    resetDeck(currentPreset)
+    
   });
 
   $("#left-toggle").on("click", function () {
