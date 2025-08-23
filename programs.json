@@ -106,7 +106,7 @@
                 "default": [
                     {
                         "affects": "programSlots",
-                        "programslots": 2
+                        "programSlots": 2
                     },
                     {
                         "affects": "notes",
