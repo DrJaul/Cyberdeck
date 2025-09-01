@@ -352,7 +352,7 @@
   {
     "id": 152748,
     "name": "Break Target Lock",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Break lock a target has on you",
     "formula": [
       "electronicWarfare",
@@ -364,7 +364,7 @@
   {
     "id": 539682,
     "name": "Calibration",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Lend processing power to speed up a program",
     "formula": [
       "-"
@@ -375,7 +375,7 @@
   {
     "id": 794136,
     "name": "Change Icon",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Change device\u0092s icon",
     "formula": [
       "-"
@@ -386,7 +386,7 @@
   {
     "id": 231579,
     "name": "Confluence Plot",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Send spoofed code to a piloted device",
     "formula": [
       "electronicWarfare",
@@ -398,7 +398,7 @@
   {
     "id": 568943,
     "name": "Detect Target Lock",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Detect signals targeting you",
     "formula": [
       "-"
@@ -409,7 +409,7 @@
   {
     "id": 827615,
     "name": "Enter/Exit Host",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Enter or exit a host",
     "formula": [
       "-"
@@ -420,7 +420,7 @@
   {
     "id": 196374,
     "name": "Grid Hop",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Hop to another grid",
     "formula": [
       "computer",
@@ -432,7 +432,7 @@
   {
     "id": 583921,
     "name": "I am the Firewall",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Threat highlighting",
     "formula": [
       "-"
@@ -454,7 +454,7 @@
   {
     "id": 329418,
     "name": "Invite Mark",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Offer someone else a mark on your device",
     "formula": [
       "-"
@@ -465,7 +465,7 @@
   {
     "id": 675832,
     "name": "Jump into Rigger Device",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Jump into rigger-adapted device",
     "formula": [
       "electronicWarfare",
@@ -477,7 +477,7 @@
   {
     "id": 913547,
     "name": "Matrix Search",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Search Matrix for topic",
     "formula": [
       "-"
@@ -488,7 +488,7 @@
   {
     "id": 284761,
     "name": "Suppress Noise",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Use RCC to reduce noise",
     "formula": [
       "-"
@@ -499,7 +499,7 @@
   {
     "id": 629153,
     "name": "Switch Interface Mode",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Switch between AR and VR",
     "formula": [
       "-"
@@ -533,7 +533,7 @@
   {
     "id": 597423,
     "name": "Trackback",
-    "limit": "Data",
+    "limit": "Data Processing",
     "description": "Track marks back to source",
     "formula": [
       "-"
