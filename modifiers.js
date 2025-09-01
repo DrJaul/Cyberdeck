@@ -67,25 +67,35 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
   const table = $("#matrix-actions-table tbody");
   table.empty();
 
+  // Map from limit names to baseStats keys
+  const limitToStatMap = {
+    "data processing": "dataProcessing",
+    "attack": "attack",
+    "sleaze": "sleaze",
+    "firewall": "firewall"
+  };
+
   actions.forEach(action => {
     const row = $("<tr>");
 
     const limitKey = (action.limit || "").toLowerCase();
-    const baseLimit = baseStats[limitKey] ?? 0;
+    const statKey = limitToStatMap[limitKey] || limitKey;
+    const baseLimit = baseStats[statKey] ?? 0;
     const limitCell = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
 
-    const attrKey = Array.isArray(action.formula) && action.formula[0]
-      ? action.formula[0].toLowerCase()
+    // Use the original formula values without converting to lowercase
+    const skillKey = Array.isArray(action.formula) && action.formula[0]
+      ? action.formula[0]
       : "";
-    const skillKey = Array.isArray(action.formula) && action.formula[1]
-      ? action.formula[1].toLowerCase()
+    const attrKey = Array.isArray(action.formula) && action.formula[1]
+      ? action.formula[1]
       : "";
 
-    const attrVal = attributes[attrKey] || 0;
     const skillVal = skills[skillKey] || 0;
+    const attrVal = attributes[attrKey] || 0;
     const qualityBonus = qualityMods[action.name] || 0;
 
-    const formula = `${action.formula?.[0] || "?"}(${attrVal}) + ${action.formula?.[1] || "?"}(${skillVal})` +
+    const formula = `${action.formula?.[0] || "?"}(${skillVal}) + ${action.formula?.[1] || "?"}(${attrVal})` +
       (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
 
     const total = attrVal + skillVal + qualityBonus;
