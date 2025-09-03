@@ -1,652 +1,522 @@
 [
   {
-    "id": 192837,
-    "name": "Disarm Data Bomb",
-    "limit": "Firewall",
-    "description": "Disarm a databomb.",
-    "formula": [
-      "software",
-      "intuition"
-    ]
-  },
-  {
-    "id": 465912,
-    "name": "Jack Out",
-    "limit": "Firewall",
-    "description": "Jack out of the Matrix and reboot device being used.",
-    "formula": [
-      "hardware",
-      "willpower"
-    ]
-  },
-  {
-    "id": 738294,
-    "name": "Control Device",
-    "limit": "Sleaze",
-    "description": "Perform an action through a device you control.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ],
-    "marksRequired": "Variable",
-    "actionType": "Complex"
-  },
-  {
-    "id": 615243,
-    "name": "Set Data Bomb",
-    "limit": "Sleaze",
-    "description": "Set a data bomb.",
-    "formula": [
-      "software",
-      "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 927384,
-    "name": "Garbage In/Out",
-    "limit": "Sleaze",
-    "description": "Confuse a device's input and output commands.",
-    "formula": [
-      "software",
-      "logic"
-    ],
-    "marksRequired": "3",
-    "actionType": "Complex"
-  },
-  {
-    "id": 354167,
-    "name": "Hide",
-    "limit": "Sleaze",
-    "description": "Hide in the Matrix.",
-    "formula": [
-      "electronicWarfare",
-      "intuition"
-    ],
-    "marksRequired": "-",
-    "actionType": "Complex"
-  },
-  {
-    "id": 891726,
-    "name": "Spoof Command",
-    "limit": "Sleaze",
-    "description": "Send a command that the device thinks is a legitimate one from its owner.",
-    "formula": [
-      "hacking",
-      "intuition"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 243618,
-    "name": "Intercept Traffic",
-    "limit": "Sleaze",
-    "description": "User is aware of Matrix actions the target is going to use.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ]
-  },
-  {
-    "id": 576932,
-    "name": "Format Device",
-    "limit": "Data Processing",
-    "description": "Device shuts down and immediately reboots.",
-    "formula": [
-      "computer",
-      "logic"
-    ],
-    "marksRequired": "3",
-    "actionType": "Complex"
-  },
-  {
-    "id": 819475,
-    "name": "Trace Icon",
-    "limit": "Data Processing",
-    "description": "Find the physical location of a device or persona in the Matrix.",
-    "formula": [
-      "computer",
-      "intuition"
-    ],
-    "marksRequired": "2",
-    "actionType": "Complex"
-  },
-  {
-    "id": 132659,
-    "name": "Tag Icon",
-    "limit": "Data Processing",
-    "description": "Visibly tag a target on a PAN with AROs.",
-    "formula": [
-      "computer",
-      "logic"
-    ]
-  },
-  {
-    "id": 487321,
-    "name": "Reduce Noise",
-    "limit": "Data Processing",
-    "description": "Use RCC to reduce noise between user and vehicles/drones.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ]
-  },
-  {
-    "id": 765843,
-    "name": "Reboot Device",
-    "limit": "Data Processing",
-    "description": "Device shuts down and immediately reboots.",
-    "formula": [
-      "computer",
-      "logic"
-    ],
-    "marksRequired": "-",
-    "actionType": "Complex"
-  },
-  {
-    "id": 219567,
-    "name": "Matrix Perception",
-    "limit": "Data Processing",
-    "description": "Analyze a Matrix object or scan your vicinity.",
-    "formula": [
-      "computer",
-      "intuition"
-    ],
-    "marksRequired": "-",
-    "actionType": "Special"
-  },
-  {
-    "id": 654981,
-    "name": "Offer Mark",
-    "limit": "Data Processing",
-    "description": "Offer other icons a mark on your device.",
-    "formula": [
-      "-"
-    ]
-  },
-  {
-    "id": 873254,
-    "name": "Analyze Icon",
-    "limit": "Data Processing",
-    "description": "Threat highlighting.",
-    "formula": [
-      "computer",
-      "intuition"
-    ]
-  },
-  {
-    "id": 146832,
-    "name": "Edit File",
-    "limit": "Data Processing",
-    "description": "Create, change, copy, delete, or protect any kind of file.",
-    "formula": [
-      "computer",
-      "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 592476,
-    "name": "Lock-On",
-    "limit": "Data Processing",
-    "description": "Detect wireless signals for a target lock.",
-    "formula": [
-      "computer",
-      "logic"
-    ]
-  },
-  {
-    "id": 837519,
-    "name": "Send Message",
-    "limit": "Data Processing",
-    "description": "Lend processing power to increase speed of a persona.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ],
-    "marksRequired": "0 or 1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 264183,
-    "name": "Jam Signals",
-    "limit": "Attack",
-    "description": "Prevents device from calling or sending messages.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Complex"
-  },
-  {
-    "id": 519728,
-    "name": "Jammer",
-    "limit": "Attack",
-    "description": "Turn wireless device you are using into a local jammer.",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ]
-  },
-  {
-    "id": 782365,
-    "name": "Erase Mark",
-    "limit": "Attack",
-    "description": "Remove mark on your persona or on another icon.",
-    "formula": [
-      "cybercombat",
-      "intuition"
-    ]
-  },
-  {
-    "id": 137946,
-    "name": "Crash Program",
-    "limit": "Attack",
-    "description": "Send harmful instructions to target causing Matrix damage.",
-    "formula": [
-      "cybercombat",
-      "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 498732,
-    "name": "Crack File",
-    "limit": "Attack",
-    "description": "Remove the protection from a file.",
-    "formula": [
-      "hacking",
-      "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 856219,
+    "id": 205228,
     "name": "Brute Force",
     "limit": "Attack",
-    "description": "Mark target without obtaining normal permissions",
+    "marks": "-",
+    "description": "mark target without obtaining normal permissions",
     "formula": [
       "cybercombat",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 321654,
+    "id": 569111,
+    "name": "Crack File",
+    "limit": "Attack",
+    "marks": "1",
+    "description": "remove the protection from a file",
+    "formula": [
+      "hacking",
+      "logic"
+    ]
+  },
+  {
+    "id": 978835,
+    "name": "Crash Program",
+    "limit": "Attack",
+    "marks": "1",
+    "description": "force targets program to crash",
+    "formula": [
+      "cybercombat",
+      "logic"
+    ]
+  },
+  {
+    "id": 563169,
     "name": "Data Spike",
     "limit": "Attack",
-    "description": "Send harmful instructions to target causing Matrix damage",
+    "marks": "-",
+    "description": "send harmful instructions to target causing Matrix damage",
     "formula": [
       "cybercombat",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 687429,
+    "id": 120498,
     "name": "Denial of Service",
     "limit": "Attack",
-    "description": "Pollute data streams with noise",
+    "marks": "Varies",
+    "description": "pollute data streams with noise",
     "formula": [
       "cybercombat",
       "logic"
-    ],
-    "marksRequired": "Varies",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 945781,
+    "id": 134814,
     "name": "Erase Marks",
     "limit": "Attack",
-    "description": "Remove mark on you, your persona, or another\u0092s",
+    "marks": "Special",
+    "description": "remove mark on your persona or on another icon",
     "formula": [
       "cybercombat",
       "intuition"
-    ],
-    "marksRequired": "Special",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 273846,
+    "id": 969538,
     "name": "Haywire",
     "limit": "Attack",
-    "description": "Disables all of target's PAN-related functions",
+    "marks": "-",
+    "description": "disables all of the target's PAN-related functions",
     "formula": [
       "cybercombat",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 619537,
+    "id": 505571,
+    "name": "Jam Signals",
+    "limit": "Attack",
+    "marks": "Owner",
+    "description": "turn wireless device you are using into a local jammer",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "id": 753729,
     "name": "Popup",
     "limit": "Attack",
-    "description": "Flood AR with pop-up spam",
+    "marks": "1",
+    "description": "target wireless-enabled AR is flooded with Matrix spam",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "1",
-    "actionType": "Simple"
+      "hacking",
+      "logic"
+    ]
   },
   {
-    "id": 864291,
+    "id": 442622,
     "name": "Squelch",
     "limit": "Attack",
-    "description": "Prevent device from calling or sending messages",
+    "marks": "-",
+    "description": "prevents device from calling or sending messages",
     "formula": [
-      "cybercombat",
+      "electronicWarfare",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 152748,
+    "id": 667841,
     "name": "Break Target Lock",
-    "limit": "Data Processing",
-    "description": "Break lock a target has on you",
+    "limit": "Data Porcessing",
+    "marks": "0",
+    "description": "break lock a target has on you",
     "formula": [
       "electronicWarfare",
       "intuition"
-    ],
-    "marksRequired": "0",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 539682,
+    "id": 408035,
     "name": "Calibration",
     "limit": "Data Processing",
-    "description": "Lend processing power to speed up a program",
+    "marks": "Varies",
+    "description": "lend processing power to increase speed of a persona",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "Varies",
-    "actionType": "Simple"
+      "electronicWarfare",
+      "logic"
+    ]
   },
   {
-    "id": 794136,
+    "id": 243220,
     "name": "Change Icon",
     "limit": "Data Processing",
-    "description": "Change device\u0092s icon",
+    "marks": "Owner",
+    "description": "change Icon to one you have designed or have a copy of",
     "formula": [
       "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 231579,
-    "name": "Confluence Plot",
+    "id": 128392,
+    "name": "Confuse Pilot",
     "limit": "Data Processing",
-    "description": "Send spoofed code to a piloted device",
+    "marks": "-",
+    "description": "send a stream of misleading code to a device with a pilot",
     "formula": [
       "electronicWarfare",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 568943,
+    "id": 968045,
+    "name": "Control Device",
+    "limit": "Data Processing",
+    "marks": "Varies",
+    "description": "perform an action through a device you control",
+    "formula": [
+      "asAction"
+    ]
+  },
+  {
+    "id": 422282,
     "name": "Detect Target Lock",
     "limit": "Data Processing",
-    "description": "Detect signals targeting you",
-    "formula": [
-      "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Free"
-  },
-  {
-    "id": 827615,
-    "name": "Enter/Exit Host",
-    "limit": "Data Processing",
-    "description": "Enter or exit a host",
-    "formula": [
-      "-"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
-  },
-  {
-    "id": 196374,
-    "name": "Grid Hop",
-    "limit": "Data Processing",
-    "description": "Hop to another grid",
+    "marks": "Owner",
+    "description": "detect wirless signals for a target lock",
     "formula": [
       "computer",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 583921,
+    "id": 548060,
+    "name": "Enter/Exit Host",
+    "limit": "Data Processing",
+    "marks": "1",
+    "description": "enter or exit a host",
+    "formula": [
+      "-"
+    ]
+  },
+  {
+    "id": 412092,
+    "name": "Edit File",
+    "limit": "Data Processing",
+    "marks": "1",
+    "description": "create, change, copy, delete, or protect any kind of file",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "id": 259712,
+    "name": "Grid Hop",
+    "limit": "Data Processing",
+    "marks": "-",
+    "description": "hop to another grid",
+    "formula": [
+      "-"
+    ]
+  },
+  {
+    "id": 307777,
     "name": "I am the Firewall",
     "limit": "Data Processing",
-    "description": "Threat highlighting",
+    "marks": "-",
+    "description": "threat highlighting",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex/Interrupt"
+      "computer",
+      "intuition"
+    ]
   },
   {
-    "id": 847265,
+    "id": 349721,
     "name": "Intervene",
-    "limit": "-",
-    "description": "Warn ally to avoid harm",
+    "limit": "Data Processing",
+    "marks": "-",
+    "description": "give your allies warning to avoid harm",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "-",
-    "actionType": "Interrupt"
+      "computer",
+      "intuition"
+    ]
   },
   {
-    "id": 329418,
+    "id": 799622,
     "name": "Invite Mark",
     "limit": "Data Processing",
-    "description": "Offer someone else a mark on your device",
+    "marks": "Owner",
+    "description": "offer other icons a mark on your device",
     "formula": [
       "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 675832,
-    "name": "Jump into Rigger Device",
+    "id": 410302,
+    "name": "Jump into Rigged Device",
     "limit": "Data Processing",
-    "description": "Jump into rigger-adapted device",
+    "marks": "3",
+    "description": "jump into a device that has a rigger adaptation",
     "formula": [
       "electronicWarfare",
       "logic"
-    ],
-    "marksRequired": "3",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 913547,
+    "id": 514397,
+    "name": "Matrix Perception",
+    "limit": "Data Processing",
+    "marks": "-",
+    "description": "analyze a Matrix object or scan your vicinity",
+    "formula": [
+      "computer",
+      "intuition"
+    ]
+  },
+  {
+    "id": 880744,
     "name": "Matrix Search",
     "limit": "Data Processing",
-    "description": "Search Matrix for topic",
+    "marks": "-",
+    "description": "search the Matrix for information about a topic",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+      "computer",
+      "intuition"
+    ]
   },
   {
-    "id": 284761,
-    "name": "Suppress Noise",
+    "id": 370969,
+    "name": "Reboot Device",
     "limit": "Data Processing",
-    "description": "Use RCC to reduce noise",
-    "formula": [
-      "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Complex"
-  },
-  {
-    "id": 629153,
-    "name": "Switch Interface Mode",
-    "limit": "Data Processing",
-    "description": "Switch between AR and VR",
-    "formula": [
-      "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Complex"
-  },
-  {
-    "id": 875294,
-    "name": "Tag",
-    "limit": "Sleaze",
-    "description": "Visibly tag PAN target",
+    "marks": "3",
+    "description": "device shuts down and immediately reboots",
     "formula": [
       "computer",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 241638,
-    "name": "Target Device",
-    "limit": "Sleaze",
-    "description": "Target spotted device",
+    "id": 839120,
+    "name": "Send Message",
+    "limit": "Data Processing",
+    "marks": "or 1",
+    "description": "send text or audio message (short sentence), image, or a file",
     "formula": [
       "-"
-    ],
-    "marksRequired": "2",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 597423,
+    "id": 971326,
+    "name": "Suppress Noise",
+    "limit": "Data Processing",
+    "marks": "Owner",
+    "description": "use RCC to reduce noise between user and vehicles/drones",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "id": 955323,
+    "name": "Switch Interface Mode",
+    "limit": "Data Processing",
+    "marks": "Owner",
+    "description": "switch your perception between AR and VR",
+    "formula": [
+      "-"
+    ]
+  },
+  {
+    "id": 594115,
+    "name": "Tag",
+    "limit": "Data Processing",
+    "marks": "-",
+    "description": "Visibly Tag a target on a PAN with AROs",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "id": 100512,
+    "name": "Target Device",
+    "limit": "Data Processing",
+    "marks": "-",
+    "description": "target a wireless device spotted on the Matrix",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "id": 741764,
+    "name": "Trace Icon",
+    "limit": "Data Processing",
+    "marks": "2",
+    "description": "find the physical location of a device or persona in the Matrix",
+    "formula": [
+      "computer",
+      "intuition"
+    ]
+  },
+  {
+    "id": 378608,
     "name": "Trackback",
     "limit": "Data Processing",
-    "description": "Track marks back to source",
+    "marks": "Owner",
+    "description": "track marks back to owners",
     "formula": [
-      "-"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Special"
+      "extendedComputer",
+      "intSpecial,30MinutesTest"
+    ]
   },
   {
-    "id": 836917,
+    "id": 368208,
     "name": "Disarm Databomb",
     "limit": "Firewall",
-    "description": "Disarm a databomb",
+    "marks": "-",
+    "description": "disarm a databomb",
     "formula": [
       "software",
       "intuition"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 172584,
+    "id": 504602,
     "name": "Full Matrix Defense",
     "limit": "Firewall",
-    "description": "Focus on Matrix defense",
+    "marks": "Owner",
+    "description": "focus on defending yourelf in the Matrix",
     "formula": [
-      "electronicWarfare",
-      "intuition"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Interrupt"
+      "-"
+    ]
   },
   {
-    "id": 548932,
+    "id": 928781,
     "name": "Jackout",
     "limit": "Firewall",
-    "description": "Jack out and reboot",
+    "marks": "Owner",
+    "description": "jack out of the matrix and reboot device being used",
     "formula": [
       "hardware",
       "willpower"
-    ],
-    "marksRequired": "Owner",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 793461,
+    "id": 747398,
     "name": "Check Overwatch Score",
     "limit": "Sleaze",
-    "description": "Check how close Grid is to spotting you",
+    "marks": "-",
+    "description": "find how close the grid is to coverging on you",
     "formula": [
       "electronicWarfare",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Simple"
+    ]
   },
   {
-    "id": 128574,
+    "id": 204395,
+    "name": "Control Device",
+    "limit": "Sleaze",
+    "marks": "Varies",
+    "description": "perform an action through a device you control",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ]
+  },
+  {
+    "id": 112988,
+    "name": "Format Device",
+    "limit": "Sleaze",
+    "marks": "3",
+    "description": "device is foratted on next reboot",
+    "formula": [
+      "computer",
+      "logic"
+    ]
+  },
+  {
+    "id": 589581,
+    "name": "Garbage In/Out",
+    "limit": "Sleaze",
+    "marks": "3",
+    "description": "confuse devices input and output commands",
+    "formula": [
+      "software",
+      "logic"
+    ]
+  },
+  {
+    "id": 369832,
     "name": "Hack on the Fly",
     "limit": "Sleaze",
-    "description": "Mark target without permission",
+    "marks": "-",
+    "description": "mark target without obtaining normal permissions",
     "formula": [
       "hacking",
       "logic"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 463925,
+    "id": 309649,
+    "name": "Hide",
+    "limit": "Sleaze",
+    "marks": "Owner",
+    "description": "Hide in the Matrix",
+    "formula": [
+      "electronicWarfare",
+      "intuition"
+    ]
+  },
+  {
+    "id": 550293,
     "name": "Masquerade",
     "limit": "Sleaze",
-    "description": "Impersonate a persona",
+    "marks": "2/2",
+    "description": "Impersonate a persona on the Matrix",
     "formula": [
       "hacking",
       "intuition"
-    ],
-    "marksRequired": "2-Feb",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 719846,
+    "id": 346667,
+    "name": "Set Data Bomb",
+    "limit": "Sleaze",
+    "marks": "1",
+    "description": "set a Data Bomb",
+    "formula": [
+      "software",
+      "logic"
+    ]
+  },
+  {
+    "id": 834998,
     "name": "Snoop",
     "limit": "Sleaze",
-    "description": "Intercept traffic",
+    "marks": "1",
+    "description": "intercept Matrix traffic sent to and from target",
     "formula": [
       "electronicWarfare",
       "intuition"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 385217,
+    "id": 595680,
+    "name": "Spoof Command",
+    "limit": "Sleaze",
+    "marks": "1",
+    "description": "a command that the device thinks is a legitimate one from its owner",
+    "formula": [
+      "hacking",
+      "intuition"
+    ]
+  },
+  {
+    "id": 858742,
     "name": "Subvert Infrastructure",
     "limit": "Sleaze",
-    "description": "Manipulate simple device",
+    "marks": "1",
+    "description": "Manipulate simple device slaved to host",
     "formula": [
       "electronicWarfare",
       "intuition"
-    ],
-    "marksRequired": "1",
-    "actionType": "Complex"
+    ]
   },
   {
-    "id": 642938,
+    "id": 299715,
     "name": "Watchdog",
     "limit": "Sleaze",
-    "description": "Watch for Matrix actions",
+    "marks": "-",
+    "description": "User is aware of Matrix actions the target is going to use",
     "formula": [
       "electronicWarfare",
       "logic"
-    ],
-    "marksRequired": "-",
-    "actionType": "Simple"
+    ]
   }
 ]

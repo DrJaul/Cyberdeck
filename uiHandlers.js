@@ -107,6 +107,9 @@ $(document).ready(async function () {
   }
   if (saved.selectedPreset) {
     presetSelect.val(saved.selectedPreset).trigger("change");
+  } else {
+    // If no preset was saved, update the title with the default (empty) value
+    updateDeckStatsTitle();
   }
   if (saved.qualities) {
     saved.qualities.forEach(q => $(`.quality-checkbox input[value="${q}"]`).prop("checked", true));
@@ -137,6 +140,16 @@ $(document).ready(async function () {
       dataProcessing: preset.dataProcessing,
       firewall: preset.firewall
     };
+  }
+
+  // Function to update the deck stats title with the selected preset name
+  function updateDeckStatsTitle() {
+    const presetName = $("#preset-selector").val();
+    if (presetName) {
+      $("#deck-stats h3").text(presetName);
+    } else {
+      $("#deck-stats h3").text("Drag to Reassign Stats");
+    }
   }
 
   function updateMatrixActions() {
@@ -205,14 +218,17 @@ $(document).ready(async function () {
     const selected = presets.find(p => p.name === $(this).val());
     if (selected) {
       resetDeck(selected);
+      // Update the title with the selected preset name
+      updateDeckStatsTitle();
     }
   });
 
   $("#reset-factory").on("click", function () {
     var currentPresetName = JSON.parse(localStorage.getItem("cyberdeckState") || "{}").selectedPreset
     var currentPreset = presets.find(p => p.name === currentPresetName);
-    resetDeck(currentPreset)
-    
+    resetDeck(currentPreset);
+    // Update the title with the current preset name
+    updateDeckStatsTitle();
   });
 
   $("#left-toggle").on("click", function () {
