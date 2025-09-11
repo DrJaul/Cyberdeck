@@ -69,10 +69,12 @@ function makeProgramsDraggable(programs) {
       .addClass("program-item")
       .attr("draggable", true)
       .text(prog.name)
+      .off("dragstart")
       .on("dragstart", function (e) {
         e.originalEvent.dataTransfer.setData("text/plain", prog.name);
         e.originalEvent.dataTransfer.setData("source", "program-list");
       })
+      .off("mouseenter mouseleave")
       .hover(function (e) {
         $("#program-tooltip").text(prog.description).css({
           top: e.pageY + 10 + "px",
@@ -81,6 +83,7 @@ function makeProgramsDraggable(programs) {
       }, function () {
         $("#program-tooltip").hide();
       })
+      .off("mousemove")
       .on("mousemove", function (e) {
         $("#program-tooltip").css({
           top: e.pageY + 10 + "px",
@@ -147,7 +150,7 @@ $(document).ready(async function () {
   });
   
   // Add event handler for quality checkboxes
-  $(".quality-checkbox input").on("change", function() {
+  $(".quality-checkbox input").off("change").on("change", function() {
     const qualityName = $(this).val();
     const quality = qualityMap[qualityName];
     
@@ -404,7 +407,8 @@ $(document).ready(async function () {
     saveState();
   }
 
-  $("input, select").on("input change", function () {
+  // Log changes immediately but debounce the actual updates
+  $("input, select").off("input change").on("input change", function () {
     const inputId = $(this).attr('id');
     if (debug && inputId) {
       if (inputId.startsWith('attr-')) {
@@ -419,7 +423,7 @@ $(document).ready(async function () {
     saveState();
   });
 
-  $("#preset-selector").on("change", function () {
+  $("#preset-selector").off("change").on("change", function () {
     const selectedPreset = $(this).val();
     const selected = presets.find(p => p.name === selectedPreset);
     if (selected) {
@@ -430,7 +434,7 @@ $(document).ready(async function () {
     }
   });
 
-  $("#reset-factory").on("click", function () {
+  $("#reset-factory").off("click").on("click", function () {
     var currentPresetName = JSON.parse(localStorage.getItem("cyberdeckState") || "{}").selectedPreset
     var currentPreset = presets.find(p => p.name === currentPresetName);
     resetDeck(currentPreset);
@@ -438,16 +442,16 @@ $(document).ready(async function () {
     updateDeckStatsTitle();
   });
 
-  $("#left-toggle").on("click", function () {
+  $("#left-toggle").off("click").on("click", function () {
     $("#left-panel").toggleClass("open");
   });
 
-  $("#right-toggle").on("click", function () {
+  $("#right-toggle").off("click").on("click", function () {
     $("#right-panel").toggleClass("open");
   });
   
   // Set up modal handlers
-  $("#improvement-choice-confirm").on("click", function() {
+  $("#improvement-choice-confirm").off("click").on("click", function() {
     const modal = $("#improvement-choice-modal");
     const itemInfo = modal.data("itemInfo");
     const selectedOption = $("#improvement-choice-dropdown").val();
@@ -490,7 +494,7 @@ $(document).ready(async function () {
     modal.hide();
   });
   
-  $("#improvement-choice-cancel").on("click", function() {
+  $("#improvement-choice-cancel").off("click").on("click", function() {
     const modal = $("#improvement-choice-modal");
     const itemInfo = modal.data("itemInfo");
     
@@ -508,20 +512,20 @@ $(document).ready(async function () {
   });
 
   // Add drag-swap logic
-  $("#draggables .stat-box").on("dragstart", function (e) {
+  $("#draggables .stat-box").off("dragstart").on("dragstart", function (e) {
     e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
   });
 
-  $("#draggables .stat-box").on("dragover", function (e) {
+  $("#draggables .stat-box").off("dragover").on("dragover", function (e) {
     e.preventDefault();
     $(this).addClass("drag-over");
   });
 
-  $("#draggables .stat-box").on("dragleave", function () {
+  $("#draggables .stat-box").off("dragleave").on("dragleave", function () {
     $(this).removeClass("drag-over");
   });
 
-  $("#draggables .stat-box").on("drop", function (e) {
+  $("#draggables .stat-box").off("drop").on("drop", function (e) {
     e.preventDefault();
     $(this).removeClass("drag-over");
 
