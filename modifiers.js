@@ -24,7 +24,9 @@ export function applyImprovements(baseStats, items = []) {
   if (!modified.skills) modified.skills = {};
   if (!modified.deckStats) modified.deckStats = {};
   if (!modified.matrixActions) modified.matrixActions = {};
+  if (!modified.matrixActionDetails) modified.matrixActionDetails = {}; // Store details about each improvement
   if (!modified.replacements) modified.replacements = [];
+  if (!modified.notes) modified.notes = []; // Array to store notes
 
   items.forEach(item => {
     if (item.improvements && item.improvements.selections) {
@@ -69,9 +71,61 @@ export function applyImprovements(baseStats, items = []) {
                 if (!modified.deckStats[target]) modified.deckStats[target] = 0;
                 modified.deckStats[target] += value;
                 break;
+              case "notes":
+                // Handle improvements that affect notes
+                // For notes, the value is the text to be displayed
+                if (value && typeof value === 'string') {
+                  // Get the display name (include the selected option for choice-type items)
+                  let displayName = item.name;
+                  if (type === "choice" && item.selectedOption) {
+                    displayName = `${item.name} (${item.selectedOption})`;
+                  }
+                  
+                  // Add the note with source information
+                  modified.notes.push({
+                    text: value,
+                    source: displayName
+                  });
+                }
+                break;
               case "matrixAction":
-                if (!modified.matrixActions[target]) modified.matrixActions[target] = 0;
-                modified.matrixActions[target] += value;
+                // Check if this improvement targets a specific matrix action by ID
+                const matrixActionId = entry.matrixActionId;
+                
+                // Track both the total value and the individual contributions
+              
+                // This improvement targets a specific matrix action by ID
+                // Store under both the original ID and a normalized version to improve matching
+                const targets = [matrixActionId];
+                
+                // If it's a string ID, also store under a normalized version (lowercase, no spaces)
+                if (typeof matrixActionId === 'string') {
+                  console.warn("matrix action id is string")
+                }
+                
+                // Store the improvement under all target keys
+                targets.forEach(targetId => {
+                  if (!modified.matrixActions[targetId]) modified.matrixActions[targetId] = 0;
+                  modified.matrixActions[targetId] += value;
+                  
+                  // Store details about this improvement for the formula display
+                  if (!modified.matrixActionDetails[targetId]) {
+                    modified.matrixActionDetails[targetId] = [];
+                  }
+                  
+                  // Get the display name (include the selected option for choice-type items)
+                  let displayName = item.name;
+                  if (type === "choice" && item.selectedOption) {
+                    displayName = `${item.name} (${item.selectedOption})`;
+                  }
+                  
+                  modified.matrixActionDetails[targetId].push({
+                    name: displayName,
+                    value: value,
+                    type: item.type || (item.rating ? "program" : "quality") // Try to determine if it's a program or quality
+                  });
+                });
+              
                 break;
             }
           }
@@ -86,7 +140,7 @@ export function applyImprovements(baseStats, items = []) {
   return modified;
 }
 
-export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = []) {
+export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = [], matrixActionDetails = {}) {
   const table = $("#matrix-actions-table tbody");
   table.empty();
 
@@ -97,6 +151,11 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
     "sleaze": "sleaze",
     "firewall": "firewall"
   };
+
+  // Use matrixActionDetails from the modified stats if available
+  if (!matrixActionDetails && arguments.length >= 7) {
+    matrixActionDetails = arguments[6];
+  }
 
   actions.forEach(action => {
     const row = $("<tr>");
@@ -130,16 +189,63 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
 
     const skillVal = skills[skillKey] || 0;
     const attrVal = attributes[attrKey] || 0;
+    
+    // Get quality bonus for this action - could be from static or choice-type qualities
     const qualityBonus = qualityMods[action.name] || 0;
+    
+    // Get quality bonus for this action by ID - used by some choice-type qualities
+    const actionIdBonus = action.id ? qualityMods[action.id] || 0 : 0;
+    
+    // Combine both types of bonuses
+    const totalQualityBonus = qualityBonus + actionIdBonus;
 
     // Display the formula with the potentially replaced skill/attribute
     const displaySkill = skillKey || "?";
     const displayAttr = attrKey || "?";
     
-    const formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})` +
-      (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
+    let formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})`;
+    
+    // Get the details for this action's improvements using various possible keys
+    const possibleKeys = [action.name];
+    
+    // Add normalized version of the action name
+    if (typeof action.name === 'string') {
+      const normalizedName = action.name.toLowerCase().replace(/\s+/g, '');
+      possibleKeys.push(normalizedName);
+    }
+    
+    // Add the action ID if available
+    if (action.id) {
+      possibleKeys.push(action.id);
+      
+      // Add normalized version of the action ID if it's a string
+      if (typeof action.id === 'string') {
+        const normalizedId = action.id.toLowerCase().replace(/\s+/g, '');
+        possibleKeys.push(normalizedId);
+      }
+    }
+    
+    // Collect all details from all possible keys
+    let allDetails = [];
+    possibleKeys.forEach(key => {
+      if (matrixActionDetails[key] && matrixActionDetails[key].length > 0) {
+        allDetails = [...allDetails, ...matrixActionDetails[key]];
+      }
+    });
+    
+    // Add each improvement to the formula with its specific name and value
+    if (allDetails.length > 0) {
+      allDetails.forEach(detail => {
+        if (detail && detail.value > 0) {
+          formula += ` + ${detail.name}(${detail.value})`;
+        }
+      });
+    } else if (totalQualityBonus > 0) {
+      // Fallback to the old format if no details are available
+      formula += ` + Quality(${totalQualityBonus})`;
+    }
 
-    const total = attrVal + skillVal + qualityBonus;
+    const total = attrVal + skillVal + totalQualityBonus;
 
     row.append($("<td>").text(action.name || "(unnamed)"));
     row.append($("<td>").text(limitCell));

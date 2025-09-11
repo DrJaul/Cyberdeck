@@ -327,6 +327,24 @@ $(document).ready(async function () {
       deckStats: { ...baseStats }
     }, allItems);
 
+    // Handle notes from improvements
+    if (modifiedStats.notes && modifiedStats.notes.length > 0) {
+      const notesList = $("#notes-list");
+      notesList.empty(); // Clear existing notes
+      
+      // Add each note to the list
+      modifiedStats.notes.forEach(note => {
+        const noteItem = $("<li>").html(`<strong>${note.source}:</strong> ${note.text}`);
+        notesList.append(noteItem);
+      });
+      
+      // Show the notes section
+      $("#deck-notes").show();
+    } else {
+      // Hide the notes section if there are no notes
+      $("#deck-notes").hide();
+    }
+
     updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
       matrixActions,
@@ -334,7 +352,8 @@ $(document).ready(async function () {
       modifiedStats.skills,
       modifiedStats.deckStats,
       modifiedStats.matrixActions || {},
-      modifiedStats.replacements || []
+      modifiedStats.replacements || [],
+      modifiedStats.matrixActionDetails || {}
     );
   }
 
