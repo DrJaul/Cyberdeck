@@ -1,3 +1,9 @@
+// Global debug flag - set to true to enable debug messages
+const debug = true;
+
+// Export debug flag for use in other modules
+export { debug };
+
 import {
   loadQualities,
   loadPresets,
@@ -147,6 +153,7 @@ $(document).ready(async function () {
     
     if ($(this).prop("checked")) {
       // Quality was activated
+      if (debug) console.log(`[DEBUG] Quality activated: ${qualityName}`);
       if (handleChoiceSelection("qualities", qualityName, quality)) {
         // If it's a choice-type quality, the modal will handle the rest
         // We don't need to do anything else here
@@ -156,6 +163,7 @@ $(document).ready(async function () {
       }
     } else {
       // Quality was deactivated, remove any selected option
+      if (debug) console.log(`[DEBUG] Quality deactivated: ${qualityName}`);
       if (choiceSelections.qualities[qualityName]) {
         delete choiceSelections.qualities[qualityName];
         
@@ -397,13 +405,25 @@ $(document).ready(async function () {
   }
 
   $("input, select").on("input change", function () {
+    const inputId = $(this).attr('id');
+    if (debug && inputId) {
+      if (inputId.startsWith('attr-')) {
+        const attrName = inputId.replace('attr-', '');
+        console.log(`[DEBUG] Attribute changed: ${attrName} to ${$(this).val()}`);
+      } else if (inputId.startsWith('skill-')) {
+        const skillName = inputId.replace('skill-', '');
+        console.log(`[DEBUG] Skill changed: ${skillName} to ${$(this).val()}`);
+      }
+    }
     updateMatrixActions();
     saveState();
   });
 
   $("#preset-selector").on("change", function () {
-    const selected = presets.find(p => p.name === $(this).val());
+    const selectedPreset = $(this).val();
+    const selected = presets.find(p => p.name === selectedPreset);
     if (selected) {
+      if (debug) console.log(`[DEBUG] Preset selected: ${selectedPreset}`);
       resetDeck(selected);
       // Update the title with the selected preset name
       updateDeckStatsTitle();
@@ -435,6 +455,8 @@ $(document).ready(async function () {
     if (itemInfo && selectedOption) {
       // Store the selection
       choiceSelections[itemInfo.type][itemInfo.name] = selectedOption;
+      
+      if (debug) console.log(`[DEBUG] Choice selected: ${itemInfo.name} (${itemInfo.type}) - option: ${selectedOption}`);
       
       // Update the label with the selected option
       if (itemInfo.type === "qualities") {
@@ -529,6 +551,8 @@ $(document).ready(async function () {
       const tempValue = currentDeckStats[sourceType];
       currentDeckStats[sourceType] = currentDeckStats[targetType];
       currentDeckStats[targetType] = tempValue;
+      
+      if (debug) console.log(`[DEBUG] Deck stats swapped: ${sourceType}(${targetVal}) <-> ${targetType}(${sourceVal})`);
 
       // Re-run updates to reflect changes
       updateMatrixActions();

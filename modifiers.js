@@ -1,13 +1,19 @@
+// Import debug flag from uiHandlers.js
+import { debug } from './uiHandlers.js';
+
 export function getAttributes() {
-  return {
+  const attributes = {
     logic: parseInt($("#attr-logic").val()) || 0,
     intuition: parseInt($("#attr-intuition").val()) || 0,
     willpower: parseInt($("#attr-willpower").val()) || 0
   };
+  
+  if (debug) console.log(`[DEBUG] Retrieved attributes: ${JSON.stringify(attributes)}`);
+  return attributes;
 }
 
 export function getSkills() {
-  return {
+  const skills = {
     hacking: parseInt($("#skill-hacking").val()) || 0,
     computer: parseInt($("#skill-computer").val()) || 0,
     electronicWarfare: parseInt($("#skill-electronicWarfare").val()) || 0,
@@ -15,6 +21,9 @@ export function getSkills() {
     software: parseInt($("#skill-software").val()) || 0,
     hardware: parseInt($("#skill-hardware").val()) || 0
   };
+  
+  if (debug) console.log(`[DEBUG] Retrieved skills: ${JSON.stringify(skills)}`);
+  return skills;
 }
 
 // Helper function to get display name for an item (with selected option if applicable)
@@ -26,6 +35,8 @@ function getDisplayName(item) {
 }
 
 export function applyImprovements(baseStats, items = []) {
+  if (debug) console.log(`[DEBUG] Applying improvements from ${items.length} items`);
+  
   // Create modified stats object with shallow copies of base stat objects
   const modified = {
     attributes: { ...baseStats.attributes } || {},
@@ -115,6 +126,8 @@ export function applyImprovements(baseStats, items = []) {
 }
 
 export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = [], matrixActionDetails = {}) {
+  if (debug) console.log(`[DEBUG] Rendering ${actions.length} matrix actions`);
+  
   const table = $("#matrix-actions-table tbody");
   table.empty();
 
