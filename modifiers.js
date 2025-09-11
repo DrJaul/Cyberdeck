@@ -17,124 +17,98 @@ export function getSkills() {
   };
 }
 
+// Helper function to get display name for an item (with selected option if applicable)
+function getDisplayName(item) {
+  if (item.selectedOption) {
+    return `${item.name} (${item.selectedOption})`;
+  }
+  return item.name;
+}
+
 export function applyImprovements(baseStats, items = []) {
-  const modified = JSON.parse(JSON.stringify(baseStats)); // deep clone
+  // Create modified stats object with shallow copies of base stat objects
+  const modified = {
+    attributes: { ...baseStats.attributes } || {},
+    skills: { ...baseStats.skills } || {},
+    deckStats: { ...baseStats.deckStats } || {},
+    matrixActions: {},
+    matrixActionDetails: {},
+    replacements: [],
+    notes: []
+  };
 
-  if (!modified.attributes) modified.attributes = {};
-  if (!modified.skills) modified.skills = {};
-  if (!modified.deckStats) modified.deckStats = {};
-  if (!modified.matrixActions) modified.matrixActions = {};
-  if (!modified.matrixActionDetails) modified.matrixActionDetails = {}; // Store details about each improvement
-  if (!modified.replacements) modified.replacements = [];
-  if (!modified.notes) modified.notes = []; // Array to store notes
-
+  // Process each item (quality or program)
   items.forEach(item => {
-    if (item.improvements && item.improvements.selections) {
-      const type = item.improvements.type || "static";
-      const selections = item.improvements.selections;
+    if (!item.improvements?.selections) return;
+    
+    const type = item.improvements.type || "static";
+    const selectionKey = (type === "choice" && item.selectedOption && 
+                         item.improvements.selections[item.selectedOption]) 
+                         ? item.selectedOption : "default";
+    const selections = item.improvements.selections[selectionKey] || [];
+    const displayName = getDisplayName(item);
+    
+    // Process each improvement in the selected option
+    selections.forEach(entry => {
+      const targetGroup = entry.affects;
       
-      // Determine which selection to use
-      let selectionKey = "default";
-      
-      // If this is a choice-type item with a selected option, use that instead
-      if (type === "choice" && item.selectedOption && selections[item.selectedOption]) {
-        selectionKey = item.selectedOption;
+      // Handle replacement-type improvements
+      if (type === "replacement" && entry.formula?.length >= 2) {
+        modified.replacements.push({
+          from: entry.formula[0],
+          to: entry.formula[1],
+          affects: targetGroup
+        });
+        return;
       }
       
-      const selectionArray = selections[selectionKey] || [];
-
-      selectionArray.forEach(entry => {
-        if (type === "replacement") {
-          // Handle replacement-type improvements
-          if (entry.formula && Array.isArray(entry.formula) && entry.formula.length >= 2) {
-            modified.replacements.push({
-              from: entry.formula[0],
-              to: entry.formula[1],
-              affects: entry.affects
-            });
-          }
-        } else if (type === "static" || type === "choice") {
-          // Handle static-type and choice-type improvements 
-          for (const [target, value] of Object.entries(entry)) {
-            if (target === "affects" || target === "formula") continue;
-            const targetGroup = entry.affects;
-            switch (targetGroup) {
-              case "attribute":
-                if (!modified.attributes[target]) modified.attributes[target] = 0;
-                modified.attributes[target] += value;
-                break;
-              case "skill":
-                if (!modified.skills[target]) modified.skills[target] = 0;
-                modified.skills[target] += value;
-                break;
-              case "deckStat":
-                if (!modified.deckStats[target]) modified.deckStats[target] = 0;
-                modified.deckStats[target] += value;
-                break;
-              case "notes":
-                // Handle improvements that affect notes
-                // For notes, the value is the text to be displayed
-                if (value && typeof value === 'string') {
-                  // Get the display name (include the selected option for choice-type items)
-                  let displayName = item.name;
-                  if (type === "choice" && item.selectedOption) {
-                    displayName = `${item.name} (${item.selectedOption})`;
-                  }
-                  
-                  // Add the note with source information
-                  modified.notes.push({
-                    text: value,
-                    source: displayName
-                  });
-                }
-                break;
-              case "matrixAction":
-                // Check if this improvement targets a specific matrix action by ID
-                const matrixActionId = entry.matrixActionId;
-                
-                // Track both the total value and the individual contributions
+      // Handle static and choice-type improvements
+      if (type === "static" || type === "choice") {
+        for (const [target, value] of Object.entries(entry)) {
+          // Skip non-value properties
+          if (target === "affects" || target === "formula" || target === "matrixActionId") continue;
+          
+          switch (targetGroup) {
+            case "attribute":
+              modified.attributes[target] = (modified.attributes[target] || 0) + value;
+              break;
               
-                // This improvement targets a specific matrix action by ID
-                // Store under both the original ID and a normalized version to improve matching
-                const targets = [matrixActionId];
-                
-                // If it's a string ID, also store under a normalized version (lowercase, no spaces)
-                if (typeof matrixActionId === 'string') {
-                  console.warn("matrix action id is string")
-                }
-                
-                // Store the improvement under all target keys
-                targets.forEach(targetId => {
-                  if (!modified.matrixActions[targetId]) modified.matrixActions[targetId] = 0;
-                  modified.matrixActions[targetId] += value;
-                  
-                  // Store details about this improvement for the formula display
-                  if (!modified.matrixActionDetails[targetId]) {
-                    modified.matrixActionDetails[targetId] = [];
-                  }
-                  
-                  // Get the display name (include the selected option for choice-type items)
-                  let displayName = item.name;
-                  if (type === "choice" && item.selectedOption) {
-                    displayName = `${item.name} (${item.selectedOption})`;
-                  }
-                  
-                  modified.matrixActionDetails[targetId].push({
-                    name: displayName,
-                    value: value,
-                    type: item.type || (item.rating ? "program" : "quality") // Try to determine if it's a program or quality
-                  });
-                });
+            case "skill":
+              modified.skills[target] = (modified.skills[target] || 0) + value;
+              break;
               
-                break;
-            }
+            case "deckStat":
+              modified.deckStats[target] = (modified.deckStats[target] || 0) + value;
+              break;
+              
+            case "notes":
+              if (value && typeof value === 'string') {
+                modified.notes.push({ text: value, source: displayName });
+              }
+              break;
+              
+            case "matrixAction":
+              const actionId = entry.matrixActionId;
+              if (!actionId) continue;
+              
+              // Add to matrix action total
+              modified.matrixActions[actionId] = (modified.matrixActions[actionId] || 0) + value;
+              
+              // Store details for formula display
+              if (!modified.matrixActionDetails[actionId]) {
+                modified.matrixActionDetails[actionId] = [];
+              }
+              
+              modified.matrixActionDetails[actionId].push({
+                name: displayName,
+                value: value,
+                type: item.type || (item.rating ? "program" : "quality")
+              });
+              break;
           }
-        } else {
-          // Handle unknown improvement types 
-          console.warn(`Unknown improvement type: ${type}`);
         }
-      });
-    }
+      }
+    });
   });
 
   return modified;
@@ -152,101 +126,40 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
     "firewall": "firewall"
   };
 
-  // Use matrixActionDetails from the modified stats if available
-  if (!matrixActionDetails && arguments.length >= 7) {
-    matrixActionDetails = arguments[6];
-  }
-
   actions.forEach(action => {
     const row = $("<tr>");
-
+    
+    // Handle limit display
     const limitKey = (action.limit || "").toLowerCase();
     const statKey = limitToStatMap[limitKey] || limitKey;
     const baseLimit = baseStats[statKey] ?? 0;
     const limitCell = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
 
-    // Get the original formula values
-    let skillKey = Array.isArray(action.formula) && action.formula[0]
-      ? action.formula[0]
-      : "";
-    let attrKey = Array.isArray(action.formula) && action.formula[1]
-      ? action.formula[1]
-      : "";
-
-    // Apply replacements if applicable
-    replacements.forEach(replacement => {
-      if (replacement.affects === "matrixAction") {
-        // Replace skill
-        if (skillKey === replacement.from) {
-          skillKey = replacement.to;
-        }
-        // Replace attribute
-        if (attrKey === replacement.from) {
-          attrKey = replacement.to;
-        }
-      }
-    });
-
+    // Extract and apply formula replacements
+    let [skillKey, attrKey] = getFormulaComponents(action, replacements);
     const skillVal = skills[skillKey] || 0;
     const attrVal = attributes[attrKey] || 0;
     
-    // Get quality bonus for this action - could be from static or choice-type qualities
+    // Calculate quality bonuses
     const qualityBonus = qualityMods[action.name] || 0;
-    
-    // Get quality bonus for this action by ID - used by some choice-type qualities
     const actionIdBonus = action.id ? qualityMods[action.id] || 0 : 0;
-    
-    // Combine both types of bonuses
     const totalQualityBonus = qualityBonus + actionIdBonus;
 
-    // Display the formula with the potentially replaced skill/attribute
-    const displaySkill = skillKey || "?";
-    const displayAttr = attrKey || "?";
-    
-    let formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})`;
-    
-    // Get the details for this action's improvements using various possible keys
-    const possibleKeys = [action.name];
-    
-    // Add normalized version of the action name
-    if (typeof action.name === 'string') {
-      const normalizedName = action.name.toLowerCase().replace(/\s+/g, '');
-      possibleKeys.push(normalizedName);
-    }
-    
-    // Add the action ID if available
-    if (action.id) {
-      possibleKeys.push(action.id);
-      
-      // Add normalized version of the action ID if it's a string
-      if (typeof action.id === 'string') {
-        const normalizedId = action.id.toLowerCase().replace(/\s+/g, '');
-        possibleKeys.push(normalizedId);
-      }
-    }
-    
-    // Collect all details from all possible keys
-    let allDetails = [];
-    possibleKeys.forEach(key => {
-      if (matrixActionDetails[key] && matrixActionDetails[key].length > 0) {
-        allDetails = [...allDetails, ...matrixActionDetails[key]];
-      }
-    });
-    
-    // Add each improvement to the formula with its specific name and value
-    if (allDetails.length > 0) {
-      allDetails.forEach(detail => {
-        if (detail && detail.value > 0) {
-          formula += ` + ${detail.name}(${detail.value})`;
-        }
-      });
-    } else if (totalQualityBonus > 0) {
-      // Fallback to the old format if no details are available
-      formula += ` + Quality(${totalQualityBonus})`;
-    }
+    // Build formula display
+    const formula = buildFormulaDisplay(
+      skillKey || "?", 
+      skillVal, 
+      attrKey || "?", 
+      attrVal,
+      action,
+      matrixActionDetails,
+      totalQualityBonus
+    );
 
+    // Calculate total dice pool
     const total = attrVal + skillVal + totalQualityBonus;
 
+    // Build table row
     row.append($("<td>").text(action.name || "(unnamed)"));
     row.append($("<td>").text(limitCell));
     row.append($("<td>").text(action.description || ""));
@@ -254,4 +167,60 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
     row.append($("<td>").text(total));
     table.append(row);
   });
+}
+
+// Extract skill and attribute from formula, applying replacements
+function getFormulaComponents(action, replacements) {
+  let skillKey = Array.isArray(action.formula) && action.formula[0] ? action.formula[0] : "";
+  let attrKey = Array.isArray(action.formula) && action.formula[1] ? action.formula[1] : "";
+
+  // Apply replacements if applicable
+  replacements.forEach(replacement => {
+    if (replacement.affects === "matrixAction") {
+      if (skillKey === replacement.from) skillKey = replacement.to;
+      if (attrKey === replacement.from) attrKey = replacement.to;
+    }
+  });
+  
+  return [skillKey, attrKey];
+}
+
+// Build the formula display string with all bonuses
+function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, action, matrixActionDetails, totalQualityBonus) {
+  let formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})`;
+  
+  // Get action identifiers for looking up details
+  const actionKeys = [action.name];
+  
+  if (typeof action.name === 'string') {
+    actionKeys.push(action.name.toLowerCase().replace(/\s+/g, ''));
+  }
+  
+  if (action.id) {
+    actionKeys.push(action.id);
+    if (typeof action.id === 'string') {
+      actionKeys.push(action.id.toLowerCase().replace(/\s+/g, ''));
+    }
+  }
+  
+  // Find all improvement details for this action
+  const allDetails = [];
+  actionKeys.forEach(key => {
+    if (matrixActionDetails[key]?.length > 0) {
+      allDetails.push(...matrixActionDetails[key]);
+    }
+  });
+  
+  // Add detailed bonuses to formula
+  if (allDetails.length > 0) {
+    allDetails.forEach(detail => {
+      if (detail?.value > 0) {
+        formula += ` + ${detail.name}(${detail.value})`;
+      }
+    });
+  } else if (totalQualityBonus > 0) {
+    formula += ` + Quality(${totalQualityBonus})`;
+  }
+  
+  return formula;
 }

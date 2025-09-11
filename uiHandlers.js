@@ -271,80 +271,73 @@ $(document).ready(async function () {
     }
   }
 
+  // Collect items (qualities/programs) with their selected options
+  function collectItems() {
+    const items = [];
+    
+    // Add selected qualities
+    $(".quality-checkbox:checked").each((_, el) => {
+      const qualityName = $(el).val();
+      const quality = qualityMap[qualityName];
+      
+      if (!quality) return;
+      
+      // For choice-type qualities, add the selected option
+      if (quality.improvements?.type === "choice" && choiceSelections.qualities[qualityName]) {
+        // Add selectedOption property without deep cloning the entire object
+        items.push({
+          ...quality,
+          selectedOption: choiceSelections.qualities[qualityName]
+        });
+      } else {
+        items.push(quality);
+      }
+    });
+    
+    // Add active programs
+    $(".program-slot").each((_, el) => {
+      const programName = $(el).text().trim();
+      if (!programName) return;
+      
+      const program = programMap[programName];
+      if (!program) return;
+      
+      // For choice-type programs, add the selected option
+      if (program.improvements?.type === "choice" && choiceSelections.programs[programName]) {
+        items.push({
+          ...program,
+          selectedOption: choiceSelections.programs[programName]
+        });
+      } else {
+        items.push(program);
+      }
+    });
+    
+    return items;
+  }
+
   function updateMatrixActions() {
     const basePreset = presets.find(p => p.name === $("#preset-selector").val()) || presets[0];
     
-    // If currentDeckStats is empty, initialize it with values from getOrderedBaseStats
+    // Initialize deck stats if needed
     if (Object.keys(currentDeckStats).length === 0) {
       currentDeckStats = getOrderedBaseStats(basePreset);
     }
     
-    // Use currentDeckStats instead of calling getOrderedBaseStats every time
-    const baseStats = { ...currentDeckStats };
+    // Collect all active items (qualities and programs)
+    const allItems = collectItems();
     
-    // Get selected qualities with their choice selections
-    const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
-      const qualityName = $(el).val();
-      const quality = qualityMap[qualityName];
-      
-      // If this is a choice-type quality with a selection, add the selection
-      if (quality && quality.improvements && quality.improvements.type === "choice" && 
-          choiceSelections.qualities[qualityName]) {
-        // Create a copy of the quality with the selected option
-        const qualityCopy = JSON.parse(JSON.stringify(quality));
-        qualityCopy.selectedOption = choiceSelections.qualities[qualityName];
-        return qualityCopy;
-      }
-      
-      return quality;
-    }).get();
-    
-    // Get active programs with their choice selections
-    const activePrograms = $(".program-slot").map((_, el) => {
-      const programName = $(el).text().trim();
-      if (!programName) return null;
-      
-      const program = programMap[programName];
-      
-      // If this is a choice-type program with a selection, add the selection
-      if (program && program.improvements && program.improvements.type === "choice" && 
-          choiceSelections.programs[programName]) {
-        // Create a copy of the program with the selected option
-        const programCopy = JSON.parse(JSON.stringify(program));
-        programCopy.selectedOption = choiceSelections.programs[programName];
-        return programCopy;
-      }
-      
-      return program;
-    }).get().filter(Boolean); // Filter out null values
-    
-    // Combine qualities and programs for improvements
-    const allItems = [...selectedQualities, ...activePrograms];
-    
+    // Apply improvements to get modified stats
     const modifiedStats = applyImprovements({
       attributes: getAttributes(),
       skills: getSkills(),
-      deckStats: { ...baseStats }
+      deckStats: { ...currentDeckStats }
     }, allItems);
 
-    // Handle notes from improvements
-    if (modifiedStats.notes && modifiedStats.notes.length > 0) {
-      const notesList = $("#notes-list");
-      notesList.empty(); // Clear existing notes
-      
-      // Add each note to the list
-      modifiedStats.notes.forEach(note => {
-        const noteItem = $("<li>").html(`<strong>${note.source}:</strong> ${note.text}`);
-        notesList.append(noteItem);
-      });
-      
-      // Show the notes section
-      $("#deck-notes").show();
-    } else {
-      // Hide the notes section if there are no notes
-      $("#deck-notes").hide();
-    }
-
+    // Update notes display
+    updateNotesDisplay(modifiedStats.notes);
+    
+    // Update UI with modified stats
     updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
       matrixActions,
@@ -355,6 +348,24 @@ $(document).ready(async function () {
       modifiedStats.replacements || [],
       modifiedStats.matrixActionDetails || {}
     );
+  }
+  
+  // Update the notes display based on improvement notes
+  function updateNotesDisplay(notes) {
+    const notesList = $("#notes-list");
+    
+    if (notes?.length > 0) {
+      notesList.empty();
+      
+      notes.forEach(note => {
+        const noteItem = $("<li>").html(`<strong>${note.source}:</strong> ${note.text}`);
+        notesList.append(noteItem);
+      });
+      
+      $("#deck-notes").show();
+    } else {
+      $("#deck-notes").hide();
+    }
   }
 
   updateMatrixActions();
