@@ -2,18 +2,15 @@
 import { debug } from './uiHandlers.js';
 
 export function getAttributes() {
-  const attributes = {
+  return {
     logic: parseInt($("#attr-logic").val()) || 0,
     intuition: parseInt($("#attr-intuition").val()) || 0,
     willpower: parseInt($("#attr-willpower").val()) || 0
   };
-  
-  if (debug) console.log(`[DEBUG] Retrieved attributes: ${JSON.stringify(attributes)}`);
-  return attributes;
 }
 
 export function getSkills() {
-  const skills = {
+  return {
     hacking: parseInt($("#skill-hacking").val()) || 0,
     computer: parseInt($("#skill-computer").val()) || 0,
     electronicWarfare: parseInt($("#skill-electronicWarfare").val()) || 0,
@@ -21,9 +18,6 @@ export function getSkills() {
     software: parseInt($("#skill-software").val()) || 0,
     hardware: parseInt($("#skill-hardware").val()) || 0
   };
-  
-  if (debug) console.log(`[DEBUG] Retrieved skills: ${JSON.stringify(skills)}`);
-  return skills;
 }
 
 // Helper function to get display name for an item (with selected option if applicable)
