@@ -21,4 +21,5 @@ A browser-based tool for Shadowrun 5e Cyberdeck-users to track your cyberdeck co
 - Matrix Search Time display
 - Overwatch Score estimation and danger rating
 - Matrix Condition Monitor
-- Configuration data export
+- Configuration data import/export
+- Loadouts
