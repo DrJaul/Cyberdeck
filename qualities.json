@@ -25,21 +25,21 @@
         "Hack On The Fly": [
           {
             "affects": "matrixAction",
-            "matrixActionId":"Hack On The Fly",
+            "matrixActionId": 369832,
             "value": 2
           }
         ],
         "Data Spike": [
           {
             "affects": "matrixAction",
-            "matrixActionId":"Data Spike",
+            "matrixActionId": 563169,
             "value": 2
           }
         ],
         "Brute Force": [
           {
             "affects": "matrixAction",
-            "matrixActionId":"Brute Force",
+            "matrixActionId": 205228,
             "value": 2
           }
         ]
@@ -61,7 +61,7 @@
           },
           {
             "affects": "matrixAction",
-            "matrixActionId":"Matrix Perception",
+            "matrixActionId": 514397,
             "value": 2
           }
         ]
@@ -121,14 +121,14 @@
         "1": [
           {
             "affects": "matrixAction",
-            "matrixActionId":"Matrix Perception",
+            "matrixActionId": 514397,
             "value": 1
           }
         ],
         "2": [
           {
             "affects": "matrixAction",
-            "matrixActionId":"Matrix Perception",
+            "matrixActionId": 514397,
             "value": 2
           }
         ]
