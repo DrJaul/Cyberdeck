@@ -24,6 +24,7 @@ export function applyImprovements(baseStats, qualities = []) {
   if (!modified.skills) modified.skills = {};
   if (!modified.deckStats) modified.deckStats = {};
   if (!modified.matrixActions) modified.matrixActions = {};
+  if (!modified.replacements) modified.replacements = [];
 
   qualities.forEach(q => {
     if (q.improvements && q.improvements.selections) {
@@ -34,27 +35,43 @@ export function applyImprovements(baseStats, qualities = []) {
       const selectionArray = selections.default || [];
 
       selectionArray.forEach(entry => {
-        for (const [target, value] of Object.entries(entry)) {
-          if (target === "affects") continue;
-          const targetGroup = entry.affects;
-          switch (targetGroup) {
-            case "attribute":
-              if (!modified.attributes[target]) modified.attributes[target] = 0;
-              modified.attributes[target] += value;
-              break;
-            case "skill":
-              if (!modified.skills[target]) modified.skills[target] = 0;
-              modified.skills[target] += value;
-              break;
-            case "deckStat":
-              if (!modified.deckStats[target]) modified.deckStats[target] = 0;
-              modified.deckStats[target] += value;
-              break;
-            case "matrixAction":
-              if (!modified.matrixActions[target]) modified.matrixActions[target] = 0;
-              modified.matrixActions[target] += value;
-              break;
+        if (type === "replacement") {
+          // Handle replacement-type improvements
+          if (entry.formula && Array.isArray(entry.formula) && entry.formula.length >= 2) {
+            modified.replacements.push({
+              from: entry.formula[0],
+              to: entry.formula[1],
+              affects: entry.affects
+            });
           }
+        } else if (type === "static") {
+          // Handle static-type improvements 
+          for (const [target, value] of Object.entries(entry)) {
+            if (target === "affects" || target === "formula") continue;
+            const targetGroup = entry.affects;
+            switch (targetGroup) {
+              case "attribute":
+                if (!modified.attributes[target]) modified.attributes[target] = 0;
+                modified.attributes[target] += value;
+                break;
+              case "skill":
+                if (!modified.skills[target]) modified.skills[target] = 0;
+                modified.skills[target] += value;
+                break;
+              case "deckStat":
+                if (!modified.deckStats[target]) modified.deckStats[target] = 0;
+                modified.deckStats[target] += value;
+                break;
+              case "matrixAction":
+                if (!modified.matrixActions[target]) modified.matrixActions[target] = 0;
+                modified.matrixActions[target] += value;
+                break;
+            }
+          }
+        } else {
+          // Handle unknown improvement types 
+          console.warn(`Unknown improvement type: ${type}`);
+        
         }
       });
     }
@@ -63,7 +80,7 @@ export function applyImprovements(baseStats, qualities = []) {
   return modified;
 }
 
-export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods) {
+export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = []) {
   const table = $("#matrix-actions-table tbody");
   table.empty();
 
@@ -83,19 +100,37 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
     const baseLimit = baseStats[statKey] ?? 0;
     const limitCell = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
 
-    // Use the original formula values without converting to lowercase
-    const skillKey = Array.isArray(action.formula) && action.formula[0]
+    // Get the original formula values
+    let skillKey = Array.isArray(action.formula) && action.formula[0]
       ? action.formula[0]
       : "";
-    const attrKey = Array.isArray(action.formula) && action.formula[1]
+    let attrKey = Array.isArray(action.formula) && action.formula[1]
       ? action.formula[1]
       : "";
+
+    // Apply replacements if applicable
+    replacements.forEach(replacement => {
+      if (replacement.affects === "matrixAction") {
+        // Replace skill
+        if (skillKey === replacement.from) {
+          skillKey = replacement.to;
+        }
+        // Replace attribute
+        if (attrKey === replacement.from) {
+          attrKey = replacement.to;
+        }
+      }
+    });
 
     const skillVal = skills[skillKey] || 0;
     const attrVal = attributes[attrKey] || 0;
     const qualityBonus = qualityMods[action.name] || 0;
 
-    const formula = `${action.formula?.[0] || "?"}(${skillVal}) + ${action.formula?.[1] || "?"}(${attrVal})` +
+    // Display the formula with the potentially replaced skill/attribute
+    const displaySkill = skillKey || "?";
+    const displayAttr = attrKey || "?";
+    
+    const formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})` +
       (qualityBonus > 0 ? ` + ${action.name}[Quality](${qualityBonus})` : "");
 
     const total = attrVal + skillVal + qualityBonus;

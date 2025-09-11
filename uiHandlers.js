@@ -177,7 +177,8 @@ $(document).ready(async function () {
       modifiedStats.attributes,
       modifiedStats.skills,
       modifiedStats.deckStats,
-      modifiedStats.matrixActions || {}
+      modifiedStats.matrixActions || {},
+      modifiedStats.replacements || []
     );
   }
 
