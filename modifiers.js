@@ -17,7 +17,7 @@ export function getSkills() {
   };
 }
 
-export function applyImprovements(baseStats, qualities = []) {
+export function applyImprovements(baseStats, items = []) {
   const modified = JSON.parse(JSON.stringify(baseStats)); // deep clone
 
   if (!modified.attributes) modified.attributes = {};
@@ -26,13 +26,20 @@ export function applyImprovements(baseStats, qualities = []) {
   if (!modified.matrixActions) modified.matrixActions = {};
   if (!modified.replacements) modified.replacements = [];
 
-  qualities.forEach(q => {
-    if (q.improvements && q.improvements.selections) {
-      const type = q.improvements.type || "static";
-      const selections = q.improvements.selections;
-
-      // For now, apply default only; choice/ranked logic not yet implemented
-      const selectionArray = selections.default || [];
+  items.forEach(item => {
+    if (item.improvements && item.improvements.selections) {
+      const type = item.improvements.type || "static";
+      const selections = item.improvements.selections;
+      
+      // Determine which selection to use
+      let selectionKey = "default";
+      
+      // If this is a choice-type item with a selected option, use that instead
+      if (type === "choice" && item.selectedOption && selections[item.selectedOption]) {
+        selectionKey = item.selectedOption;
+      }
+      
+      const selectionArray = selections[selectionKey] || [];
 
       selectionArray.forEach(entry => {
         if (type === "replacement") {
@@ -44,8 +51,8 @@ export function applyImprovements(baseStats, qualities = []) {
               affects: entry.affects
             });
           }
-        } else if (type === "static") {
-          // Handle static-type improvements 
+        } else if (type === "static" || type === "choice") {
+          // Handle static-type and choice-type improvements 
           for (const [target, value] of Object.entries(entry)) {
             if (target === "affects" || target === "formula") continue;
             const targetGroup = entry.affects;
@@ -71,7 +78,6 @@ export function applyImprovements(baseStats, qualities = []) {
         } else {
           // Handle unknown improvement types 
           console.warn(`Unknown improvement type: ${type}`);
-        
         }
       });
     }

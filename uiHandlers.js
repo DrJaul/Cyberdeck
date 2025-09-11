@@ -13,6 +13,48 @@ import {
   renderMatrixActions
 } from './modifiers.js';
 
+// Store selected options for choice-type qualities and programs
+const choiceSelections = {
+  qualities: {}, // Format: {qualityName: selectedOption}
+  programs: {}   // Format: {programName: selectedOption}
+};
+
+// Function to handle choice-type qualities and programs
+function handleChoiceSelection(itemType, itemName, itemData) {
+  // Check if this is a choice-type item
+  if (itemData.improvements && itemData.improvements.type === "choice") {
+    const selections = itemData.improvements.selections;
+    const options = Object.keys(selections);
+    
+    if (options.length > 0) {
+      // Populate the dropdown with options
+      const dropdown = $("#improvement-choice-dropdown");
+      dropdown.empty();
+      
+      options.forEach(option => {
+        dropdown.append($("<option>").val(option).text(option));
+      });
+      
+      // Set description
+      $("#improvement-choice-description").text(
+        `Select an option for ${itemName}:`
+      );
+      
+      // Store the current item info for use in the confirm handler
+      $("#improvement-choice-modal").data("itemInfo", {
+        type: itemType,
+        name: itemName,
+        data: itemData
+      });
+      
+      // Show the modal
+      $("#improvement-choice-modal").show();
+      return true; // Indicate that we're handling a choice
+    }
+  }
+  return false; // Not a choice-type or no options
+}
+
 function makeProgramsDraggable(programs) {
   const container = $("#program-list");
   container.empty();
@@ -55,7 +97,8 @@ function saveState() {
       sleaze: $("#draggables .stat-box[data-type='sleaze'] span").text(),
       dataProcessing: $("#draggables .stat-box[data-type='dataProcessing'] span").text(),
       firewall: $("#draggables .stat-box[data-type='firewall'] span").text()
-    }
+    },
+    choiceSelections: choiceSelections // Save choice selections
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
 }
@@ -78,12 +121,53 @@ $(document).ready(async function () {
   // Global variable to store current deck stats
   let currentDeckStats = {};
 
+  // Create a map of quality and program names to their data for easy lookup
+  const qualityMap = qualities.reduce((map, q) => {
+    map[q.name] = q;
+    return map;
+  }, {});
+  
+  const programMap = programs.reduce((map, p) => {
+    map[p.name] = p;
+    return map;
+  }, {});
+
   const container = $("#quality-list");
   qualities.forEach(q => {
     const checkbox = $(`<label class="quality-checkbox">
         <input type="checkbox" value="${q.name}"> ${q.name}
       </label>`);
     container.append(checkbox);
+  });
+  
+  // Add event handler for quality checkboxes
+  $(".quality-checkbox input").on("change", function() {
+    const qualityName = $(this).val();
+    const quality = qualityMap[qualityName];
+    
+    if ($(this).prop("checked")) {
+      // Quality was activated
+      if (handleChoiceSelection("qualities", qualityName, quality)) {
+        // If it's a choice-type quality, the modal will handle the rest
+        // We don't need to do anything else here
+      } else {
+        // Not a choice-type quality, update matrix actions immediately
+        updateMatrixActions();
+      }
+    } else {
+      // Quality was deactivated, remove any selected option
+      if (choiceSelections.qualities[qualityName]) {
+        delete choiceSelections.qualities[qualityName];
+        
+        // Update the label to remove the selected option
+        const label = $(this).closest("label");
+        label.contents().last().remove(); // Remove the text node with the selected option
+      }
+      
+      updateMatrixActions();
+    }
+    
+    saveState();
   });
 
   const presetSelect = $("#preset-selector");
@@ -114,12 +198,47 @@ $(document).ready(async function () {
   if (saved.qualities) {
     saved.qualities.forEach(q => $(`.quality-checkbox input[value="${q}"]`).prop("checked", true));
   }
+  
+  // Load saved choice selections
+  if (saved.choiceSelections) {
+    Object.assign(choiceSelections, saved.choiceSelections);
+    
+    // Update labels for qualities with selections
+    for (const qualityName in choiceSelections.qualities) {
+      const selectedOption = choiceSelections.qualities[qualityName];
+      const checkbox = $(`.quality-checkbox input[value="${qualityName}"]`);
+      if (checkbox.length && checkbox.prop("checked")) {
+        const label = checkbox.closest("label");
+        label.append(` (${selectedOption})`);
+      }
+    }
+  }
 
   const activePreset = presets.find(p => p.name === saved.selectedPreset) || presets[0];
   initProgramSlots(
     activePreset.programSlots || 6,
     saved.programSlots || [],
-    saveState
+    function() {
+      // Custom callback for program slot changes
+      const slots = $(".program-slot");
+      
+      // Check if any slot contains a choice-type program
+      slots.each(function() {
+        const programName = $(this).text().trim();
+        if (programName && !$(this).data("choice-handled")) {
+          const program = programMap[programName];
+          
+          if (program && handleChoiceSelection("programs", programName, program)) {
+            // Mark this slot as having been handled for choice selection
+            $(this).data("choice-handled", true);
+          }
+        }
+      });
+      
+      // Update the UI and save state
+      updateMatrixActions();
+      saveState();
+    }
   );
 
   function getOrderedBaseStats(preset) {
@@ -162,14 +281,51 @@ $(document).ready(async function () {
     
     // Use currentDeckStats instead of calling getOrderedBaseStats every time
     const baseStats = { ...currentDeckStats };
+    
+    // Get selected qualities with their choice selections
     const selectedQualities = $(".quality-checkbox:checked").map((_, el) => {
-      return qualities.find(q => q.name === $(el).val());
+      const qualityName = $(el).val();
+      const quality = qualityMap[qualityName];
+      
+      // If this is a choice-type quality with a selection, add the selection
+      if (quality && quality.improvements && quality.improvements.type === "choice" && 
+          choiceSelections.qualities[qualityName]) {
+        // Create a copy of the quality with the selected option
+        const qualityCopy = JSON.parse(JSON.stringify(quality));
+        qualityCopy.selectedOption = choiceSelections.qualities[qualityName];
+        return qualityCopy;
+      }
+      
+      return quality;
     }).get();
+    
+    // Get active programs with their choice selections
+    const activePrograms = $(".program-slot").map((_, el) => {
+      const programName = $(el).text().trim();
+      if (!programName) return null;
+      
+      const program = programMap[programName];
+      
+      // If this is a choice-type program with a selection, add the selection
+      if (program && program.improvements && program.improvements.type === "choice" && 
+          choiceSelections.programs[programName]) {
+        // Create a copy of the program with the selected option
+        const programCopy = JSON.parse(JSON.stringify(program));
+        programCopy.selectedOption = choiceSelections.programs[programName];
+        return programCopy;
+      }
+      
+      return program;
+    }).get().filter(Boolean); // Filter out null values
+    
+    // Combine qualities and programs for improvements
+    const allItems = [...selectedQualities, ...activePrograms];
+    
     const modifiedStats = applyImprovements({
       attributes: getAttributes(),
       skills: getSkills(),
       deckStats: { ...baseStats }
-    }, selectedQualities);
+    }, allItems);
 
     updateDeckStatLabels(modifiedStats.deckStats);
     renderMatrixActions(
@@ -238,6 +394,65 @@ $(document).ready(async function () {
 
   $("#right-toggle").on("click", function () {
     $("#right-panel").toggleClass("open");
+  });
+  
+  // Set up modal handlers
+  $("#improvement-choice-confirm").on("click", function() {
+    const modal = $("#improvement-choice-modal");
+    const itemInfo = modal.data("itemInfo");
+    const selectedOption = $("#improvement-choice-dropdown").val();
+    
+    if (itemInfo && selectedOption) {
+      // Store the selection
+      choiceSelections[itemInfo.type][itemInfo.name] = selectedOption;
+      
+      // Update the label with the selected option
+      if (itemInfo.type === "qualities") {
+        const checkbox = $(`.quality-checkbox input[value="${itemInfo.name}"]`);
+        const label = checkbox.closest("label");
+        
+        // Remove any existing selection text
+        label.contents().filter(function() {
+          return this.nodeType === 3 && this.textContent.includes("(");
+        }).remove();
+        
+        // Add the new selection text
+        label.append(` (${selectedOption})`);
+      } else if (itemInfo.type === "programs") {
+        // For programs, we need to find the slot with this program
+        const slots = $(".program-slot");
+        slots.each(function() {
+          if ($(this).text().trim() === itemInfo.name) {
+            // Update the slot text to include the selection
+            $(this).text(`${itemInfo.name} (${selectedOption})`);
+          }
+        });
+      }
+      
+      // Update matrix actions with the new selection
+      updateMatrixActions();
+      saveState();
+    }
+    
+    // Hide the modal
+    modal.hide();
+  });
+  
+  $("#improvement-choice-cancel").on("click", function() {
+    const modal = $("#improvement-choice-modal");
+    const itemInfo = modal.data("itemInfo");
+    
+    // If canceling a new quality selection, uncheck the checkbox
+    if (itemInfo && itemInfo.type === "qualities" && !choiceSelections.qualities[itemInfo.name]) {
+      $(`.quality-checkbox input[value="${itemInfo.name}"]`).prop("checked", false);
+    }
+    
+    // Hide the modal
+    modal.hide();
+    
+    // Update matrix actions and save state
+    updateMatrixActions();
+    saveState();
   });
 
   // Add drag-swap logic
