@@ -18,14 +18,14 @@
     {
         "id": 594823,
         "name": "Configurator",
-        "description": "Stores an alternate configuration for your deck, allowing you to swap to the full configuration instead of only two attributes or programs.",
+        "description": "Change all deck attributes and programs to preselected configuration with single free action",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value": "Change all deck attributes and programs with single free action"
+                        "value": "Change all deck attributes and programs to preselected configuration with single free action"
                     }
                 ]
             }
@@ -34,7 +34,7 @@
     {
         "id": 176543,
         "name": "Edit",
-        "description": "+2 to Data Processing limit for Edit tests.",
+        "description": "+2 to Data Processing for Edit tests.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -51,7 +51,7 @@
     {
         "id": 829371,
         "name": "Encryption",
-        "description": "+1 bonus to your Firewall attribute.",
+        "description": "+1 to Firewall attribute.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -67,14 +67,14 @@
     {
         "id": 457812,
         "name": "Signal Scrub",
-        "description": "Rating 2 noise reduction.",
+        "description": "-2 noise",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value": "-2 to noise"
+                        "value": "-2 noise"
                     }
                 ]
             }
@@ -99,7 +99,7 @@
     {
         "id": 785124,
         "name": "Virtual Machine",
-        "description": "Your deck can run two additional programs, but whenever your persona takes Matrix damage, it takes an additional box of Matrix damage that cannot be resisted.",
+        "description": "+2 program slots, +1 to matrix damage taken.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -110,7 +110,7 @@
                     },
                     {
                         "affects": "notes",
-                        "value": "+1 unresisted incoming matrix damage"
+                        "value": "+1 final matrix damage taken"
                     }
                 ]
             }
@@ -119,14 +119,15 @@
     {
         "id": 319567,
         "name": "Armor",
-        "description": "+2 dice pool modifier to resist Matrix damage.",
+        "description": "+2 Resist Matrix Damage.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
-                        "affects": "notes",
-                        "value": "+2 to resist Matrix damage"
+                        "affects": "matrixAction",
+                        "matrixActionId": "ResistMatrixDamage",
+                        "value": 2
                     }
                 ]
             }
@@ -135,7 +136,7 @@
     {
         "id": 942681,
         "name": "Baby Monitor",
-        "description": "Keeps track of your movements in the Matrix, so you always know your current Overwatch Score.",
+        "description": "You always know your current Overwatch Score.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -151,14 +152,14 @@
     {
         "id": 537894,
         "name": "Biofeedback",
-        "description": "Attacks causing Matrix damage add an equal amount of Stun (cold-sim) or Physical (hot-sim) biofeedback damage. Also applies to damage caused by failed attacks against you.",
+        "description": "When dealing Matrix damage, deal equal Stun or Physical damage to target in cold- or hot- sim, respectively.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value": "When dealing matrix damage, apply equal damage to opponent in meat-space ( sim dependednt)"
+                        "value": "When dealing matrix damage, apply equal Stun or Physical damage to target in cold- or hot- sim, respectively."
                     }
                 ]
             }
@@ -183,7 +184,7 @@
     {
         "id": 714926,
         "name": "Blackout",
-        "description": "Same as biofeedback, but only causes Stun damage, even if the target is using hot-sim.",
+        "description": "When dealing Matrix damage, deal equal amount of Stun to target.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -219,7 +220,7 @@
     {
         "id": 861243,
         "name": "Cat's Paw",
-        "description": "On a successful Data Spike action, instead of doing damage, the program generates a negative dice pool modifier equal to two plus the number of marks the user has on their target.",
+        "description": "On a successful Data Spike, deal no damage, target gets 2 + (marks) penalty to matrix actions.",
         "active":false,
         "improvements": {
             "type": "static",
