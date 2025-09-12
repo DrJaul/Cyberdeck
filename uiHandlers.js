@@ -408,9 +408,8 @@ $(document).ready(async function () {
     saveState();
   }
 
-  // Log changes immediately but debounce the actual updates
-  $("input, select").off("input change");
-  $("input, select").on("input change", function () {
+  $("input").off("change");
+  $("input").on("change", function (e) {
     const inputId = $(this).attr('id');
     if (debug && inputId) {
       if (inputId.startsWith('attr-')) {
