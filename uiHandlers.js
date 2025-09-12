@@ -149,9 +149,12 @@ $(document).ready(async function () {
     container.append(checkbox);
   });
   
-  // Add event handler for quality checkboxes
-  $(".quality-checkbox input").off("change");
-  $(".quality-checkbox input").on("change", function() {
+  //Quality Checkbox event listener
+  var qualityCheckboxSelector = ".quality-checkbox input[type='checkbox']"
+  $(qualityCheckboxSelector).off("change");
+  $(qualityCheckboxSelector).on("change", function() {
+  if (debug) console.log(`[DEBUG] Quality checked: ${qualityName}`);
+
     const qualityName = $(this).val();
     const quality = qualityMap[qualityName];
     
@@ -408,8 +411,8 @@ $(document).ready(async function () {
     saveState();
   }
 
-  $("input").off("change");
-  $("input").on("change", function (e) {
+  $("input[id^='attr-'], input[id^='skill-']").off("change");
+  $("input[id^='attr-'], input[id^='skill-']").on("change", function (e) {
     const inputId = $(this).attr('id');
     if (debug && inputId) {
       if (inputId.startsWith('attr-')) {
