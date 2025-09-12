@@ -220,7 +220,7 @@
     {
         "id": 861243,
         "name": "Cat's Paw",
-        "description": "On a successful Data Spike, deal no damage, target gets 2 + (marks) penalty to matrix actions.",
+        "description": "On successful Data Spike, deal no damage; target gets 2 + (marks) penalty to matrix actions.",
         "active":false,
         "improvements": {
             "type": "static",
@@ -232,7 +232,7 @@
                     },
                     {
                         "affects": "notes",
-                        "value": "-(marks +2) to all matrix actions your opponent attempts after beign Data Spiked"
+                        "value": "target gets 2 + marks penalty to all matrix actions"
                     }
                 ]
             }
@@ -264,7 +264,7 @@
     {
         "id": 679432,
         "name": "Hammer",
-        "description": "+2 DV to Matrix Damage. Does not apply on failed Attack actions against you.",
+        "description": "+2 DV to Matrix Damage.",
         "improvements": {
             "type": "static",
             "selections": {
@@ -280,14 +280,14 @@
     {
         "id": 348916,
         "name": "Lockdown",
-        "description": "When you cause damage to a persona, he or she is link-locked until you stop running this program or they successfully Jack Out.",
+        "description": "On hit, target is link-locked until you stop running Lockdown or target Jacks Out.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value":"Opponent link-locked after you damage them"
+                        "value":"Target link-locked after you damage them"
                     }
                 ]
             }
@@ -296,14 +296,14 @@
     {
         "id": 752641,
         "name": "Mugger",
-        "description": "Bonus damage from marks is increased by 1 DV per mark.",
+        "description": "Bonus damage from marks is increased by 1 per mark.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value": "+marks to dv when dealing matrix damage"
+                        "value": "+1 damage per mark on target"
                     }
                 ]
             }
@@ -312,14 +312,14 @@
     {
         "id": 218753,
         "name": "Guard",
-        "description": "Reduces the extra damage you take from marks by 1 DV per mark.",
+        "description": "Reduces the extra damage you take from marks by 1 per mark.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
-                        "value": "-marks to incoming damage"
+                        "value": "-1 damage per mark on you, from attacker"
                     }
                 ]
             }
@@ -334,12 +334,14 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "notes",
-                        "value":"+1 to resist matrix damage"
+                        "affects": "matrixAction",
+                        "matrixActionId": "ResistMatrixDamage",
+                        "value":1
                     },
                     {
-                        "affects": "notes",
-                        "value":"+1 to resist biofeedback damage"
+                        "affects": "matrixAction",
+                        "matrixActionId": "ResistBiofeedbackDamage",
+                        "value":1
                     }
                 ]
             }
