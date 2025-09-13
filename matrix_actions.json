@@ -12,7 +12,7 @@
     "action": "Complex",
     "function": "Mark Manipulation",
     "opposedRoll": "WIL+ Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 569111,
@@ -27,7 +27,7 @@
     "action": "Complex",
     "function": "File Manipulation",
     "opposedRoll": "Protection Rating X2",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 978835,
@@ -42,7 +42,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 563169,
@@ -57,7 +57,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 120498,
@@ -72,7 +72,7 @@
     "action": "Simple",
     "function": "Matrix Combat",
     "opposedRoll": "WIL + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 134814,
@@ -87,7 +87,7 @@
     "action": "Complex",
     "function": "Mark Manipulation",
     "opposedRoll": "WIL + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 969538,
@@ -102,7 +102,7 @@
     "action": "Complex",
     "function": "Device Manipulation",
     "opposedRoll": "WIL + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 505571,
@@ -117,19 +117,9 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
-  {
-    "id": 753729,
-    "name": "Popup",
-    "limit": "Attack",
-    "marks": "1",
-    "description": "target wireless-enabled AR is flooded with Matrix spam",
-    "formula": [
-      "hacking",
-      "logic"
-    ]
-  },
+  
   {
     "id": 442622,
     "name": "Squelch",
@@ -143,7 +133,7 @@
     "action": "Simple",
     "function": "Miscellaneous",
     "opposedRoll": "INT + Slease",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 667841,
@@ -158,7 +148,7 @@
     "action": "Simple",
     "function": "Rigging",
     "opposedRoll": "LOG + Sensors",
-    "isActive": "N"
+    "isActive": false
   },
   {
     "id": 408035,
@@ -173,7 +163,7 @@
     "action": "Simple",
     "function": "Matrix Combat",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 243220,
@@ -187,7 +177,7 @@
     "action": "Simple",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 128392,
@@ -202,18 +192,9 @@
     "action": "Complex",
     "function": "Rigging",
     "opposedRoll": "Pilot + Firewall",
-    "isActive": "N"
+    "isActive": false
   },
-  {
-    "id": 968045,
-    "name": "Control Device",
-    "limit": "Data Processing",
-    "marks": "Varies",
-    "description": "perform an action through a device you control",
-    "formula": [
-      "asAction"
-    ]
-  },
+  
   {
     "id": 422282,
     "name": "Detect Target Lock",
@@ -228,7 +209,7 @@
     "action": "Free",
     "function": "Rigging",
     "opposedRoll": "None",
-    "isActive": "N"
+    "isActive": false
   },
   {
     "id": 548060,
@@ -242,7 +223,7 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 412092,
@@ -257,7 +238,7 @@
     "action": "Complex",
     "function": "File Manipulation",
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 259712,
@@ -271,7 +252,7 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 307777,
@@ -286,7 +267,7 @@
     "action": "Complex/Interupt",
     "function": "Matrix Combat",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 349721,
@@ -301,7 +282,7 @@
     "action": "Interupt",
     "function": "Matrix Combat",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 799622,
@@ -315,7 +296,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 410302,
@@ -330,7 +311,7 @@
     "action": "Complex",
     "function": "Rigging",
     "opposedRoll": "WILL + Firewall",
-    "isActive": "N"
+    "isActive": false
   },
   {
     "id": 514397,
@@ -345,7 +326,7 @@
     "action": "Special",
     "function": "Information Gathering",
     "opposedRoll": "LOG + Sleaze",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 880744,
@@ -360,7 +341,7 @@
     "action": "Complex",
     "function": "Information Gathering",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 370969,
@@ -375,7 +356,7 @@
     "action": "Complex",
     "function": "Device Manipulation",
     "opposedRoll": "WILL + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 839120,
@@ -389,7 +370,7 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 971326,
@@ -405,7 +386,7 @@
     "action": "Complex",
     "function": "Rigging",
     "opposedRoll": "None",
-    "isActive": "N"
+    "isActive": false
   },
   {
     "id": 955323,
@@ -419,7 +400,7 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 594115,
@@ -434,7 +415,7 @@
     "action": "Simple",
     "function": "Matrix Combat",
     "opposedRoll": "Sleaze + INT",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 100512,
@@ -450,7 +431,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "WILL + Firewall",
-    "isActive": "N"
+    "isActive": false
   },
   {
     "id": 741764,
@@ -465,7 +446,7 @@
     "action": "Complex",
     "function": "Information Gathering",
     "opposedRoll": "WILL + Sleaze",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 378608,
@@ -480,7 +461,7 @@
     "action": "Special",
     "function": "Matrix Combat",
     "opposedRoll": "30 minute test",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 368208,
@@ -495,7 +476,7 @@
     "action": "Complex",
     "function": "File Manipulation",
     "opposedRoll": "Data Bomb Rating X 2",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 504602,
@@ -509,7 +490,7 @@
     "action": "Interupt",
     "function": "Matrix Combat",
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 928781,
@@ -524,7 +505,7 @@
     "action": "Simple",
     "function": "Miscellaneous",
     "opposedRoll": "LOG + Attack",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 747398,
@@ -539,19 +520,9 @@
     "action": "Simple",
     "function": "Information Gathering",
     "opposedRoll": "6 dice",
-    "isActive": "Y"
+    "isActive": true
   },
-  {
-    "id": 204395,
-    "name": "Control Device",
-    "limit": "Sleaze",
-    "marks": "Varies",
-    "description": "perform an action through a device you control",
-    "formula": [
-      "electronicWarfare",
-      "logic"
-    ]
-  },
+  
   {
     "id": 112988,
     "name": "Format Device",
@@ -565,7 +536,7 @@
     "action": "Complex",
     "function": "Device Manipulation",
     "opposedRoll": "WILL + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 589581,
@@ -580,7 +551,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "LOG + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 369832,
@@ -595,7 +566,7 @@
     "action": "Complex",
     "function": "Mark Manipulation",
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 309649,
@@ -610,7 +581,7 @@
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "INT + Data Processing",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 550293,
@@ -625,7 +596,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "LOG + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 346667,
@@ -640,7 +611,7 @@
     "action": "Complex",
     "function": "File Manipulation",
     "opposedRoll": "Device Rating X 2",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 834998,
@@ -655,7 +626,7 @@
     "action": "Complex",
     "function": "Information Gathering",
     "opposedRoll": " LOG + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 595680,
@@ -670,7 +641,7 @@
     "action": "Complex",
     "function": "Device Manipulation send",
     "opposedRoll": " LOG + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 858742,
@@ -685,7 +656,7 @@
     "action": "Complex",
     "function": "Device Manipulation",
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 299715,
@@ -700,7 +671,7 @@
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "LOG + Firewall",
-    "isActive": "Y"
+    "isActive": true
   },
   {
     "id": 250716,
@@ -715,7 +686,7 @@
       "logic"
     ],
     "opposedRoll": "WIL + Firewall",
-    "isActive": "Y"
+    "isActive": true
     
   },
   {
@@ -730,7 +701,7 @@
       "*Relevant Meatspace Test*"
     ],
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
     
   },
   {
@@ -746,7 +717,7 @@
       "Firewall"
     ],
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
 
   },
   {
@@ -762,7 +733,7 @@
       "Firewall"
     ],
     "opposedRoll": "None",
-    "isActive": "Y"
+    "isActive": true
     
   },
   {
@@ -778,7 +749,7 @@
       "logic"
     ],
     "opposedRoll": "INT + Firewall",
-    "isActive": "Y"
+    "isActive": true
     
   },
   {
@@ -794,7 +765,7 @@
       "logic"
     ],
     "opposedRoll": "WIL + Firewall",
-    "isActive": "Y"
+    "isActive": true
     
   }
 ]
