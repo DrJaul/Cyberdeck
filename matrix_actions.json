@@ -154,8 +154,8 @@
     "id": 408035,
     "name": "Calibration",
     "limit": "Data Processing",
-    "marks": "Varies",
-    "description": "lend processing power to increase speed of a persona",
+    "marks": "1",
+    "description": "Increase initiative of target persona by 1, per 2 hits",
     "formula": [
       "electronicWarfare",
       "logic"
