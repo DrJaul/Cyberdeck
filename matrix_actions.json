@@ -3,12 +3,16 @@
     "id": 205228,
     "name": "Brute Force",
     "limit": "Attack",
-    "marks": "-",
-    "description": "mark target without obtaining normal permissions",
+    "marks": "0",
+    "description": "overtly acquire marks on target; deal matrix damage; enemy instantly alerted to attack but not your position",
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Mark Manipulation",
+    "opposedRoll": "WIL+ Firewall",
+    "isActive": "Y"
   },
   {
     "id": 569111,
@@ -19,62 +23,86 @@
     "formula": [
       "hacking",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "File Manipulation",
+    "opposedRoll": "Protection Rating X2",
+    "isActive": "Y"
   },
   {
     "id": 978835,
     "name": "Crash Program",
     "limit": "Attack",
     "marks": "1",
-    "description": "force targets program to crash",
+    "description": "target loses benefit from program; must know they are running the program",
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 563169,
     "name": "Data Spike",
     "limit": "Attack",
-    "marks": "-",
-    "description": "send harmful instructions to target causing Matrix damage",
+    "marks": "0",
+    "description": "deal matrix damage",
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 120498,
     "name": "Denial of Service",
     "limit": "Attack",
-    "marks": "Varies",
-    "description": "pollute data streams with noise",
+    "marks": "1 per affected device",
+    "description": "add penalty to use wireless devices on enemy PAN",
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Matrix Combat",
+    "opposedRoll": "WIL + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 134814,
     "name": "Erase Marks",
     "limit": "Attack",
-    "marks": "Special",
+    "marks": "Owner/3",
     "description": "remove mark on your persona or on another icon",
     "formula": [
       "cybercombat",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Mark Manipulation",
+    "opposedRoll": "WIL + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 969538,
     "name": "Haywire",
     "limit": "Attack",
-    "marks": "-",
-    "description": "disables all of the target's PAN-related functions",
+    "marks": "0",
+    "description": "negate dicepool bonuses from all wireless devices on enemy PAN",
     "formula": [
       "cybercombat",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Device Manipulation",
+    "opposedRoll": "WIL + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 505571,
@@ -85,7 +113,11 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 753729,
@@ -102,23 +134,31 @@
     "id": 442622,
     "name": "Squelch",
     "limit": "Attack",
-    "marks": "-",
+    "marks": "0",
     "description": "prevents device from calling or sending messages",
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Miscellaneous",
+    "opposedRoll": "INT + Slease",
+    "isActive": "Y"
   },
   {
     "id": 667841,
     "name": "Break Target Lock",
-    "limit": "Data Porcessing",
+    "limit": "Data Processing",
     "marks": "0",
     "description": "break lock a target has on you",
     "formula": [
       "electronicWarfare",
       "intuition"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Rigging",
+    "opposedRoll": "LOG + Sensors",
+    "isActive": "N"
   },
   {
     "id": 408035,
@@ -129,7 +169,11 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Matrix Combat",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 243220,
@@ -138,19 +182,27 @@
     "marks": "Owner",
     "description": "change Icon to one you have designed or have a copy of",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Simple",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 128392,
     "name": "Confuse Pilot",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "send a stream of misleading code to a device with a pilot",
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Rigging",
+    "opposedRoll": "Pilot + Firewall",
+    "isActive": "N"
   },
   {
     "id": 968045,
@@ -170,8 +222,13 @@
     "description": "detect wirless signals for a target lock",
     "formula": [
       "computer",
-      "logic"
-    ]
+      "logic",
+      "RCC Noise Reduction(2)"
+    ],
+    "action": "Free",
+    "function": "Rigging",
+    "opposedRoll": "None",
+    "isActive": "N"
   },
   {
     "id": 548060,
@@ -180,8 +237,12 @@
     "marks": "1",
     "description": "enter or exit a host",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 412092,
@@ -192,39 +253,55 @@
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "File Manipulation",
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 259712,
     "name": "Grid Hop",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "hop to another grid",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 307777,
     "name": "I am the Firewall",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "threat highlighting",
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "action": "Complex/Interupt",
+    "function": "Matrix Combat",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 349721,
     "name": "Intervene",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "give your allies warning to avoid harm",
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "action": "Interupt",
+    "function": "Matrix Combat",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 799622,
@@ -233,8 +310,12 @@
     "marks": "Owner",
     "description": "offer other icons a mark on your device",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 410302,
@@ -245,29 +326,41 @@
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Rigging",
+    "opposedRoll": "WILL + Firewall",
+    "isActive": "N"
   },
   {
     "id": 514397,
     "name": "Matrix Perception",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "analyze a Matrix object or scan your vicinity",
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "action": "Special",
+    "function": "Information Gathering",
+    "opposedRoll": "LOG + Sleaze",
+    "isActive": "Y"
   },
   {
     "id": 880744,
     "name": "Matrix Search",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "search the Matrix for information about a topic",
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Information Gathering",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 370969,
@@ -278,17 +371,25 @@
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Device Manipulation",
+    "opposedRoll": "WILL + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 839120,
     "name": "Send Message",
     "limit": "Data Processing",
-    "marks": "or 1",
+    "marks": "0",
     "description": "send text or audio message (short sentence), image, or a file",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 971326,
@@ -298,8 +399,13 @@
     "description": "use RCC to reduce noise between user and vehicles/drones",
     "formula": [
       "electronicWarfare",
-      "logic"
-    ]
+      "logic",
+      "RCC Noise Reduction"
+    ],
+    "action": "Complex",
+    "function": "Rigging",
+    "opposedRoll": "None",
+    "isActive": "N"
   },
   {
     "id": 955323,
@@ -308,30 +414,43 @@
     "marks": "Owner",
     "description": "switch your perception between AR and VR",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 594115,
     "name": "Tag",
     "limit": "Data Processing",
-    "marks": "-",
+    "marks": "0",
     "description": "Visibly Tag a target on a PAN with AROs",
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Matrix Combat",
+    "opposedRoll": "Sleaze + INT",
+    "isActive": "Y"
   },
   {
     "id": 100512,
     "name": "Target Device",
     "limit": "Data Processing",
-    "marks": "-",
-    "description": "target a wireless device spotted on the Matrix",
+    "marks": "0",
+    "description": "target a wireless device, in meat space, that you have spotted on the Matrix; net hits provide dice pool bonus to attack device",
     "formula": [
       "electronicWarfare",
-      "logic"
-    ]
+      "logic",
+      "RCC Noise reduction"
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "WILL + Firewall",
+    "isActive": "N"
   },
   {
     "id": 741764,
@@ -342,7 +461,11 @@
     "formula": [
       "computer",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Information Gathering",
+    "opposedRoll": "WILL + Sleaze",
+    "isActive": "Y"
   },
   {
     "id": 378608,
@@ -351,20 +474,28 @@
     "marks": "Owner",
     "description": "track marks back to owners",
     "formula": [
-      "extendedComputer",
-      "intSpecial,30MinutesTest"
-    ]
+      "computer",
+      "intuition"
+    ],
+    "action": "Special",
+    "function": "Matrix Combat",
+    "opposedRoll": "30 minute test",
+    "isActive": "Y"
   },
   {
     "id": 368208,
     "name": "Disarm Databomb",
     "limit": "Firewall",
-    "marks": "-",
+    "marks": "0",
     "description": "disarm a databomb",
     "formula": [
       "software",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "File Manipulation",
+    "opposedRoll": "Data Bomb Rating X 2",
+    "isActive": "Y"
   },
   {
     "id": 504602,
@@ -373,30 +504,42 @@
     "marks": "Owner",
     "description": "focus on defending yourelf in the Matrix",
     "formula": [
-      "-"
-    ]
+      "None"
+    ],
+    "action": "Interupt",
+    "function": "Matrix Combat",
+    "opposedRoll": "None",
+    "isActive": "Y"
   },
   {
     "id": 928781,
     "name": "Jackout",
     "limit": "Firewall",
     "marks": "Owner",
-    "description": "jack out of the matrix and reboot device being used",
+    "description": "jack out of the matrix and reboot your device",
     "formula": [
       "hardware",
       "willpower"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Miscellaneous",
+    "opposedRoll": "LOG + Attack",
+    "isActive": "Y"
   },
   {
     "id": 747398,
     "name": "Check Overwatch Score",
     "limit": "Sleaze",
-    "marks": "-",
+    "marks": "0",
     "description": "find how close the grid is to coverging on you",
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Simple",
+    "function": "Information Gathering",
+    "opposedRoll": "6 dice",
+    "isActive": "Y"
   },
   {
     "id": 204395,
@@ -414,11 +557,15 @@
     "name": "Format Device",
     "limit": "Sleaze",
     "marks": "3",
-    "description": "device is foratted on next reboot",
+    "description": "a formatted device wont reboot after being shut down",
     "formula": [
       "computer",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Device Manipulation",
+    "opposedRoll": "WILL + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 589581,
@@ -429,18 +576,26 @@
     "formula": [
       "software",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "LOG + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 369832,
     "name": "Hack on the Fly",
     "limit": "Sleaze",
-    "marks": "-",
-    "description": "mark target without obtaining normal permissions",
+    "marks": "0",
+    "description": "Acquire marks on target stealthily; learn things about target; failure alerts enemy and reveals your position",
     "formula": [
       "hacking",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Mark Manipulation",
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 309649,
@@ -451,18 +606,26 @@
     "formula": [
       "electronicWarfare",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Miscellaneous",
+    "opposedRoll": "INT + Data Processing",
+    "isActive": "Y"
   },
   {
     "id": 550293,
     "name": "Masquerade",
     "limit": "Sleaze",
-    "marks": "2/2",
+    "marks": "2",
     "description": "Impersonate a persona on the Matrix",
     "formula": [
       "hacking",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "LOG + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 346667,
@@ -473,7 +636,11 @@
     "formula": [
       "software",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "File Manipulation",
+    "opposedRoll": "Device Rating X 2",
+    "isActive": "Y"
   },
   {
     "id": 834998,
@@ -484,7 +651,11 @@
     "formula": [
       "electronicWarfare",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Information Gathering",
+    "opposedRoll": " LOG + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 595680,
@@ -495,7 +666,11 @@
     "formula": [
       "hacking",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Device Manipulation send",
+    "opposedRoll": " LOG + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 858742,
@@ -506,17 +681,120 @@
     "formula": [
       "electronicWarfare",
       "intuition"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Device Manipulation",
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
   },
   {
     "id": 299715,
     "name": "Watchdog",
     "limit": "Sleaze",
-    "marks": "-",
+    "marks": "0",
     "description": "User is aware of Matrix actions the target is going to use",
     "formula": [
       "electronicWarfare",
       "logic"
-    ]
+    ],
+    "action": "Complex",
+    "function": "Matrix Combat",
+    "opposedRoll": "LOG + Firewall",
+    "isActive": "Y"
+  },
+  {
+    "id": 250716,
+    "name": "Popup(Cybercombat)",
+    "action": "Simple",
+    "marks": "1",
+    "limit": "Attack",
+    "function": "Matrix Combat",
+    "description": "target in AR takes penalty to all actions; deal net hits in matrix damage; ineffective against targets in VR  ",
+    "formula": [
+      "cybercombat",
+      "logic"
+    ],
+    "opposedRoll": "WIL + Firewall",
+    "isActive": "Y"
+    
+  },
+  {
+    "id": 750283,
+    "name": "Control Device (w/ Test)",
+    "action": "Free/Simple/Complex",
+    "marks": "1/2/3",
+    "limit": "Data Processing",
+    "function": "Device Manipulation",
+    "description": "perform an action that requires a dice roll, through a device you control. ",
+    "formula": [
+      "*Relevant Meatspace Test*"
+    ],
+    "opposedRoll": "None",
+    "isActive": "Y"
+    
+  },
+  {
+    "id": 924426,
+    "name": "Resist Biofeedback Damage",
+    "action": "Defense",
+    "marks": "0",
+    "limit": "Firewall",
+    "function": "Defense",
+    "description": "resist biofeedback damage",
+    "formula": [
+      "willpower",
+      "Firewall"
+    ],
+    "opposedRoll": "None",
+    "isActive": "Y"
+
+  },
+  {
+    "id": 762696,
+    "name": "Resist Matrix Damage",
+    "action": "Defense",
+    "marks": "0",
+    "limit": "Firewall",
+    "function": "Defense",
+    "description": "resist matrix damage",
+    "formula": [
+      "Rating",
+      "Firewall"
+    ],
+    "opposedRoll": "None",
+    "isActive": "Y"
+    
+  },
+  {
+    "id": 568147,
+    "name": "Control Device(w/o Test)",
+    "action": "Variable",
+    "marks": "1/2/3",
+    "limit": "Sleaze",
+    "function": "Device Manipulation",
+    "description": "perform an action that does not require a dice roll, through a device you control",
+    "formula": [
+      "electronicWarfare",
+      "logic"
+    ],
+    "opposedRoll": "INT + Firewall",
+    "isActive": "Y"
+    
+  },
+  {
+    "id": 141688,
+    "name": "Popup(Hacking)",
+    "action": "Simple",
+    "marks": "1",
+    "limit": "Slease",
+    "function": "Matrix Combat",
+    "description": "target in AR takes penalty to all actions; ineffective against targets in VR",
+    "formula": [
+      "hacking",
+      "logic"
+    ],
+    "opposedRoll": "WIL + Firewall",
+    "isActive": "Y"
+    
   }
 ]

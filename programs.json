@@ -328,19 +328,19 @@
     {
         "id": 635987,
         "name": "Shell",
-        "description": "+1 dice pool to resist Matrix and biofeedback damage.",
+        "description": "+1 to resist Matrix and biofeedback damage.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "ResistMatrixDamage",
+                        "matrixActionId": 762696,
                         "value":1
                     },
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "ResistBiofeedbackDamage",
+                        "matrixActionId": 924426,
                         "value":1
                     }
                 ]
