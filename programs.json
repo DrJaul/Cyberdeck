@@ -9,6 +9,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "Halve matrix search time"
                     }
                 ]
@@ -25,6 +26,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "Change all deck attributes and programs to preselected configuration with single free action"
                     }
                 ]
@@ -41,7 +43,8 @@
                 "default": [
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "Edit File",
+                        "action": "add",
+                        "matrixActionId": 412092,
                         "limit": 2
                     }
                 ]
@@ -58,6 +61,7 @@
                 "default": [
                     {
                         "affects": "deckStat",
+                        "action": "add",
                         "firewall": 1
                     }
                 ]
@@ -74,6 +78,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "-2 noise"
                     }
                 ]
@@ -90,6 +95,7 @@
                 "default": [
                     {
                         "affects": "deckStat",
+                        "action": "add",
                         "Data Processing": 1
                     }
                 ]
@@ -106,10 +112,12 @@
                 "default": [
                     {
                         "affects": "programSlots",
+                        "action": "add",
                         "programSlots": 2
                     },
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "+1 final matrix damage taken"
                     }
                 ]
@@ -126,7 +134,8 @@
                 "default": [
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "ResistMatrixDamage",
+                        "action": "add",
+                        "matrixActionId": 762696,
                         "value": 2
                     }
                 ]
@@ -143,6 +152,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "GM tells you overwatch score for free"
                     }
                 ]
@@ -159,6 +169,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "When dealing matrix damage, apply equal Stun or Physical damage to target in cold- or hot- sim, respectively."
                     }
                 ]
@@ -174,8 +185,10 @@
             "selections": {
                 "default": [
                     {
-                        "affects": "notes",
-                        "value": "+2 to resist biofeedback damage"
+                        "affects": "matrixAction",
+                        "action": "add",
+                        "matrixActionId": 924426,
+                        "value": 2
                     }
                 ]
             }
@@ -191,10 +204,12 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "if opponent in hot-sim, when dealing matrix damage, deal equal physical damage"
                     },
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "if opponent in cold-sim, when dealing matrix damage, deal equal stun damage"
                     }
                 ]
@@ -211,6 +226,7 @@
                 "default": [
                     {
                         "affects": "deckStat",
+                        "action": "add",
                         "Attack": 1
                     }
                 ]
@@ -228,10 +244,12 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "deal 0 matrix damage on Data Spike"
                     },
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "target gets 2 + marks penalty to all matrix actions"
                     }
                 ]
@@ -248,12 +266,14 @@
                 "default": [
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "Crash Program",
+                        "action": "add",
+                        "matrixActionId": 978835,
                         "value": 1
                     },
                     {
                         "affects": "matrixAction",
-                        "matrixActionId": "Crash Program",
+                        "action": "add",
+                        "matrixActionId": 978835,
                         "limit": 2
                         
                     }
@@ -271,6 +291,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value":"+2 DV to matrix damage"
                     }
                 ]
@@ -287,6 +308,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value":"Target link-locked after you damage them"
                     }
                 ]
@@ -296,13 +318,14 @@
     {
         "id": 752641,
         "name": "Mugger",
-        "description": "Bonus damage from marks is increased by 1 per mark.",
+        "description": "Bonus damage you deal from marks is increased by 1 per mark.",
         "improvements": {
             "type": "static",
             "selections": {
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "+1 damage per mark on target"
                     }
                 ]
@@ -319,6 +342,7 @@
                 "default": [
                     {
                         "affects": "notes",
+                        "action": "add",
                         "value": "-1 damage per mark on you, from attacker"
                     }
                 ]
@@ -335,11 +359,13 @@
                 "default": [
                     {
                         "affects": "matrixAction",
+                        "action": "add",
                         "matrixActionId": 762696,
                         "value":1
                     },
                     {
                         "affects": "matrixAction",
+                        "action": "add",
                         "matrixActionId": 924426,
                         "value":1
                     }

@@ -94,9 +94,24 @@ export function applyImprovements(baseStats, items = []) {
               
             case "matrixAction":
               const actionId = entry.matrixActionId;
-              if (!actionId) continue;
               
-              // Add to matrix action total
+              // Handle global matrix action improvements (no specific actionId)
+              if (!actionId) {
+                // Initialize globalMatrixActionDetails if it doesn't exist
+                if (!modified.globalMatrixActionDetails) {
+                  modified.globalMatrixActionDetails = [];
+                }
+                
+                // Store the global improvement details
+                modified.globalMatrixActionDetails.push({
+                  name: displayName,
+                  value: value,
+                  type: item.type || (item.rating ? "program" : "quality")
+                });
+                continue;
+              }
+              
+              // Add to matrix action total for specific action
               modified.matrixActions[actionId] = (modified.matrixActions[actionId] || 0) + value;
               
               // Store details for formula display
@@ -119,60 +134,98 @@ export function applyImprovements(baseStats, items = []) {
   return modified;
 }
 
-export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = [], matrixActionDetails = {}) {
-  if (debug) console.log(`[DEBUG] Rendering ${actions.length} matrix actions`);
+export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = [], matrixActionDetails = {}, globalMatrixActionDetails = []) {
+  // Only display active matrix actions
+  const activeActions = actions.filter(action => action.isActive === true);
   
-  const table = $("#matrix-actions-table tbody");
-  table.empty();
-
-  // Map from limit names to baseStats keys
+  const table = $("#matrix-actions-table");
+  const tableHead = table.find("thead");
+  const tableBody = table.find("tbody");
+  
+  tableHead.empty();
+  tableBody.empty();
+  
+  // Map for deck stat lookups
   const limitToStatMap = {
     "data processing": "dataProcessing",
     "attack": "attack",
     "sleaze": "sleaze",
     "firewall": "firewall"
   };
-
-  actions.forEach(action => {
+  
+  // Define columns in specific order (excluding 'function' and 'isActive')
+  const allFields = new Set([
+    'name',
+    'description',
+    'action',
+    'marks',
+    'limit',
+    'formula',
+    'opposedRoll',
+    'total'
+  ]);
+  
+  // Create header row
+  const headerRow = $("<tr>");
+  allFields.forEach(field => {
+    const displayName = field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    headerRow.append($("<th>").text(displayName));
+  });
+  tableHead.append(headerRow);
+  
+  // Create rows for each action
+  activeActions.forEach(action => {
     const row = $("<tr>");
     
-    // Handle limit display
+    // Calculate values for special fields
     const limitKey = (action.limit || "").toLowerCase();
     const statKey = limitToStatMap[limitKey] || limitKey;
     const baseLimit = baseStats[statKey] ?? 0;
-    const limitCell = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
-
-    // Extract and apply formula replacements
-    let [skillKey, attrKey] = getFormulaComponents(action, replacements);
+    
+    const [skillKey, attrKey] = getFormulaComponents(action, replacements);
     const skillVal = skills[skillKey] || 0;
     const attrVal = attributes[attrKey] || 0;
     
-    // Calculate quality bonuses
     const qualityBonus = qualityMods[action.name] || 0;
     const actionIdBonus = action.id ? qualityMods[action.id] || 0 : 0;
     const totalQualityBonus = qualityBonus + actionIdBonus;
-
-    // Build formula display
-    const formula = buildFormulaDisplay(
+    
+    const dicePool = attrVal + skillVal + totalQualityBonus;
+    
+    const formulaDisplay = buildFormulaDisplay(
       skillKey || "?", 
       skillVal, 
       attrKey || "?", 
       attrVal,
       action,
       matrixActionDetails,
-      totalQualityBonus
+      totalQualityBonus,
+      globalMatrixActionDetails
     );
-
-    // Calculate total dice pool
-    const total = attrVal + skillVal + totalQualityBonus;
-
-    // Build table row
-    row.append($("<td>").text(action.name || "(unnamed)"));
-    row.append($("<td>").text(limitCell));
-    row.append($("<td>").text(action.description || ""));
-    row.append($("<td>").text(formula));
-    row.append($("<td>").text(total));
-    table.append(row);
+    
+    // Add each field to the row
+    allFields.forEach(field => {
+      let content = "";
+      
+      // Set cell content based on field type
+      switch (field) {
+        case 'formula':
+          content = action.formula.length >0 ? formulaDisplay : "N/a";
+          break;
+        case 'total':
+          content = dicePool;
+          break;
+        case 'limit':
+          content = action.limit ? `${action.limit}(${baseLimit})` : "(n/a)";
+          break;
+        default:
+          content = action[field] !== undefined ? action[field] : "";
+      }
+      
+      row.append($("<td>").text(content));
+    });
+    
+    tableBody.append(row);
   });
 }
 
@@ -192,22 +245,45 @@ function getFormulaComponents(action, replacements) {
   return [skillKey, attrKey];
 }
 
+// Format a skill or attribute name for display
+function formatDisplayName(name) {
+  if (!name || typeof name !== 'string') return name;
+  
+  // Special case for electronicWarfare
+  if (name === 'electronicWarfare') return 'E.War';
+  
+  // Add spaces before capital letters and capitalize first letter
+  return name
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .trim();
+}
+
 // Build the formula display string with all bonuses
-function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, action, matrixActionDetails, totalQualityBonus) {
-  let formula = `${displaySkill}(${skillVal}) + ${displayAttr}(${attrVal})`;
+function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, action, matrixActionDetails, totalQualityBonus, globalMatrixActionDetails = []) {
+  // Format skill and attribute names
+  const formattedSkill = formatDisplayName(displaySkill);
+  const formattedAttr = formatDisplayName(displayAttr);
+  
+  let formula = `${formattedSkill}(${skillVal}) + ${formattedAttr}(${attrVal})`;
   
   // Get action identifiers for looking up details
-  const actionKeys = [action.name];
+  const actionKeys = [];
   
-  if (typeof action.name === 'string') {
-    actionKeys.push(action.name.toLowerCase().replace(/\s+/g, ''));
+  // Add action.name and normalized version if it's a string
+  if (action.name) {
+    actionKeys.push(action.name);
+    if (typeof action.name === 'string') {
+      actionKeys.push(action.name.toLowerCase().replace(/\s+/g, ''));
+    }
   }
   
+  // Add action.id - ensure we check both number and string versions
   if (action.id) {
+    // Add as number
     actionKeys.push(action.id);
-    if (typeof action.id === 'string') {
-      actionKeys.push(action.id.toLowerCase().replace(/\s+/g, ''));
-    }
+    // Add as string
+    actionKeys.push(String(action.id));
   }
   
   // Find all improvement details for this action
@@ -227,6 +303,15 @@ function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, actio
     });
   } else if (totalQualityBonus > 0) {
     formula += ` + Quality(${totalQualityBonus})`;
+  }
+  
+  // Add global matrix action improvements
+  if (globalMatrixActionDetails?.length > 0) {
+    globalMatrixActionDetails.forEach(detail => {
+      if (detail?.value > 0) {
+        formula += ` + ${detail.name}(${detail.value})`;
+      }
+    });
   }
   
   return formula;

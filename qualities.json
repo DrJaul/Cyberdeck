@@ -9,6 +9,7 @@
         "default": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "value": 2
           }
         ]
@@ -25,6 +26,7 @@
         "Hack On The Fly": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 369832,
             "value": 2
           }
@@ -32,6 +34,7 @@
         "Data Spike": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 563169,
             "value": 2
           }
@@ -39,6 +42,7 @@
         "Brute Force": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 205228,
             "value": 2
           }
@@ -57,10 +61,12 @@
         "default": [
           {
             "affects": "attribute",
+            "action": "add",
             "logic": 2
           },
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 514397,
             "value": 2
           }
@@ -77,6 +83,7 @@
       "selections": {
         "default": [{
             "affects": "notes",
+            "action": "add",
             "value": "+1 free action"
           }]
       }
@@ -91,6 +98,7 @@
       "selections": {
         "default": [{
             "affects": "matrixAction",
+            "action": "replace",
             "formula": ["intuition", "logic"]
           }]
       }
@@ -105,6 +113,7 @@
       "selections": {
         "default": [{
             "affects": "matrixAction",
+            "action": "replace",
             "formula": ["logic", "intuition"]
           }]
       }
@@ -121,6 +130,7 @@
         "1": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 514397,
             "value": 1
           }
@@ -128,6 +138,7 @@
         "2": [
           {
             "affects": "matrixAction",
+            "action": "add",
             "matrixActionId": 514397,
             "value": 2
           }

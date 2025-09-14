@@ -361,7 +361,8 @@ $(document).ready(async function () {
       modifiedStats.deckStats,
       modifiedStats.matrixActions || {},
       modifiedStats.replacements || [],
-      modifiedStats.matrixActionDetails || {}
+      modifiedStats.matrixActionDetails || {},
+      modifiedStats.globalMatrixActionDetails || []
     );
   }
   

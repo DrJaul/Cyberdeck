@@ -155,7 +155,7 @@
     "name": "Calibration",
     "limit": "Data Processing",
     "marks": "1",
-    "description": "Increase initiative of target persona by 1, per 2 hits",
+    "description": "increase initiative of target persona by 1, per 2 hits",
     "formula": [
       "electronicWarfare",
       "logic"
@@ -171,9 +171,7 @@
     "limit": "Data Processing",
     "marks": "Owner",
     "description": "change Icon to one you have designed or have a copy of",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Simple",
     "function": "Miscellaneous",
     "opposedRoll": "None",
@@ -217,9 +215,7 @@
     "limit": "Data Processing",
     "marks": "1",
     "description": "enter or exit a host",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
@@ -246,9 +242,7 @@
     "limit": "Data Processing",
     "marks": "0",
     "description": "hop to another grid",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
@@ -290,9 +284,7 @@
     "limit": "Data Processing",
     "marks": "Owner",
     "description": "offer other icons a mark on your device",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Complex",
     "function": "Matrix Combat",
     "opposedRoll": "None",
@@ -364,9 +356,7 @@
     "limit": "Data Processing",
     "marks": "0",
     "description": "send text or audio message (short sentence), image, or a file",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
@@ -394,9 +384,7 @@
     "limit": "Data Processing",
     "marks": "Owner",
     "description": "switch your perception between AR and VR",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Complex",
     "function": "Miscellaneous",
     "opposedRoll": "None",
@@ -484,9 +472,7 @@
     "limit": "Firewall",
     "marks": "Owner",
     "description": "focus on defending yourelf in the Matrix",
-    "formula": [
-      "None"
-    ],
+    "formula": [],
     "action": "Interupt",
     "function": "Matrix Combat",
     "opposedRoll": "None",
