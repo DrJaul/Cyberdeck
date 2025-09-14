@@ -98,7 +98,7 @@ function saveState() {
   const state = {
     attributes: getAttributes(),
     skills: getSkills(),
-    qualities: $(".quality-checkbox:checked").map((_, el) => $(el).val()).get(),
+    qualities: $(".quality-checkbox input[type='checkbox']:checked").map((_, el) => $(el).val()).get(),
     selectedPreset: $("#preset-selector").val(),
     programSlots: $(".program-slot").map((_, el) => $(el).text()).get(),
     swappedStats: {
@@ -153,7 +153,7 @@ $(document).ready(async function () {
   var qualityCheckboxSelector = ".quality-checkbox input[type='checkbox']"
   $(qualityCheckboxSelector).off("change");
   $(qualityCheckboxSelector).on("change", function() {
-  if (debug) console.log(`[DEBUG] Quality checked: ${qualityName}`);
+ // if (debug) console.log(`[DEBUG] Quality checked: ${qualityName}`);
 
     const qualityName = $(this).val();
     const quality = qualityMap[qualityName];
@@ -291,7 +291,7 @@ $(document).ready(async function () {
     const items = [];
     
     // Add selected qualities
-    $(".quality-checkbox:checked").each((_, el) => {
+    $(".quality-checkbox input[type='checkbox']:checked").each((_, el) => {
       const qualityName = $(el).val();
       const quality = qualityMap[qualityName];
       
