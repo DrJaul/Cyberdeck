@@ -25,6 +25,14 @@ const choiceSelections = {
   programs: {}   // Format: {programName: selectedOption}
 };
 
+// Store active programs data for fast access
+const activePrograms = {
+  // Format: {slotIndex: {name, data, selectedOption}}
+  slots: {},
+  // Quick lookup for program data by name
+  dataMap: {}
+};
+
 // Function to handle choice-type qualities and programs
 function handleChoiceSelection(itemType, itemName, itemData) {
   // Check if this is a choice-type item
@@ -61,9 +69,54 @@ function handleChoiceSelection(itemType, itemName, itemData) {
   return false; // Not a choice-type or no options
 }
 
+// Add a program to the active programs data structure
+function addActiveProgram(slotIndex, programName, programData) {
+  if (!programName || !programData) return false;
+  
+  // Store program in the slot
+  activePrograms.slots[slotIndex] = {
+    name: programName,
+    data: programData,
+    selectedOption: choiceSelections.programs[programName] || null
+  };
+  
+  if (debug) console.log(`[DEBUG] Added program to slot ${slotIndex}: ${programName}`);
+  return true;
+}
+
+// Remove a program from the active programs data structure
+function removeActiveProgram(slotIndex) {
+  if (!activePrograms.slots[slotIndex]) return false;
+  
+  const programName = activePrograms.slots[slotIndex].name;
+  if (debug) console.log(`[DEBUG] Removed program from slot ${slotIndex}: ${programName}`);
+  
+  // Remove program from the slot
+  delete activePrograms.slots[slotIndex];
+  return true;
+}
+
+// Get all active programs as an array of program data objects
+function getActivePrograms() {
+  return Object.values(activePrograms.slots).map(slot => {
+    // Create a copy of the program data with the selected option
+    return {
+      ...slot.data,
+      selectedOption: slot.selectedOption
+    };
+  });
+}
+
 function makeProgramsDraggable(programs) {
   const container = $("#program-list");
   container.empty();
+  
+  // Build program data map for quick lookups
+  activePrograms.dataMap = programs.reduce((map, prog) => {
+    map[prog.name] = prog;
+    return map;
+  }, {});
+  
   programs.forEach(prog => {
     const item = $("<div>")
       .addClass("program-item")
@@ -130,14 +183,9 @@ $(document).ready(async function () {
   // Global variable to store current deck stats
   let currentDeckStats = {};
 
-  // Create a map of quality and program names to their data for easy lookup
+  // Create a map of quality names to their data for easy lookup
   const qualityMap = qualities.reduce((map, q) => {
     map[q.name] = q;
-    return map;
-  }, {});
-  
-  const programMap = programs.reduce((map, p) => {
-    map[p.name] = p;
     return map;
   }, {});
 
@@ -233,22 +281,25 @@ $(document).ready(async function () {
   initProgramSlots(
     activePreset.programSlots || 6,
     saved.programSlots || [],
-    function() {
+    function(slotIndex, programName) {
       // Custom callback for program slot changes
-      const slots = $(".program-slot");
-      
-      // Check if any slot contains a choice-type program
-      slots.each(function() {
-        const programName = $(this).text().trim();
-        if (programName && !$(this).data("choice-handled")) {
-          const program = programMap[programName];
+      if (programName) {
+        // Program was added to a slot
+        const programData = activePrograms.dataMap[programName];
+        if (programData) {
+          // Add to active programs
+          addActiveProgram(slotIndex, programName, programData);
           
-          if (program && handleChoiceSelection("programs", programName, program)) {
-            // Mark this slot as having been handled for choice selection
-            $(this).data("choice-handled", true);
+          // Check if it's a choice-type program
+          if (programData.improvements?.type === "choice" && 
+              !choiceSelections.programs[programName]) {
+            handleChoiceSelection("programs", programName, programData);
           }
         }
-      });
+      } else {
+        // Program was removed from a slot
+        removeActiveProgram(slotIndex);
+      }
       
       // Update the UI and save state
       updateMatrixActions();
@@ -309,24 +360,9 @@ $(document).ready(async function () {
       }
     });
     
-    // Add active programs
-    $(".program-slot").each((_, el) => {
-      const programName = $(el).text().trim();
-      if (!programName) return;
-      
-      const program = programMap[programName];
-      if (!program) return;
-      
-      // For choice-type programs, add the selected option
-      if (program.improvements?.type === "choice" && choiceSelections.programs[programName]) {
-        items.push({
-          ...program,
-          selectedOption: choiceSelections.programs[programName]
-        });
-      } else {
-        items.push(program);
-      }
-    });
+    // Add active programs from our optimized data structure
+    const activeProgs = getActivePrograms();
+    items.push(...activeProgs);
     
     return items;
   }
@@ -391,7 +427,10 @@ $(document).ready(async function () {
     initProgramSlots(
       preset.rating || 6,
       [], // Empty array to clear all slots
-      saveState
+      function() {
+        // Clear active programs data structure
+        activePrograms.slots = {};
+      }
     );
     
     // Clear swapped deck stats by resetting to preset values
@@ -488,9 +527,15 @@ $(document).ready(async function () {
         // For programs, we need to find the slot with this program
         const slots = $(".program-slot");
         slots.each(function() {
+          const slotIndex = $(this).data("slot-index");
           if ($(this).text().trim() === itemInfo.name) {
             // Update the slot text to include the selection
             $(this).text(`${itemInfo.name} (${selectedOption})`);
+            
+            // Update the active program data
+            if (activePrograms.slots[slotIndex]) {
+              activePrograms.slots[slotIndex].selectedOption = selectedOption;
+            }
           }
         });
       }

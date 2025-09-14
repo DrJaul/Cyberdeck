@@ -28,6 +28,12 @@ function getDisplayName(item) {
   return item.name;
 }
 
+// Helper function to get display name for formula display (without selected option)
+function getFormulaDisplayName(item) {
+  return item.name;
+}
+
+// Apply improvements from items to base stats
 export function applyImprovements(baseStats, items = []) {
   if (debug) console.log(`[DEBUG] Applying improvements from ${items.length} items`);
   
@@ -39,99 +45,146 @@ export function applyImprovements(baseStats, items = []) {
     matrixActions: {},
     matrixActionDetails: {},
     replacements: [],
-    notes: []
+    notes: [],
+    globalMatrixActionDetails: []
   };
 
-  // Process each item (quality or program)
+  // Group items by type for more efficient processing
+  const groupedItems = {
+    static: [],
+    choice: [],
+    replacement: []
+  };
+
+  // Pre-sort items into groups
   items.forEach(item => {
     if (!item.improvements?.selections) return;
-    
     const type = item.improvements.type || "static";
-    const selectionKey = (type === "choice" && item.selectedOption && 
-                         item.improvements.selections[item.selectedOption]) 
-                         ? item.selectedOption : "default";
-    const selections = item.improvements.selections[selectionKey] || [];
-    const displayName = getDisplayName(item);
-    
-    // Process each improvement in the selected option
-    selections.forEach(entry => {
-      const targetGroup = entry.affects;
-      
-      // Handle replacement-type improvements
-      if (type === "replacement" && entry.formula?.length >= 2) {
-        modified.replacements.push({
-          from: entry.formula[0],
-          to: entry.formula[1],
-          affects: targetGroup
-        });
-        return;
-      }
-      
-      // Handle static and choice-type improvements
-      if (type === "static" || type === "choice") {
-        for (const [target, value] of Object.entries(entry)) {
-          // Skip non-value properties
-          if (target === "affects" || target === "formula" || target === "matrixActionId") continue;
-          
-          switch (targetGroup) {
-            case "attribute":
-              modified.attributes[target] = (modified.attributes[target] || 0) + value;
-              break;
-              
-            case "skill":
-              modified.skills[target] = (modified.skills[target] || 0) + value;
-              break;
-              
-            case "deckStat":
-              modified.deckStats[target] = (modified.deckStats[target] || 0) + value;
-              break;
-              
-            case "notes":
-              if (value && typeof value === 'string') {
-                modified.notes.push({ text: value, source: displayName });
-              }
-              break;
-              
-            case "matrixAction":
-              const actionId = entry.matrixActionId;
-              
-              // Handle global matrix action improvements (no specific actionId)
-              if (!actionId) {
-                // Initialize globalMatrixActionDetails if it doesn't exist
-                if (!modified.globalMatrixActionDetails) {
-                  modified.globalMatrixActionDetails = [];
-                }
-                
-                // Store the global improvement details
-                modified.globalMatrixActionDetails.push({
-                  name: displayName,
-                  value: value,
-                  type: item.type || (item.rating ? "program" : "quality")
-                });
-                continue;
-              }
-              
-              // Add to matrix action total for specific action
-              modified.matrixActions[actionId] = (modified.matrixActions[actionId] || 0) + value;
-              
-              // Store details for formula display
-              if (!modified.matrixActionDetails[actionId]) {
-                modified.matrixActionDetails[actionId] = [];
-              }
-              
-              modified.matrixActionDetails[actionId].push({
-                name: displayName,
-                value: value,
-                type: item.type || (item.rating ? "program" : "quality")
-              });
-              break;
-          }
-        }
-      }
-    });
+    if (groupedItems[type]) {
+      groupedItems[type].push(item);
+    } else {
+      groupedItems.static.push(item); // Default to static if unknown type
+    }
+  });
+
+  // Process replacement-type improvements first (they affect formulas)
+  groupedItems.replacement.forEach(item => {
+    processReplacementItem(item, modified);
+  });
+
+  // Process static improvements
+  groupedItems.static.forEach(item => {
+    processStaticItem(item, modified);
+  });
+
+  // Process choice-type improvements
+  groupedItems.choice.forEach(item => {
+    processChoiceItem(item, modified);
   });
 
   return modified;
+}
+
+// Process a replacement-type item
+function processReplacementItem(item, modified) {
+  if (!item.improvements?.selections) return;
+  
+  const selections = item.improvements.selections.default || [];
+  const displayName = getDisplayName(item);
+  
+  selections.forEach(entry => {
+    if (entry.affects && entry.formula?.length >= 2) {
+      modified.replacements.push({
+        from: entry.formula[0],
+        to: entry.formula[1],
+        affects: entry.affects
+      });
+    }
+  });
+}
+
+// Process a static-type item
+function processStaticItem(item, modified) {
+  if (!item.improvements?.selections) return;
+  
+  const selections = item.improvements.selections.default || [];
+  const displayName = getDisplayName(item);
+  
+  processSelections(selections, displayName, item, modified);
+}
+
+// Process a choice-type item
+function processChoiceItem(item, modified) {
+  if (!item.improvements?.selections) return;
+  
+  const selectionKey = item.selectedOption && 
+                      item.improvements.selections[item.selectedOption] 
+                      ? item.selectedOption : "default";
+  const selections = item.improvements.selections[selectionKey] || [];
+  const displayName = getDisplayName(item);
+  
+  processSelections(selections, displayName, item, modified);
+}
+
+// Process selections from an item
+function processSelections(selections, displayName, item, modified) {
+  selections.forEach(entry => {
+    const targetGroup = entry.affects;
+    
+    for (const [target, value] of Object.entries(entry)) {
+      // Skip non-value properties
+      if (target === "affects" || target === "formula" || target === "matrixActionId") continue;
+      
+      switch (targetGroup) {
+        case "attribute":
+          modified.attributes[target] = (modified.attributes[target] || 0) + value;
+          break;
+          
+        case "skill":
+          modified.skills[target] = (modified.skills[target] || 0) + value;
+          break;
+          
+        case "deckStat":
+          modified.deckStats[target] = (modified.deckStats[target] || 0) + value;
+          break;
+          
+        case "notes":
+          if (value && typeof value === 'string') {
+            modified.notes.push({ text: value, source: displayName });
+          }
+          break;
+          
+        case "matrixAction":
+          const actionId = entry.matrixActionId;
+          
+          // Handle global matrix action improvements (no specific actionId)
+          if (!actionId) {
+            // Store the global improvement details
+            modified.globalMatrixActionDetails.push({
+              name: getFormulaDisplayName(item),
+              value: Number(value),
+              type: item.type || (item.rating ? "program" : "quality")
+            });
+            continue;
+          }
+          
+          // Add to matrix action total for specific action - ensure value is a number
+          modified.matrixActions[actionId] = (modified.matrixActions[actionId] || 0) + Number(value);
+          
+          // Store details for formula display
+          if (!modified.matrixActionDetails[actionId]) {
+            modified.matrixActionDetails[actionId] = [];
+          }
+          
+          modified.matrixActionDetails[actionId].push({
+            name: getFormulaDisplayName(item),
+            value: Number(value),
+            type: item.type || (item.rating ? "program" : "quality")
+          });
+          break;
+      }
+    }
+  });
 }
 
 export function renderMatrixActions(actions, attributes, skills, baseStats, qualityMods, replacements = [], matrixActionDetails = {}, globalMatrixActionDetails = []) {
@@ -301,8 +354,6 @@ function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, actio
         formula += ` + ${detail.name}(${detail.value})`;
       }
     });
-  } else if (totalQualityBonus > 0) {
-    formula += ` + Quality(${totalQualityBonus})`;
   }
   
   // Add global matrix action improvements
