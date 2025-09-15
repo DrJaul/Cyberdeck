@@ -82,39 +82,40 @@
   <button id="left-toggle" class="panel-toggle">☰</button>
   <button id="right-toggle" class="panel-toggle">☰</button>
 
-  <div id="deck-stats">
+  <div id="main-screen">
+    <div id="deck-stats">
     <h3>Drag to Reassign Stats</h3>
     <div id="draggables">
       <div class="stat-container">
         <div class="stat-label">Attack</div>
         <div class="stat-box" draggable="true" data-type="attack">
-          <span>0</span>
-          <div class="augmented-display" id="aug-attack"></div>
+          <span>0</span>    
         </div>
+        <div class="augmented-display" id="aug-attack"></div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Sleaze</div>
         <div class="stat-box" draggable="true" data-type="sleaze">
           <span>0</span>
-          <div class="augmented-display" id="aug-sleaze"></div>
         </div>
+        <div class="augmented-display" id="aug-sleaze"></div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Data Processing</div>
         <div class="stat-box" draggable="true" data-type="dataProcessing">
           <span>0</span>
-          <div class="augmented-display" id="aug-dataProcessing"></div>
         </div>
+        <div class="augmented-display" id="aug-dataProcessing"></div>
       </div>
       <div class="stat-container">
         <div class="stat-label">Firewall</div>
         <div class="stat-box" draggable="true" data-type="firewall">
           <span>0</span>
-          <div class="augmented-display" id="aug-firewall"></div>
         </div>
+        <div class="augmented-display" id="aug-firewall"></div>
       </div>
     </div>
-    <button type="button" id="reset-factory">Reset to Factory Settings</button>
+    
   </div>
 
   <div id="program-section">
@@ -132,7 +133,8 @@
     <h3>Notes</h3>
     <ul id="notes-list"></ul>
   </div>
-
+    <button type="button" id="reset-factory">Reset to Factory Settings</button>
+  </div>
   <div id="status"></div>
   <div id="program-tooltip"></div>
   

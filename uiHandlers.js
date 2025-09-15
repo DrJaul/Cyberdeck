@@ -2,8 +2,7 @@ import {
   loadQualities,
   loadPresets,
   loadPrograms,
-  loadMatrixActions,
-  initProgramSlots
+  loadMatrixActions
 } from './dataLoader.js';
 
 import {
@@ -64,6 +63,8 @@ function handleChoiceSelection(itemType, itemName, itemData) {
 function addActiveProgram(slotIndex, programName, programData) {
   if (!programName || !programData) return false;
   
+  console.log(`[Program Activation] Adding program "${programName}" to slot ${slotIndex}`);
+  
   // Store program in the slot
   activePrograms.slots[slotIndex] = {
     name: programName,
@@ -71,12 +72,17 @@ function addActiveProgram(slotIndex, programName, programData) {
     selectedOption: choiceSelections.programs[programName] || null
   };
   
+  console.log(`[Program Activation] Program "${programName}" added with improvements:`, programData.improvements);
+  
   return true;
 }
 
 // Remove a program from the active programs data structure
 function removeActiveProgram(slotIndex) {
   if (!activePrograms.slots[slotIndex]) return false;
+  
+  const programName = activePrograms.slots[slotIndex].name;
+  console.log(`[Program Deactivation] Removing program "${programName}" from slot ${slotIndex}`);
   
   // Remove program from the slot
   delete activePrograms.slots[slotIndex];
@@ -151,10 +157,21 @@ function saveState() {
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
 }
 
-function updateDeckStatLabels(deckStats) {
+function updateDeckStatLabels(deckStats, originalDeckStats) {
   $("#draggables .stat-box").each(function () {
     const type = $(this).data("type");
-    $(this).find("span").text(deckStats[type] ?? 0);
+    const originalValue = originalDeckStats[type] ?? 0;
+    const modifiedValue = deckStats[type] ?? 0;
+    
+    // Keep the original value in the span
+    $(this).find("span").text(originalValue);
+    
+    // If there's a difference, show the final modified value in parentheses
+    if (modifiedValue !== originalValue) {
+      $(`#aug-${type}`).text(`(${modifiedValue})`);
+    } else {
+      $(`#aug-${type}`).text("");
+    }
   });
 }
 
@@ -234,6 +251,8 @@ $(document).ready(async function () {
   }
   if (saved.selectedPreset) {
     presetSelect.val(saved.selectedPreset).trigger("change");
+    // Ensure the deck name is displayed on startup if data exists
+    updateDeckStatsTitle();
   } else {
     // If no preset was saved, update the title with the default (empty) value
     updateDeckStatsTitle();
@@ -260,31 +279,7 @@ $(document).ready(async function () {
   const activePreset = presets.find(p => p.name === saved.selectedPreset) || presets[0];
   initProgramSlots(
     activePreset.programSlots || 6,
-    saved.programSlots || [],
-    function(slotIndex, programName) {
-      // Custom callback for program slot changes
-      if (programName) {
-        // Program was added to a slot
-        const programData = activePrograms.dataMap[programName];
-        if (programData) {
-          // Add to active programs
-          addActiveProgram(slotIndex, programName, programData);
-          
-          // Check if it's a choice-type program
-          if (programData.improvements?.type === "choice" && 
-              !choiceSelections.programs[programName]) {
-            handleChoiceSelection("programs", programName, programData);
-          }
-        }
-      } else {
-        // Program was removed from a slot
-        removeActiveProgram(slotIndex);
-      }
-      
-      // Update the UI and save state
-      updateMatrixActions();
-      saveState();
-    }
+    saved.programSlots || []
   );
 
   function getOrderedBaseStats(preset) {
@@ -357,6 +352,9 @@ $(document).ready(async function () {
     // Collect all active items (qualities and programs)
     const allItems = collectItems();
     
+    // Store original deck stats before applying improvements
+    const originalDeckStats = { ...currentDeckStats };
+    
     // Apply improvements to get modified stats
     const modifiedStats = applyImprovements({
       attributes: getAttributes(),
@@ -367,8 +365,8 @@ $(document).ready(async function () {
     // Update notes display
     updateNotesDisplay(modifiedStats.notes);
     
-    // Update UI with modified stats
-    updateDeckStatLabels(modifiedStats.deckStats);
+    // Update UI with modified stats, passing both original and modified values
+    updateDeckStatLabels(modifiedStats.deckStats, originalDeckStats);
     renderMatrixActions(
       matrixActions,
       modifiedStats.attributes,
@@ -405,12 +403,11 @@ $(document).ready(async function () {
     // Empty all populated program slots
     initProgramSlots(
       preset.rating || 6,
-      [], // Empty array to clear all slots
-      function() {
-        // Clear active programs data structure
-        activePrograms.slots = {};
-      }
+      [] // Empty array to clear all slots
     );
+    
+    // Clear active programs data structure
+    activePrograms.slots = {};
     
     // Clear swapped deck stats by resetting to preset values
     currentDeckStats = {
@@ -421,7 +418,8 @@ $(document).ready(async function () {
     };
     
     // Update deck stat labels to values from selected preset
-    updateDeckStatLabels(currentDeckStats);
+    // Since we're resetting, original and modified values are the same
+    updateDeckStatLabels(currentDeckStats, currentDeckStats);
     
     // Rerun applyImprovements via updateMatrixActions
     updateMatrixActions();
@@ -532,6 +530,185 @@ $(document).ready(async function () {
     updateMatrixActions();
     saveState();
   });
+
+  // Function to initialize program slots with drag and drop functionality
+  function initProgramSlots(slotCount, savedSlots) {
+    const container = $("#program-slots");
+    container.empty();
+    
+    // Track which slot is being dragged
+    let currentDragSlot = null;
+    
+    // Add document-level handlers for drag and drop
+    $(document).off("dragover").on("dragover", function(e) {
+      // Always prevent default to allow drops anywhere on the document
+      e.preventDefault();
+      
+      // Add visual indication that dropping outside will deactivate the program
+      if (currentDragSlot !== null) {
+        // Check if we're over a program slot
+        const isOverProgramSlot = $(e.target).closest('.program-slot').length > 0;
+        if (!isOverProgramSlot) {
+          // Visual indication that dropping here will deactivate
+          $('body').addClass('program-deactivate-zone');
+        } else {
+          $('body').removeClass('program-deactivate-zone');
+        }
+      }
+    });
+    
+    $(document).off("drop").on("drop", function(e) {
+      e.preventDefault();
+      $('body').removeClass('program-deactivate-zone');
+      
+      // Only process if we have a current drag operation from a program slot
+      if (currentDragSlot !== null) {
+        // Check if we're dropping on a program slot
+        const targetSlot = $(e.target).closest('.program-slot');
+        
+        // If not dropping on a program slot, deactivate the program
+        if (targetSlot.length === 0) {
+          const sourceSlot = $(`#program-slots .program-slot[data-slot="${currentDragSlot}"]`);
+          const programName = sourceSlot.text().trim();
+          // Clear the source slot
+          sourceSlot.text("");
+          
+          // Remove program from active programs
+          removeActiveProgram(currentDragSlot);
+          
+          // Update UI and save state
+          updateMatrixActions();
+          saveState();
+        }
+        
+        // Reset tracking
+        currentDragSlot = null;
+      }
+    });
+    
+    // Handle drag end to clean up visual states
+    $(document).off("dragend").on("dragend", function() {
+      $('body').removeClass('program-deactivate-zone');
+      currentDragSlot = null;
+    });
+    
+    for (let i = 0; i < slotCount; i++) {
+      const slot = $("<div>")
+        .addClass("program-slot")
+        .attr("data-slot", i)
+        .attr("data-slot-index", i) // Add slot-index for compatibility with existing code
+        .attr("draggable", true)
+        .text(savedSlots[i] || "")
+        .on("dragstart", function(e) {
+          const content = $(this).text().trim();
+          // Only make it draggable if it has content
+          if (content === "") {
+            e.preventDefault();
+            return false;
+          }
+          
+          // Set data for the drag operation
+          e.originalEvent.dataTransfer.setData("text/plain", content);
+          
+          // Track which slot is being dragged using a variable instead of dataTransfer
+          currentDragSlot = $(this).attr("data-slot");
+          
+          // Set drag image and effects
+          e.originalEvent.dataTransfer.effectAllowed = "move";
+        })
+        .on("dragover", function (e) {
+          e.preventDefault();
+          $(this).addClass("drag-over");
+        })
+        .on("dragleave", function () {
+          $(this).removeClass("drag-over");
+        })
+        .on("drop", function (e) {
+          e.preventDefault();
+          $(this).removeClass("drag-over");
+          $('body').removeClass('program-deactivate-zone');
+
+          const draggedText = e.originalEvent.dataTransfer.getData("text/plain");
+          const $existing = $(this).text();
+          const targetSlotIndex = parseInt($(this).attr("data-slot"));
+          
+          // Handle drop from program list or another slot
+          if (draggedText) {
+            // If we're dropping from another program slot (tracked by currentDragSlot)
+            if (currentDragSlot !== null) {
+              const sourceSlot = $(`#program-slots .program-slot[data-slot="${currentDragSlot}"]`);
+              const sourceSlotIndex = parseInt(currentDragSlot);
+              
+              // If dropping to a different slot
+              if (sourceSlotIndex !== targetSlotIndex) {
+                if ($existing) {
+                  // Swap programs between slots
+                  sourceSlot.text($existing);
+                  
+                  // Update active programs for source slot
+                  if (activePrograms.dataMap[$existing]) {
+                    addActiveProgram(sourceSlotIndex, $existing, activePrograms.dataMap[$existing]);
+                  }
+                } else {
+                  // Move to empty slot, clear source
+                  sourceSlot.text("");
+                  
+                  // Remove program from source slot
+                  removeActiveProgram(sourceSlotIndex);
+                }
+                
+                // Set the program in the target slot
+                $(this).text(draggedText);
+                
+                // Update active programs for target slot
+                if (activePrograms.dataMap[draggedText]) {
+                  addActiveProgram(targetSlotIndex, draggedText, activePrograms.dataMap[draggedText]);
+                  
+                  // Check if it's a choice-type program
+                  const programData = activePrograms.dataMap[draggedText];
+                  if (programData.improvements?.type === "choice" && 
+                      !choiceSelections.programs[draggedText]) {
+                    handleChoiceSelection("programs", draggedText, programData);
+                  }
+                }
+              }
+            } else {
+              // Dropping from program list, just set the text
+              $(this).text(draggedText);
+              
+              // Update active programs for target slot
+              if (activePrograms.dataMap[draggedText]) {
+                addActiveProgram(targetSlotIndex, draggedText, activePrograms.dataMap[draggedText]);
+                
+                // Check if it's a choice-type program
+                const programData = activePrograms.dataMap[draggedText];
+                if (programData.improvements?.type === "choice" && 
+                    !choiceSelections.programs[draggedText]) {
+                  handleChoiceSelection("programs", draggedText, programData);
+                }
+              }
+            }
+            
+            // Update UI and save state
+            updateMatrixActions();
+            saveState();
+            
+            // Reset tracking
+            currentDragSlot = null;
+          }
+        });
+      container.append(slot);
+      
+      // Initialize active programs from saved slots
+      if (savedSlots[i]) {
+        const programName = savedSlots[i];
+        const programData = activePrograms.dataMap[programName];
+        if (programData) {
+          addActiveProgram(i, programName, programData);
+        }
+      }
+    }
+  }
 
   // Add drag-swap logic
   $("#draggables .stat-box").off("dragstart");

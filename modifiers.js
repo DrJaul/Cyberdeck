@@ -32,6 +32,8 @@ function getFormulaDisplayName(item) {
 
 // Apply improvements from items to base stats
 export function applyImprovements(baseStats, items = []) {
+  console.log(`[Improvements] Starting to apply improvements from ${items.length} items`);
+  
   // Create modified stats object with shallow copies of base stat objects
   const modified = {
     attributes: { ...baseStats.attributes },
@@ -61,6 +63,8 @@ export function applyImprovements(baseStats, items = []) {
       groupedItems.static.push(item); // Default to static if unknown type
     }
   });
+  
+  console.log(`[Improvements] Grouped items: ${groupedItems.replacement.length} replacement, ${groupedItems.static.length} static, ${groupedItems.choice.length} choice`);
 
   // Process replacement-type improvements first (they affect formulas)
   groupedItems.replacement.forEach(item => {
@@ -76,6 +80,14 @@ export function applyImprovements(baseStats, items = []) {
   groupedItems.choice.forEach(item => {
     processChoiceItem(item, modified);
   });
+  
+  console.log(`[Improvements] All improvements applied, modified stats:`, {
+    attributes: modified.attributes,
+    skills: modified.skills,
+    deckStats: modified.deckStats,
+    replacements: modified.replacements.length,
+    matrixActions: Object.keys(modified.matrixActions).length
+  });
 
   return modified;
 }
@@ -83,6 +95,8 @@ export function applyImprovements(baseStats, items = []) {
 // Process a replacement-type item
 function processReplacementItem(item, modified) {
   if (!item.improvements?.selections) return;
+  
+  console.log(`[Improvements] Processing replacement item: ${item.name}`);
   
   const selections = item.improvements.selections.default || [];
   
@@ -93,6 +107,7 @@ function processReplacementItem(item, modified) {
         to: entry.formula[1],
         affects: entry.affects
       });
+      console.log(`[Improvements] Added replacement: ${entry.formula[0]} -> ${entry.formula[1]} for ${entry.affects}`);
     }
   });
 }
@@ -100,6 +115,8 @@ function processReplacementItem(item, modified) {
 // Process a static-type item
 function processStaticItem(item, modified) {
   if (!item.improvements?.selections) return;
+  
+  console.log(`[Improvements] Processing static item: ${item.name}`);
   
   const selections = item.improvements.selections.default || [];
   const displayName = getDisplayName(item);
@@ -114,6 +131,9 @@ function processChoiceItem(item, modified) {
   const selectionKey = item.selectedOption && 
                       item.improvements.selections[item.selectedOption] 
                       ? item.selectedOption : "default";
+  
+  console.log(`[Improvements] Processing choice item: ${item.name} with selection: ${selectionKey}`);
+  
   const selections = item.improvements.selections[selectionKey] || [];
   const displayName = getDisplayName(item);
   
@@ -125,6 +145,15 @@ function processSelections(selections, displayName, item, modified) {
   selections.forEach(entry => {
     const targetGroup = entry.affects;
     
+    console.log(`[Improvements] Processing selection affecting: ${targetGroup} from ${displayName}`);
+    
+    // Special handling for notes which use a "value" property
+    if (targetGroup === "notes" && entry.value && typeof entry.value === 'string') {
+      modified.notes.push({ text: entry.value, source: displayName });
+      console.log(`[Improvements] Added note: "${entry.value}" from ${displayName}`);
+      return;
+    }
+    
     for (const [target, value] of Object.entries(entry)) {
       // Skip non-value properties
       if (target === "affects" || target === "formula" || target === "matrixActionId"|| target === "action") continue;
@@ -132,19 +161,37 @@ function processSelections(selections, displayName, item, modified) {
       switch (targetGroup) {
         case "attribute":
           modified.attributes[target] = (modified.attributes[target] || 0) + value;
+          console.log(`[Improvements] Modified attribute ${target}: +${value} from ${displayName}`);
           break;
           
         case "skill":
           modified.skills[target] = (modified.skills[target] || 0) + value;
+          console.log(`[Improvements] Modified skill ${target}: +${value} from ${displayName}`);
           break;
           
         case "deckStat":
-          modified.deckStats[target] = (modified.deckStats[target] || 0) + value;
+          // Normalize deck stat property names to match the expected property names
+          let normalizedTarget = target;
+          
+          // Convert capitalized property names to the expected format
+          if (target === "Attack" || target === "attack") {
+            normalizedTarget = "attack";
+          } else if (target === "Data Processing" || target === "dataProcessing") {
+            normalizedTarget = "dataProcessing";
+          } else if (target === "Sleaze" || target === "sleaze") {
+            normalizedTarget = "sleaze";
+          } else if (target === "Firewall" || target === "firewall") {
+            normalizedTarget = "firewall";
+          }
+          
+          modified.deckStats[normalizedTarget] = (modified.deckStats[normalizedTarget] || 0) + value;
+          console.log(`[Improvements] Modified deck stat ${normalizedTarget}: +${value} from ${displayName}`);
           break;
           
         case "notes":
           if (value && typeof value === 'string') {
             modified.notes.push({ text: value, source: displayName });
+            console.log(`[Improvements] Added note: "${value}" from ${displayName}`);
           }
           break;
           
@@ -158,6 +205,7 @@ function processSelections(selections, displayName, item, modified) {
               value: Number(value),
               type: item.type || (item.rating ? "program" : "quality")
             });
+            console.log(`[Improvements] Added global matrix action bonus: +${value} from ${displayName}`);
             continue;
           }
           
@@ -174,6 +222,7 @@ function processSelections(selections, displayName, item, modified) {
             value: Number(value),
             type: item.type || (item.rating ? "program" : "quality")
           });
+          console.log(`[Improvements] Modified matrix action ${actionId}: +${value} from ${displayName}`);
           break;
       }
     }

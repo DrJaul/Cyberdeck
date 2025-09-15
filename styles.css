@@ -4,15 +4,30 @@ body {
   padding: 0;
   background-color: #111;
   color: #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 h3 {
   margin-top: 1em;
   margin-bottom: 0.5em;
+  text-align: center;
 }
 
-form, #deck-stats, #program-section, #program-slots, #status {
+form, #deck-stats, #program-section, #program-slots, #status, #deck-notes {
   margin: 1em;
+  max-width: 1200px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#main-screen {
+  width: 600px; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 label {
@@ -29,7 +44,8 @@ input[type="number"] {
   display: flex;
   gap: 1em;
   flex-wrap: wrap;
-  margin-top: 0.5em;
+  margin-top: 2em;
+  justify-content: center;
 }
 
 /* New layout for deck stat items */
@@ -40,8 +56,14 @@ input[type="number"] {
 }
 
 .stat-label {
-  margin-bottom: 0.3em;
-  font-weight: bold;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+    width: 80px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .stat-box {
@@ -51,9 +73,12 @@ input[type="number"] {
   border-radius: 4px;
   cursor: move;
   user-select: none;
-  min-width: 100px;
+  width: 30px;
+  height: 17px;
   text-align: center;
   position: relative;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .stat-box .augmented {
@@ -63,18 +88,29 @@ input[type="number"] {
   margin-top: 0.2em;
 }
 
+/* Specific styling for augmented-display in stat boxes */
+.stat-container .augmented-display {
+  display: block;
+  font-size: 1.2em; /* Larger text for modified values */
+  color: #4CAF50; /* Green color for positive modifications */
+  font-weight: bold;
+  margin-top: 0.2em;
+}
+
 .stat-box:hover {
   background-color: #444;
 }
 
 #program-list-container, #program-slots {
   margin: 1em;
+  width: 100%;
 }
 
 #program-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5em;
+  justify-content: center;
 }
 
 .program-item {
@@ -84,6 +120,10 @@ input[type="number"] {
   border-radius: 3px;
   cursor: grab;
   user-select: none;
+}
+
+#program-slots {
+  text-align: center;
 }
 
 .program-slot {
@@ -148,6 +188,7 @@ input[type="number"] {
   transition: transform 0.3s ease;
   z-index: 1000;
   padding: 1em;
+  max-width: 400px;
 }
 
 #left-panel {
@@ -237,6 +278,7 @@ input[type="number"] {
   width: 80%;
   max-width: 500px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
 }
 
 .modal h3 {
@@ -289,4 +331,20 @@ input[type="number"] {
 
 #quality-choice-cancel:hover {
   background-color: #777;
+}
+
+/* Factory reset button styling */
+#reset-factory {
+  float: right;
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#reset-factory:hover {
+  background-color: #666;
 }
