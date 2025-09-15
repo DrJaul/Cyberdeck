@@ -1,6 +1,3 @@
-// Import debug flag from uiHandlers.js
-import { debug } from './uiHandlers.js';
-
 export function getAttributes() {
   return {
     logic: parseInt($("#attr-logic").val()) || 0,
@@ -35,13 +32,11 @@ function getFormulaDisplayName(item) {
 
 // Apply improvements from items to base stats
 export function applyImprovements(baseStats, items = []) {
-  if (debug) console.log(`[DEBUG] Applying improvements from ${items.length} items`);
-  
   // Create modified stats object with shallow copies of base stat objects
   const modified = {
-    attributes: { ...baseStats.attributes } || {},
-    skills: { ...baseStats.skills } || {},
-    deckStats: { ...baseStats.deckStats } || {},
+    attributes: { ...baseStats.attributes },
+    skills: { ...baseStats.skills },
+    deckStats: { ...baseStats.deckStats },
     matrixActions: {},
     matrixActionDetails: {},
     replacements: [],
@@ -90,7 +85,6 @@ function processReplacementItem(item, modified) {
   if (!item.improvements?.selections) return;
   
   const selections = item.improvements.selections.default || [];
-  const displayName = getDisplayName(item);
   
   selections.forEach(entry => {
     if (entry.affects && entry.formula?.length >= 2) {
@@ -133,7 +127,7 @@ function processSelections(selections, displayName, item, modified) {
     
     for (const [target, value] of Object.entries(entry)) {
       // Skip non-value properties
-      if (target === "affects" || target === "formula" || target === "matrixActionId") continue;
+      if (target === "affects" || target === "formula" || target === "matrixActionId"|| target === "action") continue;
       
       switch (targetGroup) {
         case "attribute":
@@ -159,7 +153,6 @@ function processSelections(selections, displayName, item, modified) {
           
           // Handle global matrix action improvements (no specific actionId)
           if (!actionId) {
-            // Store the global improvement details
             modified.globalMatrixActionDetails.push({
               name: getFormulaDisplayName(item),
               value: Number(value),
@@ -168,7 +161,7 @@ function processSelections(selections, displayName, item, modified) {
             continue;
           }
           
-          // Add to matrix action total for specific action - ensure value is a number
+          // Add to matrix action total for specific action
           modified.matrixActions[actionId] = (modified.matrixActions[actionId] || 0) + Number(value);
           
           // Store details for formula display
@@ -243,7 +236,18 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
     const actionIdBonus = action.id ? qualityMods[action.id] || 0 : 0;
     const totalQualityBonus = qualityBonus + actionIdBonus;
     
-    const dicePool = attrVal + skillVal + totalQualityBonus;
+    // Calculate global matrix action bonus
+    let globalBonus = 0;
+    if (globalMatrixActionDetails?.length > 0) {
+      globalMatrixActionDetails.forEach(detail => {
+        if (detail?.value > 0) {
+          globalBonus += detail.value;
+        }
+      });
+    }
+    
+    // Include global bonus in dice pool calculation
+    const dicePool = attrVal + skillVal + totalQualityBonus + globalBonus;
     
     const formulaDisplay = buildFormulaDisplay(
       skillKey || "?", 
@@ -263,7 +267,7 @@ export function renderMatrixActions(actions, attributes, skills, baseStats, qual
       // Set cell content based on field type
       switch (field) {
         case 'formula':
-          content = action.formula.length >0 ? formulaDisplay : "N/a";
+          content = action.formula.length > 0 ? formulaDisplay : "N/a";
           break;
         case 'total':
           content = dicePool;
@@ -323,20 +327,8 @@ function buildFormulaDisplay(displaySkill, skillVal, displayAttr, attrVal, actio
   // Get action identifiers for looking up details
   const actionKeys = [];
   
-  // Add action.name and normalized version if it's a string
-  if (action.name) {
-    actionKeys.push(action.name);
-    if (typeof action.name === 'string') {
-      actionKeys.push(action.name.toLowerCase().replace(/\s+/g, ''));
-    }
-  }
-  
-  // Add action.id - ensure we check both number and string versions
   if (action.id) {
-    // Add as number
     actionKeys.push(action.id);
-    // Add as string
-    actionKeys.push(String(action.id));
   }
   
   // Find all improvement details for this action

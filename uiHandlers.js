@@ -1,9 +1,3 @@
-// Global debug flag - set to true to enable debug messages
-const debug = true;
-
-// Export debug flag for use in other modules
-export { debug };
-
 import {
   loadQualities,
   loadPresets,
@@ -21,21 +15,18 @@ import {
 
 // Store selected options for choice-type qualities and programs
 const choiceSelections = {
-  qualities: {}, // Format: {qualityName: selectedOption}
-  programs: {}   // Format: {programName: selectedOption}
+  qualities: {},
+  programs: {}
 };
 
 // Store active programs data for fast access
 const activePrograms = {
-  // Format: {slotIndex: {name, data, selectedOption}}
   slots: {},
-  // Quick lookup for program data by name
   dataMap: {}
 };
 
 // Function to handle choice-type qualities and programs
 function handleChoiceSelection(itemType, itemName, itemData) {
-  // Check if this is a choice-type item
   if (itemData.improvements && itemData.improvements.type === "choice") {
     const selections = itemData.improvements.selections;
     const options = Object.keys(selections);
@@ -80,16 +71,12 @@ function addActiveProgram(slotIndex, programName, programData) {
     selectedOption: choiceSelections.programs[programName] || null
   };
   
-  if (debug) console.log(`[DEBUG] Added program to slot ${slotIndex}: ${programName}`);
   return true;
 }
 
 // Remove a program from the active programs data structure
 function removeActiveProgram(slotIndex) {
   if (!activePrograms.slots[slotIndex]) return false;
-  
-  const programName = activePrograms.slots[slotIndex].name;
-  if (debug) console.log(`[DEBUG] Removed program from slot ${slotIndex}: ${programName}`);
   
   // Remove program from the slot
   delete activePrograms.slots[slotIndex];
@@ -99,7 +86,6 @@ function removeActiveProgram(slotIndex) {
 // Get all active programs as an array of program data objects
 function getActivePrograms() {
   return Object.values(activePrograms.slots).map(slot => {
-    // Create a copy of the program data with the selected option
     return {
       ...slot.data,
       selectedOption: slot.selectedOption
@@ -160,7 +146,7 @@ function saveState() {
       dataProcessing: $("#draggables .stat-box[data-type='dataProcessing'] span").text(),
       firewall: $("#draggables .stat-box[data-type='firewall'] span").text()
     },
-    choiceSelections: choiceSelections // Save choice selections
+    choiceSelections: choiceSelections
   };
   localStorage.setItem("cyberdeckState", JSON.stringify(state));
 }
@@ -197,28 +183,22 @@ $(document).ready(async function () {
     container.append(checkbox);
   });
   
-  //Quality Checkbox event listener
+  // Quality Checkbox event listener
   var qualityCheckboxSelector = ".quality-checkbox input[type='checkbox']"
   $(qualityCheckboxSelector).off("change");
   $(qualityCheckboxSelector).on("change", function() {
- // if (debug) console.log(`[DEBUG] Quality checked: ${qualityName}`);
-
     const qualityName = $(this).val();
     const quality = qualityMap[qualityName];
     
     if ($(this).prop("checked")) {
-      // Quality was activated
-      if (debug) console.log(`[DEBUG] Quality activated: ${qualityName}`);
       if (handleChoiceSelection("qualities", qualityName, quality)) {
         // If it's a choice-type quality, the modal will handle the rest
-        // We don't need to do anything else here
       } else {
         // Not a choice-type quality, update matrix actions immediately
         updateMatrixActions();
       }
     } else {
       // Quality was deactivated, remove any selected option
-      if (debug) console.log(`[DEBUG] Quality deactivated: ${qualityName}`);
       if (choiceSelections.qualities[qualityName]) {
         delete choiceSelections.qualities[qualityName];
         
@@ -350,7 +330,6 @@ $(document).ready(async function () {
       
       // For choice-type qualities, add the selected option
       if (quality.improvements?.type === "choice" && choiceSelections.qualities[qualityName]) {
-        // Add selectedOption property without deep cloning the entire object
         items.push({
           ...quality,
           selectedOption: choiceSelections.qualities[qualityName]
@@ -452,17 +431,7 @@ $(document).ready(async function () {
   }
 
   $("input[id^='attr-'], input[id^='skill-']").off("change");
-  $("input[id^='attr-'], input[id^='skill-']").on("change", function (e) {
-    const inputId = $(this).attr('id');
-    if (debug && inputId) {
-      if (inputId.startsWith('attr-')) {
-        const attrName = inputId.replace('attr-', '');
-        console.log(`[DEBUG] Attribute changed: ${attrName} to ${$(this).val()}`);
-      } else if (inputId.startsWith('skill-')) {
-        const skillName = inputId.replace('skill-', '');
-        console.log(`[DEBUG] Skill changed: ${skillName} to ${$(this).val()}`);
-      }
-    }
+  $("input[id^='attr-'], input[id^='skill-']").on("change", function () {
     updateMatrixActions();
     saveState();
   });
@@ -472,7 +441,6 @@ $(document).ready(async function () {
     const selectedPreset = $(this).val();
     const selected = presets.find(p => p.name === selectedPreset);
     if (selected) {
-      if (debug) console.log(`[DEBUG] Preset selected: ${selectedPreset}`);
       resetDeck(selected);
       // Update the title with the selected preset name
       updateDeckStatsTitle();
@@ -508,8 +476,6 @@ $(document).ready(async function () {
     if (itemInfo && selectedOption) {
       // Store the selection
       choiceSelections[itemInfo.type][itemInfo.name] = selectedOption;
-      
-      if (debug) console.log(`[DEBUG] Choice selected: ${itemInfo.name} (${itemInfo.type}) - option: ${selectedOption}`);
       
       // Update the label with the selected option
       if (itemInfo.type === "qualities") {
@@ -607,16 +573,11 @@ $(document).ready(async function () {
       targetBox.find("span").text(sourceVal);
       sourceBox.removeClass("swap");
       targetBox.removeClass("swap");
-
-      // No longer swapping data-type attributes
-      // Labels remain fixed, only values change
       
       // Update the currentDeckStats with the swapped values
       const tempValue = currentDeckStats[sourceType];
       currentDeckStats[sourceType] = currentDeckStats[targetType];
       currentDeckStats[targetType] = tempValue;
-      
-      if (debug) console.log(`[DEBUG] Deck stats swapped: ${sourceType}(${targetVal}) <-> ${targetType}(${sourceVal})`);
 
       // Re-run updates to reflect changes
       updateMatrixActions();

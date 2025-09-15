@@ -1,42 +1,32 @@
-// Import debug flag from uiHandlers.js
-import { debug } from './uiHandlers.js';
-
 async function loadJSON(file) {
   const res = await fetch(file);
   const data = await res.json();
-  if (debug) console.log(`[DEBUG] Loaded data from ${file}`);
   return data;
 }
 
 async function loadQualities() {
   const qualities = await loadJSON("qualities.json");
-  if (debug) console.log(`[DEBUG] Loaded ${qualities.length} qualities`);
   return qualities;
 }
 
 async function loadPresets() {
   const presets = await loadJSON("presets.json");
-  if (debug) console.log(`[DEBUG] Loaded ${presets.length} presets`);
   return presets;
 }
 
 async function loadPrograms() {
   const programs = await loadJSON("programs.json");
-  if (debug) console.log(`[DEBUG] Loaded ${programs.length} programs`);
   return programs;
 }
 
 async function loadMatrixActions() {
   const actions = await loadJSON("matrix_actions.json");
-  if (debug) console.log(`[DEBUG] Loaded ${actions.length} matrix actions`);
   return actions;
 }
 
 function initProgramSlots(slotCount, savedSlots, onProgramChange) {
   const container = $("#program-slots");
   container.empty();
-  
-  if (debug) console.log(`[DEBUG] Initializing ${slotCount} program slots`);
   
   // Track which slot is being dragged
   let currentDragSlot = null;
@@ -74,7 +64,6 @@ function initProgramSlots(slotCount, savedSlots, onProgramChange) {
         const programName = sourceSlot.text().trim();
         // Clear the source slot
         sourceSlot.text("");
-        if (debug) console.log(`[DEBUG] Program deactivated: ${programName} from slot ${currentDragSlot}`);
         onProgramChange(); // Update backend state
       }
       
@@ -108,8 +97,6 @@ function initProgramSlots(slotCount, savedSlots, onProgramChange) {
         
         // Track which slot is being dragged using a variable instead of dataTransfer
         currentDragSlot = $(this).attr("data-slot");
-        
-        if (debug) console.log(`[DEBUG] Program dragged: ${content} from slot ${currentDragSlot}`);
         
         // Set drag image and effects
         e.originalEvent.dataTransfer.effectAllowed = "move";
@@ -148,13 +135,10 @@ function initProgramSlots(slotCount, savedSlots, onProgramChange) {
               
               // Set the program in the target slot
               $(this).text(draggedText);
-              
-              if (debug) console.log(`[DEBUG] Programs swapped: ${draggedText} to slot ${targetSlotIndex}, ${$existing} to slot ${currentDragSlot}`);
             }
           } else {
             // Dropping from program list, just set the text
             $(this).text(draggedText);
-            if (debug) console.log(`[DEBUG] Program added: ${draggedText} to slot ${targetSlotIndex}`);
           }
           
           // Update backend state
