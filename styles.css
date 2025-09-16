@@ -40,15 +40,20 @@ h3 {
 form, #deck-stats, #program-section, #program-slots, #status, #deck-notes {
   margin: 1em;
   max-width: 1200px;
-  width: 90%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
 
 #main-screen {
-  width: 600px; 
+  width: 100%;
+  max-width: 600px; 
   margin-left: auto;
   margin-right: auto;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 label {
@@ -94,8 +99,7 @@ input[type="number"] {
   border-radius: 2px;
   cursor: move;
   user-select: none;
-  width: 30px;
-  height: 17px;
+  width: 35px;
   text-align: center;
   position: relative;
   margin-top: 20px;
@@ -188,6 +192,9 @@ input[type="number"] {
   border-collapse: collapse;
   margin-top: 1em;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #matrix-actions-table th,
@@ -221,18 +228,19 @@ input[type="number"] {
   padding: 1em;
   border-right: 1px solid #00aa00;
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+  box-sizing: border-box;
 }
 
 #left-panel {
   left: 0;
   transform: translateX(-100%);
-  width: 25%;
+  max-width: 30%;
 }
 
 #right-panel {
   right: 0;
   transform: translateX(100%);
-  width: 75%;
+  max-width: 70%;
 }
 
 #left-panel.open {
@@ -327,11 +335,12 @@ input:focus, select:focus, button:focus {
   background-color: #001a00;
   padding: 1.5em;
   border-radius: 3px;
-  width: 80%;
+  width: 90%;
   max-width: 500px;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
   margin: 0 auto;
   border: 1px solid #00aa00;
+  box-sizing: border-box;
 }
 
 .modal h3 {
@@ -426,4 +435,137 @@ input:focus, select:focus, button:focus {
 
 body {
   animation: crt-flicker 10s infinite;
+  box-sizing: border-box;
+}
+
+/* Global box-sizing reset */
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* Improve touch responsiveness */
+.stat-box, .program-item, .program-slot {
+  touch-action: none; /* Disable browser handling of all panning and zooming gestures */
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  /* Adjust font sizes for better readability on small screens */
+  body {
+    font-size: 14px;
+  }
+  
+  h3 {
+    font-size: 1.3em;
+  }
+  
+  /* Make the draggable stats more touch-friendly */
+  #draggables {
+    gap: 0.8em;
+  }
+  
+  /* Make panels full width when open on mobile */
+  #left-panel.open,
+  #right-panel.open {
+    width: 100%;
+  }
+  
+  .stat-box {
+    width: 40px;
+    height: 25px;
+    padding: 0.7em;
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+  
+  /* Improve form elements for touch */
+  input, select, button {
+    padding: 0.5em;
+    font-size: 1em;
+  }
+  
+  input[type="number"] {
+    width: 70px;
+  }
+  
+  /* Adjust panel toggles for easier tapping */
+  .panel-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5em;
+  }
+  
+  /* Make program items more touch-friendly */
+  .program-item {
+    padding: 0.5em 0.7em;
+    margin: 0.3em;
+  }
+  
+  /* Adjust modal for mobile */
+  .modal-content {
+    padding: 1em;
+    width: 95%;
+  }
+  
+  .modal-buttons button {
+    padding: 0.7em 1.2em;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 576px) {
+  /* Further adjustments for very small screens */
+  body {
+    font-size: 13px;
+  }
+  
+  /* Keep the same layout for stat boxes as desktop, just adjust spacing */
+  #draggables {
+    gap: 0.5em;
+  }
+  
+  .stat-container {
+    margin-bottom: 0.5em;
+  }
+  
+  /* Ensure notes section displays properly when visible */
+  #deck-notes {
+    clear: both;
+    width: 100%;
+    margin: 1em 0;
+    padding: 0.5em;
+  }
+  
+  /* Adjust program list for small screens */
+  #program-list {
+    justify-content: flex-start;
+  }
+  
+  /* Make the reset button more prominent */
+  #reset-factory {
+    float: none;
+    display: block;
+    width: 100%;
+    margin: 1em auto;
+    padding: 0.8em;
+  }
+  
+  /* Ensure table is scrollable horizontally */
+  #matrix-actions-table {
+    font-size: 0.9em;
+  }
+  
+  /* Adjust modal for very small screens */
+  .modal-content {
+    padding: 0.8em;
+  }
+  
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  
+  .modal-buttons button {
+    width: 100%;
+  }
 }
