@@ -189,12 +189,14 @@ input[type="number"] {
 /* Matrix Actions Table */
 #matrix-actions-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 1em;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
   display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  table-layout: fixed;
 }
 
 #matrix-actions-table th,
@@ -213,6 +215,28 @@ input[type="number"] {
 #matrix-actions-table td {
   background-color: #001100;
   color: #00dd00;
+}
+
+/* Fixed first column (Action/Name column) */
+#matrix-actions-table th:first-child,
+#matrix-actions-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+#matrix-actions-table th:first-child {
+  background-color: #002200; /* Same as other headers */
+  z-index: 2; /* Higher than td to stay on top at corner */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#matrix-actions-table td:first-child {
+  background-color: #002200; /* Same as header cells */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  color: #00ff00; /* Match header text color */
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); /* Match header text shadow */
+  font-weight: bold; /* Add bold to emphasize like headers */
 }
 
 /* Side Panels */
@@ -240,7 +264,7 @@ input[type="number"] {
 #right-panel {
   right: 0;
   transform: translateX(100%);
-  max-width: 70%;
+  max-width: 100%;
 }
 
 #left-panel.open {
