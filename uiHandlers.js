@@ -17,7 +17,7 @@ const activePrograms = { slots: {}, dataMap: {} };
 const currentDeckStats = {};
 
 function handleChoiceSelection(itemType, itemName, itemData) {
-  if (!itemData.improvements?.type === "choice") return false;
+  if (itemData.improvements?.type !== "choice") return false;
   
   const options = Object.keys(itemData.improvements.selections || {});
   if (!options.length) return false;
