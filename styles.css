@@ -258,7 +258,7 @@ input[type="number"] {
 #left-panel {
   left: 0;
   transform: translateX(-100%);
-  max-width: 30%;
+  min-width: 250px;
 }
 
 #right-panel {
@@ -465,6 +465,40 @@ body {
 /* Global box-sizing reset */
 *, *:before, *:after {
   box-sizing: inherit;
+}
+
+/* Overlay Scrollbar Styling */
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 21, 0, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 170, 0, 0.7);
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 255, 0, 0.8);
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 170, 0, 0.7) rgba(0, 21, 0, 0.3);
 }
 
 /* Improve touch responsiveness */

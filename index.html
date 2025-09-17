@@ -6,11 +6,14 @@
   <title>Cyberdeck Config Helper (SR5)</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7896945483758478"
+     crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="panel-container">
     <div id="left-panel" class="side-panel">
       <form id="deck-config">
+      </br>
         <label>
           Select Your Deck:
           <select id="preset-selector">
@@ -116,7 +119,11 @@
         <div class="augmented-display" id="aug-firewall"></div>
       </div>
     </div>
-    
+  </div>
+  
+
+  <div id="program-slots">
+    <h3>Program Slots</h3>
   </div>
 
   <div id="program-section">
@@ -126,17 +133,14 @@
     </div>
   </div>
 
-  <div id="program-slots">
-    <h3>Active Programs</h3>
-  </div>
-    <button type="button" id="reset-factory">Reset to Factory Settings</button>
+ 
+  <button type="button" id="reset-factory">Reset to Factory Settings</button>
 
   <div id="deck-notes" style="margin: 1em; display: none;">
     <h3>Notes</h3>
     <ul id="notes-list"></ul>
   </div>
-  </div>
-  <div id="status"></div>
+ </div>
   <div id="program-tooltip"></div>
   
   <!-- Modal for improvement choices -->
