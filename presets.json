@@ -1,29 +1,277 @@
 [
   {
-    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "id": 798394,
     "name": "Renraku Tsurugi",
-    "attack": 2,
+    "rating": 3,
+    "attack": 6,
     "sleaze": 5,
-    "dataProcessing": 4,
-    "firewall": 3,
-    "rating": 3
-  },
-  {
-    "id": "7b989a54-6a3d-4d6a-9b9c-5b2f34d8f8b1",
-    "name": "Microdeck Summit",
-    "attack": 1,
-    "sleaze": 3,
     "dataProcessing": 5,
-    "firewall": 4,
-    "rating": 2
+    "firewall": 3,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Balanced mid-range deck. Slight emphasis on Data Processing."
   },
   {
-    "id": "c8d7e5f3-9a2b-4c1d-8e6f-0a9b8c7d6e5f",
+    "id": 622517,
+    "name": "Microdeck Summit",
+    "rating": 1,
+    "attack": 4,
+    "sleaze": 3,
+    "dataProcessing": 3,
+    "firewall": 1,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Entry-level deck. Slightly higher Sleaze than Erika MCD-1."
+  },
+  {
+    "id": 267845,
     "name": "Hermes Ikon",
+    "rating": 5,
     "attack": 4,
     "sleaze": 3,
     "dataProcessing": 3,
     "firewall": 4,
-    "rating": 5
+    "source": null,
+    "descriptionNotes": null
+  },
+  {
+    "id": 163209,
+    "name": "Aztechnology Defender",
+    "rating": 5,
+    "attack": 8,
+    "sleaze": 7,
+    "dataProcessing": 5,
+    "firewall": 5,
+    "source": "Kill Code, p.63",
+    "descriptionNotes": "Matrix damage taken is reduced by 1 (min 1), Dumpshock damage reduced by 2 (min 1). –2 Initiative penalty after rolling Initiative."
+  },
+  {
+    "id": 731456,
+    "name": "Aztechnology Shadow Warrior",
+    "rating": 3,
+    "attack": 6,
+    "sleaze": 5,
+    "dataProcessing": 4,
+    "firewall": 3,
+    "source": "Kill Code, p.62",
+    "descriptionNotes": "+1 Sleaze actions limit and +1 Sleaze when Sleaze is highest configured attribute. Affordable stealth deck."
+  },
+  {
+    "id": 590812,
+    "name": "Erika MCD-1",
+    "rating": 1,
+    "attack": 4,
+    "sleaze": 3,
+    "dataProcessing": 2,
+    "firewall": 1,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Entry-level deck (Device Rating 1). Very low Firewall. Only supports a single program."
+  },
+  {
+    "id": 415390,
+    "name": "Evo Sublime",
+    "rating": 4,
+    "attack": 7,
+    "sleaze": 6,
+    "dataProcessing": 5,
+    "firewall": 5,
+    "source": "Kill Code, p.62",
+    "descriptionNotes": "Implant-only deck. Allows limited meat-space actions in VR. –10 dice pool and –3 limit penalty to non-Matrix actions in VR."
+  },
+  {
+    "id": 502176,
+    "name": "Fairlight Destiny Blade",
+    "rating": 4,
+    "attack": 7,
+    "sleaze": 6,
+    "dataProcessing": 5,
+    "firewall": 5,
+    "source": "Kill Code, p.62",
+    "descriptionNotes": "+1 Cybercombat limit, +1 Attack when Attack is highest configured attribute. Optimized for combat."
+  },
+  {
+    "id": 347820,
+    "name": "Fairlight Excalibur",
+    "rating": 6,
+    "attack": 9,
+    "sleaze": 8,
+    "dataProcessing": 7,
+    "firewall": 6,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Top-tier deck (Device Rating 6). Extremely expensive. Considered the best off-the-shelf deck."
+  },
+  {
+    "id": 526941,
+    "name": "Fortress (Security Deck)",
+    "rating": 6,
+    "attack": 6,
+    "sleaze": 1,
+    "dataProcessing": 5,
+    "firewall": 8,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "High Firewall (8). Minimal Sleaze. Preloaded with Encryption, Shell, and Armor programs."
+  },
+  {
+    "id": 180375,
+    "name": "Fox (Hunter Deck)",
+    "rating": 2,
+    "attack": 4,
+    "sleaze": 1,
+    "dataProcessing": 3,
+    "firewall": 4,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Always hot-sim. Preloaded with Track, Shell, Hammer. Only runs Attack/Firewall programs."
+  },
+  {
+    "id": 800460,
+    "name": "Fuchi Cyber-Ex Series",
+    "rating": "Custom",
+    "attack": "Varies",
+    "sleaze": "Varies",
+    "dataProcessing": "Varies",
+    "firewall": "Varies",
+    "source": "Kill Code, p.60",
+    "descriptionNotes": "Customizable deck. Can run Device Rating + 2 programs. Flexible but expensive."
+  },
+  {
+    "id": 268029,
+    "name": "Fuchi Cyber-N Series",
+    "rating": "Custom",
+    "attack": "Varies",
+    "sleaze": "Varies",
+    "dataProcessing": "Varies",
+    "firewall": "Varies",
+    "source": "Kill Code, p.60",
+    "descriptionNotes": "Locked configuration. Only one program can run at a time. Chosen attribute array fixed permanently."
+  },
+  {
+    "id": 135768,
+    "name": "Great Wall (Security Deck)",
+    "rating": 8,
+    "attack": 8,
+    "sleaze": 1,
+    "dataProcessing": 6,
+    "firewall": 10,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Firewall 10. Minimal Sleaze. Preloaded with Encryption, Shell, Armor, Biofeedback Filter."
+  },
+  {
+    "id": 364920,
+    "name": "Guard (Security Deck)",
+    "rating": 2,
+    "attack": 3,
+    "sleaze": 1,
+    "dataProcessing": 2,
+    "firewall": 4,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Low-end security deck. High Firewall for its rating. Comes with Encryption program."
+  },
+  {
+    "id": 439157,
+    "name": "Hermes Chariot",
+    "rating": 2,
+    "attack": 5,
+    "sleaze": 4,
+    "dataProcessing": 4,
+    "firewall": 2,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Balanced Attack and Sleaze. Low Firewall. Good mid-tier option."
+  },
+  {
+    "id": 911506,
+    "name": "Kitbashed Sleeper",
+    "rating": 4,
+    "attack": 7,
+    "sleaze": 5,
+    "dataProcessing": 5,
+    "firewall": 4,
+    "source": "Kill Code, p.63",
+    "descriptionNotes": "Contains Resonance fragment. Technomancers can use it, but deck absorbs Fade (10 Matrix condition boxes)."
+  },
+  {
+    "id": 644893,
+    "name": "Microtrónica Azteca 200",
+    "rating": 2,
+    "attack": 5,
+    "sleaze": 4,
+    "dataProcessing": 3,
+    "firewall": 2,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Affordable Rating 2 deck. Balanced Attack and Sleaze. Reliable performance."
+  },
+  {
+    "id": 317025,
+    "name": "Novatech Navigator",
+    "rating": 3,
+    "attack": 6,
+    "sleaze": 5,
+    "dataProcessing": 4,
+    "firewall": 3,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Popular Rating 3 deck. Strong Attack and Sleaze. Well-rounded."
+  },
+  {
+    "id": 554781,
+    "name": "Shark (Hunter Deck)",
+    "rating": 8,
+    "attack": 10,
+    "sleaze": 1,
+    "dataProcessing": 8,
+    "firewall": 10,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Always hot-sim. Preloaded with Track, Shell, Hammer (x2), Decryption, Mugger, Fork."
+  },
+  {
+    "id": 472350,
+    "name": "Shiawase Cyber-5",
+    "rating": 5,
+    "attack": 8,
+    "sleaze": 7,
+    "dataProcessing": 6,
+    "firewall": 5,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "High Attack and Sleaze. Average Firewall. Used by corporate deckers."
+  },
+  {
+    "id": 258901,
+    "name": "Shield (Security Deck)",
+    "rating": 4,
+    "attack": 4,
+    "sleaze": 1,
+    "dataProcessing": 3,
+    "firewall": 5,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Mid-tier security deck. Low Sleaze. Preloaded with Encryption and Shell."
+  },
+  {
+    "id": 386415,
+    "name": "Sony CIY-720",
+    "rating": 4,
+    "attack": 7,
+    "sleaze": 6,
+    "dataProcessing": 5,
+    "firewall": 4,
+    "source": "Core Rulebook, p.439",
+    "descriptionNotes": "Strong Attack and Sleaze. Lower Firewall. Good mid-high tier option."
+  },
+  {
+    "id": 974523,
+    "name": "Tiger (Hunter Deck)",
+    "rating": 6,
+    "attack": 8,
+    "sleaze": 1,
+    "dataProcessing": 6,
+    "firewall": 8,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Always hot-sim. Preloaded with Track, Shell, Hammer (x2), Decryption."
+  },
+  {
+    "id": 503698,
+    "name": "Wolf (Hunter Deck)",
+    "rating": 4,
+    "attack": 5,
+    "sleaze": 1,
+    "dataProcessing": 4,
+    "firewall": 5,
+    "source": "Kill Code, p.61",
+    "descriptionNotes": "Always hot-sim. Preloaded with Track, Shell, Hammer, Decryption."
   }
 ]
