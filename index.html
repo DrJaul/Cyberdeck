@@ -10,16 +10,10 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
-  <header id="app-header">
-    <nav id="primary-nav" aria-label="Primary">
-      <a href="#" id="about-link" class="nav-link">About</a>
-      <span class="nav-separator" aria-hidden="true">|</span>
-      <a href="#" id="contact-link" class="nav-link">Contact Us</a>
-    </nav>
-  </header>
   <div class="panel-container">
     <div id="left-panel" class="side-panel">
-      <form id="deck-config">
+      <div id="left-panel-content">
+        <form id="deck-config">
       </br>
         <label>
           Select Your Deck:
@@ -69,8 +63,15 @@
         <span class="augmented-display" id="aug-hardware"></span>
       </label>
 
-      <h3>Qualities</h3>
-      <div id="quality-list"></div>
+        <h3>Qualities</h3>
+        <div id="quality-list"></div>
+      </div>
+      
+      <div id="left-panel-footer">
+        <a href="#" id="about-link" class="footer-link">About</a>
+        <span class="footer-separator" aria-hidden="true">|</span>
+        <a href="#" id="contact-link" class="footer-link">Contact Us</a>
+      </div>
     </div>
 
     <div id="right-panel" class="side-panel">
