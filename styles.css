@@ -147,7 +147,6 @@ input[type="number"] {
   background-color: #001a00;
   border: 1px solid #00aa00;
   border-radius: 2px;
-  cursor: move;
   user-select: none;
   width: 35px;
   text-align: center;
@@ -158,6 +157,8 @@ input[type="number"] {
 }
 
 .stat-box:hover {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
   cursor: grab;
 }
 
@@ -206,6 +207,8 @@ input[type="number"] {
 }
 
 .program-item:hover {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
   cursor: grab;
 }
 
@@ -226,9 +229,6 @@ input[type="number"] {
   cursor: default;
 }
 
-.program-slot:hover {
-  cursor: grab;
-}
 
 .program-slot.drag-over {
   background-color: #003300;
@@ -639,7 +639,7 @@ body {
 
 /* Grabbing cursor for active drag operations */
 body.grabbing-active {
-  cursor: grabbing !important;
+  cursor: -moz-grabbing !important; /* For Firefox */
 }
 
 /* Overlay Scrollbar Styling */
