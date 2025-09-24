@@ -229,6 +229,12 @@ input[type="number"] {
   cursor: default;
 }
 
+.program-slot:not(:empty) {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+}
+
 
 .program-slot.drag-over {
   background-color: #003300;

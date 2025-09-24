@@ -216,6 +216,7 @@ function makeProgramsDraggable(programs) {
       .on("dragstart", function(e) {
         e.originalEvent.dataTransfer.setData("text/plain", prog.name);
         e.originalEvent.dataTransfer.setData("source", "program-list");
+        e.originalEvent.dataTransfer.setData("itemType", "program");
         $('body').addClass('grabbing-active');
       })
       .off("touchstart")
@@ -732,6 +733,7 @@ $(document).ready(async function() {
           }
           
           e.originalEvent.dataTransfer.setData("text/plain", content);
+          e.originalEvent.dataTransfer.setData("itemType", "program");
           currentDragSlot = $(this).attr("data-slot");
           e.originalEvent.dataTransfer.effectAllowed = "move";
           $('body').addClass('grabbing-active');
@@ -769,7 +771,10 @@ $(document).ready(async function() {
           $('body').removeClass('grabbing-active');
 
           const draggedText = e.originalEvent.dataTransfer.getData("text/plain");
-          if (!draggedText) return;
+          const itemType = e.originalEvent.dataTransfer.getData("itemType");
+          
+          // Only allow programs to be dropped into program slots
+          if (!draggedText || itemType !== "program") return;
           
           const targetSlotIndex = parseInt($(this).attr("data-slot"));
           
@@ -805,6 +810,7 @@ $(document).ready(async function() {
     .attr("draggable", true)
     .on("dragstart", function(e) {
       e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
+      e.originalEvent.dataTransfer.setData("itemType", "stat");
       $('body').addClass('grabbing-active');
     })
     .on("touchstart", function(e) {
@@ -834,9 +840,13 @@ $(document).ready(async function() {
       e.preventDefault();
       $(this).removeClass("drag-over");
       $('body').removeClass('grabbing-active');
-      handleStatSwap(
-        e.originalEvent.dataTransfer.getData("text/plain"),
-        $(this).data("type")
-      );
+      
+      const draggedText = e.originalEvent.dataTransfer.getData("text/plain");
+      const itemType = e.originalEvent.dataTransfer.getData("itemType");
+      
+      // Only allow stats to be dropped onto other stats
+      if (!draggedText || itemType !== "stat") return;
+      
+      handleStatSwap(draggedText, $(this).data("type"));
     });
 });
