@@ -16,6 +16,16 @@ const choiceSelections = { qualities: {}, programs: {} };
 const activePrograms = { slots: {}, dataMap: {} };
 const currentDeckStats = {};
 
+function openModal(modal) {
+  if (!modal || !modal.length) return;
+  modal.addClass("is-visible").attr("aria-hidden", "false");
+}
+
+function closeModal(modal) {
+  if (!modal || !modal.length) return;
+  modal.removeClass("is-visible").attr("aria-hidden", "true");
+}
+
 function handleChoiceSelection(itemType, itemName, itemData) {
   if (itemData.improvements?.type !== "choice") return false;
   
@@ -26,10 +36,10 @@ function handleChoiceSelection(itemType, itemName, itemData) {
   options.forEach(option => dropdown.append($("<option>").val(option).text(option)));
   
   $("#improvement-choice-description").text(`Select an option for ${itemName}:`);
-  $("#improvement-choice-modal")
-    .data("itemInfo", { type: itemType, name: itemName, data: itemData })
-    .show();
-  
+  const modal = $("#improvement-choice-modal");
+  modal.data("itemInfo", { type: itemType, name: itemName, data: itemData });
+  openModal(modal);
+
   return true;
 }
 
@@ -512,7 +522,42 @@ $(document).ready(async function() {
       $("#right-panel").removeClass("open");
     }
   });
-  
+
+  $("#about-link").on("click", function(e) {
+    e.preventDefault();
+    openModal($("#about-modal"));
+  });
+
+  $("#contact-link").on("click", function(e) {
+    e.preventDefault();
+    openModal($("#contact-modal"));
+  });
+
+  $(document).on("click", ".modal-close", function() {
+    const targetId = $(this).data("modalTarget");
+    if (targetId) {
+      closeModal($(`#${targetId}`));
+    }
+  });
+
+  $(document).on("click", ".modal", function(e) {
+    const modal = $(this);
+    if (!modal.data("dismissable")) return;
+    if (modal.is(e.target)) {
+      closeModal(modal);
+    }
+  });
+
+  $(document).on("keyup.modal", function(e) {
+    if (e.key !== "Escape") return;
+    $(".modal.is-visible").each(function() {
+      const modal = $(this);
+      if (modal.data("dismissable")) {
+        closeModal(modal);
+      }
+    });
+  });
+
   $("#improvement-choice-confirm").on("click", function() {
     const modal = $("#improvement-choice-modal");
     const itemInfo = modal.data("itemInfo");
@@ -547,9 +592,9 @@ $(document).ready(async function() {
       saveState();
     }
     
-    modal.hide();
+    closeModal(modal);
   });
-  
+
   $("#improvement-choice-cancel").on("click", function() {
     const modal = $("#improvement-choice-modal");
     const itemInfo = modal.data("itemInfo");
@@ -558,7 +603,7 @@ $(document).ready(async function() {
       $(`.quality-checkbox input[value="${itemInfo.name}"]`).prop("checked", false);
     }
     
-    modal.hide();
+    closeModal(modal);
     updateMatrixActions();
     saveState();
   });
