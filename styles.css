@@ -747,7 +747,7 @@ body.grabbing-active {
   
   /* Make the draggable stats more touch-friendly */
   #draggables {
-    gap: 0.8em;
+    gap: 0.4em; /* Reduced gap to keep elements centered when their size increases */
   }
   
   /* Make panels full width when open on mobile */
@@ -757,8 +757,8 @@ body.grabbing-active {
   }
   
   .stat-box {
-    width: 40px;
-    height: 25px;
+    width: 60px; /* Increased by 50% from 40px */
+    height: 50px; /* Increased by ~50% from 25px */
     padding: 0.7em;
     margin-top: 15px;
     margin-bottom: 8px;
@@ -808,7 +808,7 @@ body.grabbing-active {
   
   /* Keep the same layout for stat boxes as desktop, just adjust spacing */
   #draggables {
-    gap: 0.5em;
+    gap: 0.3em; /* Reduced gap for smaller screens to match the 50% size increase */
   }
   
   .stat-container {
