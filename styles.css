@@ -37,6 +37,56 @@ h3 {
   text-align: center;
 }
 
+h4 {
+  margin: 0.8em 0 0.4em;
+  text-align: left;
+  color: #66ff66;
+  letter-spacing: 0.05em;
+}
+
+#app-header {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0, 34, 0, 0.9), rgba(0, 20, 0, 0.8));
+  border-bottom: 1px solid #005500;
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.15);
+  padding: 1.2em 1em 0.6em;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 900;
+}
+
+#primary-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  font-size: 1.1em;
+}
+
+.nav-link {
+  color: #88ff88;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2em 0.4em;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, text-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #00ff00;
+  border-color: #00ff00;
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
+  outline: none;
+}
+
+.nav-separator {
+  color: #00aa00;
+  font-size: 1.2em;
+  text-shadow: 0 0 4px rgba(0, 255, 0, 0.4);
+}
+
 form, #deck-stats, #program-section, #program-slots, #status, #deck-notes {
   margin: 1em;
   max-width: 1200px;
@@ -355,16 +405,23 @@ input:focus, select:focus, button:focus {
   align-items: center;
 }
 
+.modal.is-visible {
+  display: flex;
+}
+
 .modal-content {
   background-color: #001a00;
   padding: 1.5em;
   border-radius: 3px;
   width: 90%;
   max-width: 500px;
+  max-height: 85vh;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
   margin: 0 auto;
   border: 1px solid #00aa00;
   box-sizing: border-box;
+  position: relative;
+  overflow-y: auto;
 }
 
 .modal h3 {
@@ -387,6 +444,61 @@ input:focus, select:focus, button:focus {
   border: 1px solid #00aa00;
   border-radius: 2px;
   font-family: "VT323", "Courier New", monospace;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  background-color: transparent;
+  color: #66ff66;
+  border: 1px solid #005500;
+  border-radius: 50%;
+  width: 1.8em;
+  height: 1.8em;
+  line-height: 1.6em;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #00ff00;
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  outline: none;
+}
+
+.modal-section {
+  margin-bottom: 1em;
+}
+
+.modal-section ol {
+  margin: 0.4em 0 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 0.3em;
+}
+
+.modal-section li {
+  line-height: 1.4;
+}
+
+.modal-link {
+  color: #88ff88;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(136, 255, 136, 0.7);
+  transition: color 0.2s ease, border-bottom-color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.modal-link:hover,
+.modal-link:focus {
+  color: #00ff00;
+  border-bottom-color: #00ff00;
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.6);
+  outline: none;
 }
 
 .modal-buttons {
@@ -512,7 +624,20 @@ body {
   body {
     font-size: 14px;
   }
-  
+
+  #app-header {
+    padding: 1em 0.5em;
+  }
+
+  #primary-nav {
+    flex-direction: column;
+    gap: 0.6em;
+  }
+
+  .nav-separator {
+    display: none;
+  }
+
   h3 {
     font-size: 1.3em;
   }
@@ -563,8 +688,9 @@ body {
   .modal-content {
     padding: 1em;
     width: 95%;
+    max-height: 90vh;
   }
-  
+
   .modal-buttons button {
     padding: 0.7em 1.2em;
   }

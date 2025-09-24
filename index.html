@@ -10,6 +10,13 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
+  <header id="app-header">
+    <nav id="primary-nav" aria-label="Primary">
+      <a href="#" id="about-link" class="nav-link">About</a>
+      <span class="nav-separator" aria-hidden="true">|</span>
+      <a href="#" id="contact-link" class="nav-link">Contact Us</a>
+    </nav>
+  </header>
   <div class="panel-container">
     <div id="left-panel" class="side-panel">
       <form id="deck-config">
@@ -142,7 +149,50 @@
   </div>
  </div>
   <div id="program-tooltip"></div>
-  
+
+  <div id="about-modal" class="modal info-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title" aria-hidden="true" data-dismissable="true">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-modal-target="about-modal" aria-label="Close About modal">✕</button>
+      <h3 id="about-modal-title">About Cyberdeck Helper</h3>
+      <section class="modal-section">
+        <h4>Overview</h4>
+        <p>The Cyberdeck helper is a tool to help cyberdeck users keep track of their current deck stats and active programs, and calculate your dicepool for a variety of matrix actions.</p>
+      </section>
+      <section class="modal-section">
+        <h4>Setup</h4>
+        <ol>
+          <li>Open the left tab by clicking the left hamburger menu.</li>
+          <li>Select your deck from the dropdown and enter your character stats.</li>
+          <li>Close the left tab and begin play.</li>
+        </ol>
+      </section>
+      <section class="modal-section">
+        <h4>Cyberdeck Configuration</h4>
+        <ol>
+          <li>To change your deck stats click and drag any deck stat block into another to swap the values.</li>
+          <li>To change your program setup, drag and drop any program into a program slot. Dragging a program out of a slot deactivates it, while dragging a program into an occupied slot replaces that program with your new one.</li>
+        </ol>
+      </section>
+      <section class="modal-section">
+        <h4>Matrix Action Dice Pools</h4>
+        <ol>
+          <li>Open the right hand tab using the right hamburger menu.</li>
+          <li>Observe your dice pools and the formula that was used to calculate them.</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <div id="contact-modal" class="modal info-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" aria-hidden="true" data-dismissable="true">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-modal-target="contact-modal" aria-label="Close Contact modal">✕</button>
+      <h3 id="contact-modal-title">Contact Us</h3>
+      <p>If you encounter a bug, have feedback, or need assistance, please let us know through GitHub.</p>
+      <p><a class="modal-link" href="https://github.com/DrJaul/Cyberdeck/issues" target="_blank" rel="noopener">Report an issue on the Cyberdeck GitHub Issues page</a>.</p>
+      <p>If you appreciate the Cyberdeck helper, please consider <a class="modal-link" href="https://github.com/DrJaul/Cyberdeck" target="_blank" rel="noopener">starring the Cyberdeck repository</a> so others can find it too.</p>
+    </div>
+  </div>
+
   <!-- Modal for improvement choices -->
   <div id="improvement-choice-modal" class="modal">
     <div class="modal-content">
