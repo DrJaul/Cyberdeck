@@ -157,6 +157,10 @@ input[type="number"] {
   box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
 }
 
+.stat-box:hover {
+  cursor: grab;
+}
+
 .stat-box .augmented {
   display: block;
   font-size: 0.8em;
@@ -201,6 +205,10 @@ input[type="number"] {
   box-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
 }
 
+.program-item:hover {
+  cursor: grab;
+}
+
 #program-slots {
   text-align: center;
 }
@@ -215,6 +223,11 @@ input[type="number"] {
   margin: 0.3em;
   border-radius: 2px;
   vertical-align: top;
+  cursor: default;
+}
+
+.program-slot:hover {
+  cursor: grab;
 }
 
 .program-slot.drag-over {
