@@ -637,6 +637,11 @@ body {
   box-sizing: inherit;
 }
 
+/* Grabbing cursor for active drag operations */
+body.grabbing-active {
+  cursor: grabbing !important;
+}
+
 /* Overlay Scrollbar Styling */
 /* WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {

@@ -92,6 +92,7 @@ function resetTouchDragState() {
   removeDragGhost();
   $(".program-slot, .stat-box").removeClass("drag-over");
   $('body').removeClass('program-deactivate-zone');
+  $('body').removeClass('grabbing-active');
 }
 
 function handleProgramActivation(programName, targetSlotIndex) {
@@ -215,6 +216,7 @@ function makeProgramsDraggable(programs) {
       .on("dragstart", function(e) {
         e.originalEvent.dataTransfer.setData("text/plain", prog.name);
         e.originalEvent.dataTransfer.setData("source", "program-list");
+        $('body').addClass('grabbing-active');
       })
       .off("touchstart")
       .on("touchstart", function(e) {
@@ -230,6 +232,7 @@ function makeProgramsDraggable(programs) {
         };
         
         createDragGhost(prog.name, touch.clientX, touch.clientY);
+        $('body').addClass('grabbing-active');
         e.preventDefault();
       })
       .off("mouseenter mouseleave")
@@ -633,6 +636,7 @@ $(document).ready(async function() {
         })
         .on("dragend", function() {
           $('body').removeClass('program-deactivate-zone');
+          $('body').removeClass('grabbing-active');
           currentDragSlot = null;
         })
         .on("touchmove", function(e) {
@@ -730,6 +734,7 @@ $(document).ready(async function() {
           e.originalEvent.dataTransfer.setData("text/plain", content);
           currentDragSlot = $(this).attr("data-slot");
           e.originalEvent.dataTransfer.effectAllowed = "move";
+          $('body').addClass('grabbing-active');
         })
         .on("touchstart", function(e) {
           const content = $(this).text().trim();
@@ -747,6 +752,7 @@ $(document).ready(async function() {
           };
           
           createDragGhost(content, touch.clientX, touch.clientY);
+          $('body').addClass('grabbing-active');
           e.preventDefault();
         })
         .on("dragover", function(e) {
@@ -760,6 +766,7 @@ $(document).ready(async function() {
           e.preventDefault();
           $(this).removeClass("drag-over");
           $('body').removeClass('program-deactivate-zone');
+          $('body').removeClass('grabbing-active');
 
           const draggedText = e.originalEvent.dataTransfer.getData("text/plain");
           if (!draggedText) return;
@@ -798,6 +805,7 @@ $(document).ready(async function() {
     .attr("draggable", true)
     .on("dragstart", function(e) {
       e.originalEvent.dataTransfer.setData("text/plain", $(this).data("type"));
+      $('body').addClass('grabbing-active');
     })
     .on("touchstart", function(e) {
       const touch = e.originalEvent.touches[0];
@@ -812,6 +820,7 @@ $(document).ready(async function() {
       };
       
       createDragGhost($(this).find("span").text(), touch.clientX, touch.clientY);
+      $('body').addClass('grabbing-active');
       e.preventDefault();
     })
     .on("dragover", function(e) {
@@ -824,6 +833,7 @@ $(document).ready(async function() {
     .on("drop", function(e) {
       e.preventDefault();
       $(this).removeClass("drag-over");
+      $('body').removeClass('grabbing-active');
       handleStatSwap(
         e.originalEvent.dataTransfer.getData("text/plain"),
         $(this).data("type")
