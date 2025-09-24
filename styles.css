@@ -256,16 +256,43 @@ input[type="number"] {
 }
 
 /* Matrix Actions Table */
+#right-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+#right-panel h3 {
+  flex-shrink: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #00aa00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
 #matrix-actions-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin-top: 1em;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  table-layout: fixed;
+  table-layout: auto;
+}
+
+/* Set fixed width for Description and Formula columns */
+#matrix-actions-table th:nth-child(3),
+#matrix-actions-table td:nth-child(3) {
+  width: 400px;
+}
+
+#matrix-actions-table th:nth-child(4),
+#matrix-actions-table td:nth-child(4) {
+  width: 400px;
 }
 
 #matrix-actions-table th,
@@ -275,37 +302,44 @@ input[type="number"] {
   text-align: left;
 }
 
+/* Base styling for all cells */
+#matrix-actions-table td {
+  background-color: #001100;
+  color: #00dd00;
+  z-index: 1; /* Base z-index for regular cells */
+}
+
+/* Header row styling (first row) */
 #matrix-actions-table th {
   background-color: #002200;
   color: #00ff00;
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Higher z-index for header row */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-#matrix-actions-table td {
-  background-color: #001100;
-  color: #00dd00;
-}
-
-/* Fixed first column (Action/Name column) */
-#matrix-actions-table th:first-child,
+/* First column styling */
 #matrix-actions-table td:first-child {
   position: sticky;
   left: 0;
-  z-index: 1;
-}
-
-#matrix-actions-table th:first-child {
-  background-color: #002200; /* Same as other headers */
-  z-index: 2; /* Higher than td to stay on top at corner */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-}
-
-#matrix-actions-table td:first-child {
+  z-index: 2; /* Higher z-index for first column */
   background-color: #002200; /* Same as header cells */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   color: #00ff00; /* Match header text color */
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); /* Match header text shadow */
   font-weight: bold; /* Add bold to emphasize like headers */
+}
+
+/* First cell (top-left corner) styling */
+#matrix-actions-table th:first-child {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 3; /* Highest z-index for the corner cell */
+  background-color: #002200; /* Same as other headers */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Side Panels */
