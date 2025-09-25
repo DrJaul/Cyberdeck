@@ -1,3 +1,8 @@
+/* Global box-sizing reset */
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: "VT323", "Courier New", monospace;
   margin: 0;
@@ -11,9 +16,11 @@ body {
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
   position: relative;
   overflow-x: hidden;
+  animation: crt-flicker 10s infinite;
+  box-sizing: border-box;
 }
 
-/* CRT scan line effect */
+/* CRT scan line effect overlay */
 body::before {
   content: "";
   position: fixed;
@@ -93,7 +100,6 @@ form, #deck-stats, #program-section, #program-slots, #status, #deck-notes {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  box-sizing: border-box;
   padding: 0 10px;
 }
 
@@ -103,7 +109,6 @@ form, #deck-stats, #program-section, #program-slots, #status, #deck-notes {
   margin-left: auto;
   margin-right: auto;
   padding: 0 10px;
-  box-sizing: border-box;
 }
 
 label {
@@ -124,7 +129,7 @@ input[type="number"] {
   justify-content: center;
 }
 
-/* New layout for deck stat items */
+/* Deck stat items layout */
 .stat-container {
   display: flex;
   flex-direction: column;
@@ -148,18 +153,25 @@ input[type="number"] {
   border: 1px solid #00aa00;
   border-radius: 2px;
   user-select: none;
-  width: 35px;
+  width: 60px; 
+  height: 50px;
   text-align: center;
   position: relative;
   margin-top: 20px;
   margin-bottom: 10px;
   box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+  font-size: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .stat-box:hover {
   cursor: -webkit-grab;
   cursor: -moz-grab;
   cursor: grab;
+  background-color: #002200;
+  border-color: #00ff00;
 }
 
 .stat-box .augmented {
@@ -169,7 +181,7 @@ input[type="number"] {
   margin-top: 0.2em;
 }
 
-/* Specific styling for augmented-display in stat boxes */
+/* Augmented display styling in stat boxes */
 .stat-container .augmented-display {
   display: block;
   font-size: 1.2em; /* Larger text for modified values */
@@ -177,11 +189,6 @@ input[type="number"] {
   font-weight: bold;
   margin-top: 0.2em;
   text-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
-}
-
-.stat-box:hover {
-  background-color: #002200;
-  border-color: #00ff00;
 }
 
 #program-list-container, #program-slots {
@@ -206,7 +213,9 @@ input[type="number"] {
   box-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
 }
 
-.program-item:hover {
+/* Cursor styles for draggable elements */
+.program-item:hover,
+.program-slot:not(:empty) {
   cursor: -webkit-grab;
   cursor: -moz-grab;
   cursor: grab;
@@ -229,15 +238,11 @@ input[type="number"] {
   cursor: default;
 }
 
-.program-slot:not(:empty) {
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: grab;
-}
 
-
-.program-slot.drag-over {
-  background-color: #003300;
+/* Drag state styling */
+.program-slot.drag-over,
+.stat-box.drag-over {
+  background-color: #004400;
   border-color: #00ff00;
 }
 
@@ -255,7 +260,7 @@ input[type="number"] {
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
 }
 
-/* Matrix Actions Table */
+/* Matrix Actions Table styling */
 #right-panel {
   display: flex;
   flex-direction: column;
@@ -302,14 +307,14 @@ input[type="number"] {
   text-align: left;
 }
 
-/* Base styling for all cells */
+/* Table cell base styling */
 #matrix-actions-table td {
   background-color: #001100;
   color: #00dd00;
   z-index: 1; /* Base z-index for regular cells */
 }
 
-/* Header row styling (first row) */
+/* Table header styling */
 #matrix-actions-table th {
   background-color: #002200;
   color: #00ff00;
@@ -320,7 +325,7 @@ input[type="number"] {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* First column styling */
+/* Table first column (sticky) styling */
 #matrix-actions-table td:first-child {
   position: sticky;
   left: 0;
@@ -332,7 +337,7 @@ input[type="number"] {
   font-weight: bold; /* Add bold to emphasize like headers */
 }
 
-/* First cell (top-left corner) styling */
+/* Table corner cell (top-left) styling */
 #matrix-actions-table th:first-child {
   position: sticky;
   left: 0;
@@ -342,7 +347,7 @@ input[type="number"] {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Side Panels */
+/* Side panel styling */
 .side-panel {
   position: fixed;
   top: 0;
@@ -358,7 +363,7 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
-/* Left panel content and footer */
+/* Left panel internal layout */
 #left-panel {
   display: flex;
   flex-direction: column;
@@ -403,6 +408,7 @@ input[type="number"] {
   text-shadow: 0 0 4px rgba(0, 255, 0, 0.4);
 }
 
+/* Panel positioning */
 #left-panel {
   left: 0;
   transform: translateX(-100%);
@@ -435,6 +441,10 @@ input[type="number"] {
   z-index: 1100;
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
   box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 #left-toggle {
@@ -455,12 +465,8 @@ input[type="number"] {
   transform: scale(1.1);
 }
 
-.stat-box.drag-over {
-  background-color: #004400;
-  border-color: #00ff00;
-}
 
-/* Augmented UI next to inputs */
+/* Input field augmented UI styling */
 .input-wrapper {
   display: flex;
   align-items: center;
@@ -473,7 +479,7 @@ input[type="number"] {
   text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
 }
 
-/* Style for input elements */
+/* Form element styling */
 input, select, button {
   background-color: #001500;
   color: #00ff00;
@@ -489,7 +495,7 @@ input:focus, select:focus, button:focus {
   box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }
 
-/* Modal Styles */
+/* Modal dialog styling */
 .modal {
   display: none;
   position: fixed;
@@ -517,7 +523,6 @@ input:focus, select:focus, button:focus {
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
   margin: 0 auto;
   border: 1px solid #00aa00;
-  box-sizing: border-box;
   position: relative;
   overflow-y: auto;
 }
@@ -635,7 +640,7 @@ input:focus, select:focus, button:focus {
   box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
 }
 
-/* Factory reset button styling */
+/* Reset button styling */
 #reset-factory {
   float: right;
   margin-top: 1em;
@@ -654,7 +659,7 @@ input:focus, select:focus, button:focus {
   box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
 }
 
-/* CRT flicker animation */
+/* CRT flicker animation keyframes */
 @keyframes crt-flicker {
   0% { opacity: 1; }
   1% { opacity: 0.8; }
@@ -667,23 +672,12 @@ input:focus, select:focus, button:focus {
   94% { opacity: 1; }
 }
 
-body {
-  animation: crt-flicker 10s infinite;
-  box-sizing: border-box;
-}
-
-/* Global box-sizing reset */
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-/* Grabbing cursor for active drag operations */
+/* Active drag cursor override */
 body.grabbing-active {
   cursor: -moz-grabbing !important; /* For Firefox */
 }
 
-/* Overlay Scrollbar Styling */
-/* WebKit browsers (Chrome, Safari, Edge) */
+/* Custom scrollbar styling - WebKit browsers */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -710,22 +704,35 @@ body.grabbing-active {
   background-color: transparent;
 }
 
-/* Firefox */
+/* Custom scrollbar styling - Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 170, 0, 0.7) rgba(0, 21, 0, 0.3);
 }
 
-/* Improve touch responsiveness */
+/* Touch device optimizations */
 .stat-box, .program-item, .program-slot {
   touch-action: none; /* Disable browser handling of all panning and zooming gestures */
 }
 
-/* Mobile Responsive Design */
+/* Responsive design - Tablets and medium screens */
 @media (max-width: 768px) {
   /* Adjust font sizes for better readability on small screens */
   body {
     font-size: 14px;
+  }
+
+  /* Ensure program text and deck stat values match desktop size */
+  .program-item {
+    font-size: 16px; /* Match desktop size */
+  }
+  
+  .stat-box span {
+    font-size: 27px; /* Match desktop size */
+  }
+  
+  .stat-container .augmented-display {
+    font-size: 1.2em; /* Keep the same relative size as desktop */
   }
 
   #app-header {
@@ -757,8 +764,8 @@ body.grabbing-active {
   }
   
   .stat-box {
-    width: 60px; /* Increased by 50% from 40px */
-    height: 50px; /* Increased by ~50% from 25px */
+    width: 60px; 
+    height: 50px; 
     padding: 0.7em;
     margin-top: 15px;
     margin-bottom: 8px;
@@ -799,11 +806,20 @@ body.grabbing-active {
   }
 }
 
-/* Small mobile devices */
+/* Responsive design - Small mobile devices */
 @media (max-width: 576px) {
   /* Further adjustments for very small screens */
   body {
     font-size: 13px;
+  }
+  
+  /* Ensure program text and deck stat values match desktop size even on smaller screens */
+  .program-item {
+    font-size: 16px; /* Match desktop size */
+  }
+  
+  .stat-box span {
+    font-size: 27px; /* Match desktop size */
   }
   
   /* Keep the same layout for stat boxes as desktop, just adjust spacing */
