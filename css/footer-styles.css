@@ -1,0 +1,68 @@
+/* Footer styling - CRT aesthetic */
+footer.site-footer {
+  background: linear-gradient(180deg, #001800, #001200);
+  border-top: 2px solid #00aa00;
+  color: #88ff88;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.4);
+  box-shadow: 0 -4px 12px rgba(0, 255, 0, 0.15);
+  padding: 0.1em 0;
+  position: relative;
+  width: 100%;
+}
+
+/* CRT scan line effect for footer */
+footer.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent 0%, 
+    rgba(0, 10, 0, 0.1) 50%, 
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.site-footer .inner {
+  width: min(94vw, 1200px);
+  margin: 0 auto;
+  padding: 0.2rem 0;
+  display: grid;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: left;
+}
+
+.footer-links a {
+  color: #FFA500; /* Orange CRT color */
+  text-decoration: none;
+  font-size: 0.5rem;
+  padding: 0.1em 0.3em;
+  border-bottom: 1px solid #FFA500; /* Always show underline */
+  transition: color 0.2s ease, text-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus {
+  color: #FFD700; /* Brighter gold/orange on hover */
+  border-color: #FFD700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); /* Stronger orange/gold glow */
+  outline: none;
+}
+
+.footer-note {
+  font-size: 0.4rem;
+  line-height: 1.3;
+  text-align: left;
+  margin-top: 0.5em;
+  margin-bottom: 0.1em;
+}
